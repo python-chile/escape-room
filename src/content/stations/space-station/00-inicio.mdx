@@ -1,0 +1,59 @@
+---
+title: "Habitación 00: Inicio"
+station: "Estación espacial"
+order: 1
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Bienvenido, joven astronauta
+
+Estás a punto de iniciar tu viaje en la programación. La estación espacial necesita de tu ayuda para volver a funcionar.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-00.png`}
+    alt="Interior de la estación espacial OASIS-9"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+Año 2079. La estación espacial **OASIS-9**, que orbita la luna Europa, sufrió una serie de fallas después de una tormenta solar.
+
+El comandante activó el protocolo de emergencia **PYSCHOOL-25**. Cada habitación del sistema principal se bloqueó hasta que un miembro de la tripulación resuelva un acertijo lógico o computacional con Python.
+
+Solo así podrán restaurar los sistemas y regresar a casa.
+
+<StationCallout title="Bienvenido a PySchool">
+  Cada habitación incluye un desafío, explicaciones y pistas. Puedes intentarlo todas las veces que necesites.
+</StationCallout>
+
+<StationDisclosure title="Pistas y explicaciones">
+  En este tipo de bloques encontrarás contexto, pistas y enlaces para ayudarte a resolver cada misión.
+
+  La primera habitación es muy sencilla: tendrás que ejecutar código Python y descubrir el código de acceso.
+</StationDisclosure>
+
+## Primera misión
+
+El sistema solicita un código de acceso. La respuesta correcta es:
+
+<PythonEditor
+  starterCode={`codigo_acceso = "PySchool2025"
+
+print(codigo_acceso)`}
+  challenge={{
+    type: "equals",
+    variable: "codigo_acceso",
+    expected: "PySchool2025",
+    incompleteMessage: "Define el código de acceso.",
+    errorMessage: "El código de acceso no es correcto. Inténtalo nuevamente.",
+    successMessage: "¡Código aceptado! El sistema principal de OASIS-9 está listo para la primera misión.",
+    successHref: "/estaciones/01-estacion-espacial/01-variable-string",
+    successLabel: "Comenzar habitación 01",
+  }}
+/>

@@ -1,0 +1,195 @@
+<style is:global>
+  .station-content pre:not([data-python-output]) {
+    position: relative;
+    margin-top: 1.5rem;
+    overflow: hidden;
+    border: 1px solid rgb(16 29 39 / 18%);
+    border-radius: 0.5rem;
+    background: #ffffff !important;
+  }
+
+  .station-content pre:not([data-python-output]) .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid rgb(16 29 39 / 10%);
+    background: var(--color-paper);
+  }
+
+  .station-content pre:not([data-python-output]) .code-lang {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-brand);
+    text-transform: uppercase;
+  }
+
+  .station-content pre:not([data-python-output]) code {
+    display: block;
+    min-width: max-content;
+    overflow-x: auto;
+    padding: 1rem 1.1rem;
+    background: transparent !important;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .station-content :not(pre) > code {
+    border-bottom: 2px solid var(--color-accent);
+    background: #edf4ff;
+    padding: 0.1rem 0.3rem;
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  .station-content pre:not([data-python-output]) + p,
+  .station-content pre:not([data-python-output]) + h2,
+  .station-content pre:not([data-python-output]) + h3 {
+    margin-top: 2rem;
+  }
+
+  .copy-btn {
+    position: relative;
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+    border: 1px solid rgb(16 29 39 / 15%);
+    border-radius: 0.35rem;
+    background: white;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.12s ease;
+  }
+
+  .copy-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+  }
+
+  .copy-btn:active {
+    transform: scale(0.93);
+  }
+
+  .copy-btn:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  .copy-btn svg {
+    position: absolute;
+    width: 0.85rem;
+    height: 0.85rem;
+    stroke: currentColor;
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .copy-btn .check {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  .copy-btn.is-copied {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  .copy-btn.is-copied .icon {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  .copy-btn.is-copied .check {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+
+<script>
+  const codeBlockSelector = ".station-content pre:not([data-python-output])";
+
+  async function copyText(text: string) {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error("El portapapeles no está disponible.");
+    }
+
+    await navigator.clipboard.writeText(text);
+  }
+
+  function setupCodeBlocks() {
+    document
+      .querySelectorAll<HTMLPreElement>(codeBlockSelector)
+      .forEach((pre) => {
+        if (pre.querySelector(".code-header")) {
+          return;
+        }
+
+        const code = pre.querySelector<HTMLElement>("code");
+
+        if (!code) {
+          return;
+        }
+
+        const language =
+          code.className.match(/\blanguage-([a-z0-9+-]+)/i)?.[1] ?? "python";
+
+        const header = document.createElement("div");
+        header.className = "code-header";
+
+        const languageLabel = document.createElement("span");
+        languageLabel.className = "code-lang";
+        languageLabel.textContent = language;
+
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "copy-btn";
+        copyButton.setAttribute("aria-label", "Copiar código");
+        copyButton.setAttribute("title", "Copiar código");
+        copyButton.innerHTML = `
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <svg class="check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+
+        copyButton.addEventListener("click", async () => {
+          try {
+            await copyText(code.textContent ?? "");
+            copyButton.classList.add("is-copied");
+            copyButton.setAttribute("aria-label", "Código copiado");
+
+            window.setTimeout(() => {
+              copyButton.classList.remove("is-copied");
+              copyButton.setAttribute("aria-label", "Copiar código");
+            }, 1_400);
+          } catch {
+            copyButton.setAttribute(
+              "aria-label",
+              "No fue posible copiar el código",
+            );
+          }
+        });
+
+        header.append(languageLabel, copyButton);
+        pre.prepend(header);
+      });
+  }
+
+  setupCodeBlocks();
+  document.addEventListener("astro:page-load", setupCodeBlocks);
+</script>

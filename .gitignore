@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Tests
+test-results/
+playwright-report/
+public/python-runner.html

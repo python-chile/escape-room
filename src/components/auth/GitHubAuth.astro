@@ -1,0 +1,126 @@
+---
+const accountHref = `${import.meta.env.BASE_URL}cuenta`;
+---
+
+<div class="flex items-center" data-github-auth>
+  <button
+    type="button"
+    class="inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest text-ink transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    data-github-login
+  >
+    <svg
+      aria-hidden="true"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.58 2 12.24c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.2-3.37-1.2-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.06 1.54 1.06.9 1.58 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.4c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.8-4.58 5.06.36.32.68.93.68 1.88 0 1.36-.01 2.45-.01 2.79 0 .27.18.59.69.49A10.27 10.27 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z"
+      ></path>
+    </svg>
+
+    <span>SIGN IN</span>
+  </button>
+
+  <a
+    hidden
+    href={accountHref}
+    class="inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold text-ink transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    data-github-account
+  >
+    <img
+      alt=""
+      width="28"
+      height="28"
+      class="size-7 rounded-full border border-ink/10 object-cover"
+      data-github-avatar
+    />
+
+    <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
+
+    <span aria-hidden="true" class="text-brand">→</span>
+  </a>
+</div>
+
+<script>
+  import { syncProgressWithCloud } from "@/lib/progress";
+  import { supabase } from "@/lib/supabase";
+
+  function getCallbackUrl() {
+    return new URL(
+      `${import.meta.env.BASE_URL}auth/callback`,
+      window.location.origin,
+    ).toString();
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-github-auth]")
+    .forEach((root) => {
+      const loginButton = root.querySelector<HTMLButtonElement>(
+        "[data-github-login]",
+      );
+      const accountLink = root.querySelector<HTMLAnchorElement>(
+        "[data-github-account]",
+      );
+      const avatar = root.querySelector<HTMLImageElement>(
+        "[data-github-avatar]",
+      );
+      const name = root.querySelector<HTMLElement>("[data-github-name]");
+
+      async function renderSession() {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        const user = session?.user;
+
+        if (!user || !loginButton || !accountLink || !avatar || !name) {
+          loginButton?.removeAttribute("hidden");
+          accountLink?.setAttribute("hidden", "");
+          return;
+        }
+
+        const metadata = user.user_metadata;
+        const userName =
+          metadata.user_name ||
+          metadata.preferred_username ||
+          metadata.name ||
+          user.email ||
+          "Cuenta GitHub";
+
+        avatar.src = metadata.avatar_url || "";
+        name.textContent = userName;
+
+        loginButton.hidden = true;
+        accountLink.hidden = false;
+      }
+
+      loginButton?.addEventListener("click", async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "github",
+          options: {
+            redirectTo: getCallbackUrl(),
+          },
+        });
+
+        if (error) {
+          console.error(
+            "No fue posible iniciar sesión con GitHub:",
+            error.message,
+          );
+        }
+      });
+
+      supabase.auth.onAuthStateChange((event) => {
+        void renderSession();
+
+        if (event === "SIGNED_IN") {
+          void syncProgressWithCloud();
+        }
+      });
+
+      void renderSession();
+      void syncProgressWithCloud();
+    });
+</script>

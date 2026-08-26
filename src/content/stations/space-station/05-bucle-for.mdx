@@ -1,0 +1,87 @@
+---
+title: "Habitación 05: Bucle for"
+station: "Estación espacial"
+order: 6
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Compuerta de alta seguridad
+
+Frente a ti, una compuerta metálica de alta seguridad se mantiene cerrada.
+
+En su pantalla aparece un mensaje:
+
+```text
+Ingresa la suma correcta de la secuencia del 1 al 1000.
+```
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-05.png`}
+    alt="Compuerta de alta seguridad de la estación"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="🧮 Secuencia numérica">
+  Asigna los valores correctos a las variables `a` y `b` para sumar todos los números desde 1 hasta 1000.
+</StationCallout>
+
+## El bucle `for`
+
+`range(a, b)` crea una secuencia de números que comienza en `a` y termina antes de `b`.
+
+```python
+range(1, 5)
+```
+
+produce los números `1`, `2`, `3` y `4`.
+
+Un bucle `for` repite código para cada número de una secuencia:
+
+```python
+for numero in range(1, 5):
+    print(numero)
+```
+
+## Tu misión
+
+No cambies el bucle. Solo asigna los límites correctos a `a` y `b`.
+
+<StationDisclosure title="Pista">
+  `range()` no incluye el valor final.
+
+  Si quieres llegar hasta `1000`, el segundo valor debe ser `1001`.
+
+  ```python
+  range(1, 1001)
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Escribe tu respuesta aquí
+a = 0
+b = 1
+suma = 0
+
+for numero in range(a, b):
+    suma = numero + suma
+
+respuesta = suma
+print(respuesta)`}
+  challenge={{
+    type: "equals",
+    variable: "respuesta",
+    expected: 500500,
+    incompleteMessage: "Asigna los límites del rango para calcular la suma.",
+    errorMessage: "La suma no es correcta. Revisa desde qué número empieza y dónde termina range().",
+    successMessage: "¡Compuerta desbloqueada! El sistema reconoce la secuencia correcta.",
+    successHref: "/estaciones/01-estacion-espacial/06-indices-en-lista",
+    successLabel: "Ir a la habitación 06",
+  }}
+/>

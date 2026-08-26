@@ -1,0 +1,86 @@
+---
+title: "Habitación 08: Condicionales"
+station: "Estación espacial"
+order: 9
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Protocolo de seguridad
+
+Los tripulantes deben reparar una filtración de altas temperaturas provocada por un panel solar averiado.
+
+Antes de enviarlos, activa el sistema de seguridad para que solo entre personal con el equipamiento correcto.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-08.png`}
+    alt="Protocolo de seguridad de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="🛡️ Reglas de ingreso">
+  Un tripulante puede entrar solo si tiene credencial permitida (`True`) y un traje con resistencia `"Alta"`.
+</StationCallout>
+
+Van a ingresar tres tripulantes:
+
+- Tripulante uno: credencial `True` y resistencia `"Alta"`.
+- Tripulante dos: credencial `True` y resistencia `"Baja"`.
+- Tripulante tres: credencial `False` y resistencia `"Alta"`.
+
+## Condicionales
+
+`if` ejecuta código cuando una condición se cumple:
+
+```python
+if acceso == True:
+    return True
+```
+
+Puedes exigir que dos condiciones se cumplan a la vez con `and`:
+
+```python
+if acceso == True and resistencia == "Alta":
+    return True
+else:
+    return False
+```
+
+## Tu misión
+
+Reemplaza los valores `None` por los valores correctos. No cambies el resto de la función.
+
+<StationDisclosure title="Pista">
+  La primera condición revisa si la credencial permite el acceso.
+
+  La segunda revisa si el traje tiene resistencia `"Alta"`.
+
+  Ambas condiciones deben cumplirse para devolver `True`.
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`def autorizar_acceso(acceso, resistencia):
+    # Reemplaza los valores None por los correctos
+    if acceso == None and resistencia == None:
+        return True
+    else:
+        return False`}
+  challenge={{
+    type: "python",
+    validator: `__pyschool_validated = (
+    autorizar_acceso(True, "Alta") is True
+    and autorizar_acceso(True, "Baja") is False
+    and autorizar_acceso(False, "Alta") is False
+)`,
+    successMessage: "¡Protocolo activado! La tripulación puede reparar el panel solar de forma segura.",
+    errorMessage: "El sistema todavía autoriza a una persona incorrecta. Revisa las dos condiciones.",
+    successHref: "/estaciones/01-estacion-espacial/09-bucle-for-condicionales",
+    successLabel: "Ir a la habitación 09",
+  }}
+/>

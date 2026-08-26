@@ -1,0 +1,215 @@
+---
+import type { Challenge } from "./python-editor/types";
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  starterCode: string;
+  challenge?: Challenge;
+}
+
+const { starterCode, challenge } = Astro.props;
+
+const resolvedChallenge = challenge
+  ? {
+      ...challenge,
+      successHref: challenge.successHref
+        ? withBase(challenge.successHref)
+        : undefined,
+      dataset: challenge.dataset
+        ? {
+            ...challenge.dataset,
+            source: withBase(challenge.dataset.source),
+          }
+        : undefined,
+    }
+  : undefined;
+---
+
+<div
+  class="mt-10"
+  data-python-editor
+  data-python-starter-code={starterCode}
+  data-python-challenge={resolvedChallenge
+    ? JSON.stringify(resolvedChallenge)
+    : undefined}
+>
+  <div
+    class="overflow-hidden border border-[#cbd5e1] bg-white shadow-[3px_3px_0_0_#0879e8]"
+  >
+    <div
+      class="flex items-center justify-between gap-4 border-b border-[#dbe5f1] bg-[#f8fbff] px-5 py-3.5"
+    >
+      <div class="flex items-center gap-3">
+        <span class="font-mono text-base font-bold text-brand">&lt;/&gt;</span>
+        <span class="font-mono text-sm font-bold text-ink">main.py</span>
+      </div>
+
+      <span
+        class="flex items-center gap-2 font-mono text-xs font-semibold text-muted"
+        aria-live="polite"
+        data-python-status
+      >
+        <span class="size-1.5 rounded-full bg-brand"></span>
+        Preparando entorno…
+      </span>
+    </div>
+
+    <div class="python-workspace grid" data-python-workspace>
+      <section
+        class="python-code-panel min-h-80 min-w-0 lg:h-full lg:min-h-0"
+        data-python-code-panel
+      >
+        <label class="sr-only" for="python-code">Código Python</label>
+
+        <div
+          id="python-code"
+          class="h-full overflow-hidden bg-white"
+          data-python-code
+        >
+        </div>
+      </section>
+
+      <section
+        hidden
+        class="python-results min-h-80 min-w-0 flex-col bg-[#f8fbff] lg:h-full lg:min-h-0"
+        data-python-results
+      >
+        <div
+          class="flex items-center gap-2 border-b border-[#dbe5f1] bg-white px-5 py-3.5"
+        >
+          <span class="font-mono text-sm font-bold text-brand">&gt;_</span>
+          <span class="font-mono text-xs font-bold tracking-widest text-ink">
+            SALIDA
+          </span>
+        </div>
+
+        <div class="px-5 py-3 font-mono text-xs text-muted">
+          $ python main.py
+        </div>
+
+        <pre
+          class="min-h-0 flex-1 overflow-auto border-t border-[#dbe5f1] bg-[#f8fbff] p-5 font-mono text-sm leading-7 text-ink"
+          aria-live="polite"
+          data-python-output>
+        </pre>
+      </section>
+    </div>
+
+    <div
+      class="flex flex-wrap items-center gap-2 border-t border-[#dbe5f1] bg-paper px-4 py-4 sm:px-5"
+    >
+      <button
+        type="button"
+        disabled
+        class="inline-flex items-center gap-3 bg-accent px-5 py-3 font-bold text-ink shadow-[2px_2px_0_0_#101d27] transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50"
+        data-python-run
+      >
+        <span aria-hidden="true">▶</span>
+        Ejecutar código
+      </button>
+
+      <div class="flex items-center gap-1">
+        <div data-python-hint-slot></div>
+
+        <button
+          type="button"
+          class="grid size-10 place-items-center text-muted transition-colors hover:bg-ink/5 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          aria-label="Restablecer código"
+          title="Restablecer código"
+          data-python-reset
+        >
+          <svg
+            aria-hidden="true"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+            <path d="M3 4v5h5"></path>
+          </svg>
+        </button>
+      </div>
+
+      <a
+        hidden
+        class="ml-auto px-2 py-2 font-bold text-brand underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-brand-dark"
+        data-python-next></a>
+    </div>
+  </div>
+
+  <p
+    hidden
+    aria-live="polite"
+    class="mt-5 border-l-4 px-4 py-3 text-sm font-medium"
+    data-python-feedback
+  >
+  </p>
+
+  <div hidden class="mt-8" data-python-chart-container>
+    <div class="flex items-center gap-2">
+      <span class="font-mono text-sm font-bold text-brand">✦</span>
+      <p class="font-mono text-xs font-bold tracking-widest text-muted">
+        GRÁFICO GENERADO
+      </p>
+    </div>
+
+    <div
+      class="mt-3 overflow-hidden border border-[#cbd5e1] bg-white shadow-[2px_2px_0_0_#0879e8]"
+    >
+      <img
+        alt="Gráfico generado por Python"
+        class="w-full bg-white"
+        data-python-chart
+      />
+    </div>
+  </div>
+
+  <iframe
+    title="Entorno aislado de ejecución Python"
+    src={withBase("/python-runner.html")}
+    sandbox="allow-scripts"
+    referrerpolicy="no-referrer"
+    class="hidden"
+    data-python-runner></iframe>
+</div>
+
+<script>
+  import { initializePythonEditors } from "./python-editor/initialize";
+
+  initializePythonEditors();
+</script>
+
+<style>
+  .python-workspace {
+    min-height: 24rem;
+  }
+
+  .python-results {
+    display: flex;
+    border-top: 1px solid #dbe5f1;
+  }
+
+  @media (min-width: 1024px) {
+    .python-workspace {
+      height: 31rem;
+      min-height: 0;
+    }
+
+    .python-workspace--with-results {
+      grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+    }
+
+    .python-workspace--with-results .python-code-panel {
+      border-right: 1px solid #dbe5f1;
+    }
+
+    .python-results {
+      border-top: 0;
+    }
+  }
+</style>

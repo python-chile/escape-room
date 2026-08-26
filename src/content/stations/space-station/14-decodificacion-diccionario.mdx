@@ -1,0 +1,87 @@
+---
+title: "Habitación 14: Decodificación con diccionario"
+station: "Estación espacial"
+order: 15
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Mensaje cifrado
+
+En el módulo de comunicaciones encuentras un panel que emite puntos y rayas: un mensaje codificado.
+
+Junto al panel hay un diccionario que permite traducir cada símbolo.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-14.png`}
+    alt="Panel de comunicaciones con mensaje cifrado"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="📖 Mensaje secreto">
+  Recorre la lista `mensaje`, busca cada símbolo en `diccionario` y une los caracteres obtenidos.
+</StationCallout>
+
+## Tu misión
+
+- Crea una lista vacía.
+- Recorre `mensaje`.
+- Agrega a la lista el valor de `diccionario[simbolo]`.
+- Une todos los caracteres con `"".join()`.
+
+<StationDisclosure title="Pista">
+  La estructura es:
+
+  ```python
+  caracteres = []
+
+  for simbolo in mensaje:
+      caracteres.append(diccionario[simbolo])
+
+  respuesta = "".join(caracteres)
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`mensaje = [
+    ".", "._..", "__._.", "_._.", "___", "_..", "..", "__.", "___",
+    "__._.", "...", ".", "_._.", "._.", ".", "_", "___", "__._.",
+    "__._", ".._", ".", "__._.", "...", ".", "__._.", "_..", ".",
+    "_...", ".", "__._.", "___", "_._.", ".._", ".__.", "._", "._.",
+    "__._.", ".", "_.", "__._.", ".", "._..", "__._.", ".._", "._..",
+    "_", "..", "__", "___", "__._.", "_..", ".", "...", "._", ".._.",
+    "..", "___", "__._.", ".", "...", "__._.", "..___", "...._",
+]
+
+diccionario = {
+    "._": "a", "_...": "b", "_._.": "c", "_..": "d", ".": "e",
+    ".._.": "f", "__.": "g", "....": "h", "..": "i", ".___": "j",
+    "_._": "k", "._..": "l", "__": "m", "_.": "n", "___": "o",
+    ".__.": "p", "__._": "q", "._.": "r", "...": "s", "_": "t",
+    ".._": "u", "..._": "v", ".__": "w", "_.._": "x", "_.__": "y",
+    "__..": "z", "__._.": " ", "_____": "0", ".____": "1",
+    "..___": "2", "...__": "3", "...._": "4", ".....": "5",
+    "_....": "6", "__...": "7", "___..": "8", "____.": "9",
+}
+
+# Escribe tu solución aquí
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "equals",
+    variable: "respuesta",
+    expected: "el codigo secreto que se debe ocupar en el ultimo desafio es 24",
+    incompleteMessage: "Decodifica el mensaje y guarda el texto en respuesta.",
+    errorMessage: "El mensaje no fue decodificado correctamente. Revisa el recorrido y join().",
+    successMessage: "¡Mensaje descifrado! El código secreto para la última misión es 24.",
+    successHref: "/estaciones/01-estacion-espacial/15-bucle-for-anidado",
+    successLabel: "Ir a la habitación 15",
+  }}
+/>

@@ -1,0 +1,64 @@
+---
+title: "Habitación 01: Variable String"
+station: "Estación espacial"
+order: 2
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Fuga de oxígeno
+
+La terminal del sistema de oxígeno comienza a parpadear en rojo. Se detectó una fuga en la sala **B9-2**.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-01.png`}
+    alt="Terminal de emergencia de la sala B9-2"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="⚠️ Peligro">
+  Debes activar la puerta de emergencia antes de que el oxígeno se agote.
+</StationCallout>
+
+Usa la terminal para enviar la señal correcta: **Cerrar**.
+
+En Python, los textos se guardan entre comillas. A este tipo de dato lo llamamos **string** o cadena de texto.
+
+```python
+mensaje = "Hola"
+```
+
+## Tu misión
+
+Cambia el valor de la variable `respuesta` por `"Cerrar"` y ejecuta el código.
+
+<StationDisclosure title="Pista">
+  Un texto puede escribirse con comillas dobles o simples.
+
+  ```python
+  respuesta = "Cerrar"
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Escribe tu respuesta aquí
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "equals",
+    variable: "respuesta",
+    expected: "Cerrar",
+    incompleteMessage: "Indica una respuesta en la variable respuesta.",
+    errorMessage: "La puerta no reconoce esa señal. Inténtalo nuevamente.",
+    successMessage: "¡Puerta de emergencia cerrada! El oxígeno vuelve a estabilizarse.",
+    successHref: "/estaciones/01-estacion-espacial/02-operacion-numerica-simple",
+    successLabel: "Ir a la habitación 02",
+  }}
+/>

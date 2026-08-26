@@ -1,0 +1,36 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+---
+
+<a
+  href={withBase(href)}
+  class="cta-btn group inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-bold text-ink! shadow-[2px_2px_0_0_#101d27] transition-all hover:-translate-y-0.5 hover:bg-accent-dark hover:text-ink! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+>
+  <slot />
+
+  <span class="relative inline-block size-4 text-brand">
+    <svg
+      class="absolute inset-0 transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path
+        d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+      ></path>
+      <path
+        d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+      ></path>
+    </svg>
+  </span>
+</a>

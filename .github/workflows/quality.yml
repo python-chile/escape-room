@@ -1,0 +1,50 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests y build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Generar runner de Python
+        run: pnpm generate:python-runner
+
+      - name: Revisar tipos y Astro
+        run: pnpm check
+
+      - name: Verificar contenido y navegación
+        run: pnpm test
+
+      - name: Instalar Chromium para pruebas E2E
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Ejecutar desafíos Python
+        run: pnpm test:python
+
+      - name: Construir sitio
+        run: pnpm build

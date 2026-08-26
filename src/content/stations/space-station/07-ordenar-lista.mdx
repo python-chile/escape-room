@@ -1,0 +1,105 @@
+---
+title: "Habitación 07: Ordenar números de lista"
+station: "Estación espacial"
+order: 8
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Objetos en órbita
+
+Desde el módulo de control detectan varios objetos orbitando cerca de la estación.
+
+Debes analizar sus coordenadas para prevenir una colisión.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-07.png`}
+    alt="Objetos orbitando cerca de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="⚠️ Alerta de colisión">
+  Obtén tres datos: el objeto más cercano, el valor central y el objeto más lejano.
+</StationCallout>
+
+La lista contiene estas coordenadas:
+
+```python
+[540, 320, 890, 150, 430, 270]
+```
+
+## Ordenar una lista
+
+La función `.sort()` ordena una lista de menor a mayor:
+
+```python
+numeros = [8, 3, 5]
+numeros.sort()
+
+print(numeros)
+```
+
+Salida:
+
+```text
+[3, 5, 8]
+```
+
+Puedes obtener:
+
+```python
+numeros[0]   # Primer elemento
+numeros[-1]  # Último elemento
+```
+
+## Valor central
+
+La lista tiene seis elementos. Como tiene una cantidad par, el valor central es el promedio entero de los dos valores que están al medio.
+
+```python
+valor_central = (numeros[2] + numeros[3]) // 2
+```
+
+`//` divide y conserva solo la parte entera.
+
+## Tu misión
+
+Ordena `coordenadas` y crea una lista llamada `respuesta` con este formato:
+
+```python
+[menor, valor_central, mayor]
+```
+
+<StationDisclosure title="Pista">
+  Puedes guardar la lista ordenada en una nueva variable:
+
+  ```python
+  lista_ordenada = coordenadas.copy()
+  lista_ordenada.sort()
+  ```
+
+  Luego obtén el primer, los dos centrales y el último valor.
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`coordenadas = [540, 320, 890, 150, 430, 270]
+
+# Escribe tu solución aquí
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "python",
+    validator: `__pyschool_validated = respuesta == [150, 375, 890]`,
+    successMessage: "¡Colisión evitada! Las coordenadas fueron analizadas correctamente.",
+    errorMessage: "La respuesta debe contener el valor menor, el valor central y el valor mayor.",
+    successHref: "/estaciones/01-estacion-espacial/08-condicionales",
+    successLabel: "Ir a la habitación 08",
+  }}
+/>

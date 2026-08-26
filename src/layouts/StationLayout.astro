@@ -1,0 +1,90 @@
+---
+import "../styles/global.css";
+
+import CodeBlock from "@/components/station/CodeBlock.astro";
+import StationHeader from "@/components/station/StationHeader.astro";
+import StationSidebar from "@/components/station/StationSidebar.astro";
+
+interface Props {
+  currentPath: string;
+  station: string;
+  title: string;
+}
+
+const { currentPath, station, title } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={`${title} — ${station} | PySchool`} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>{title} | PySchool</title>
+  </head>
+
+  <body class="bg-white text-ink">
+    <div class="min-h-dvh">
+      <div class="mx-auto max-w-7xl px-6 sm:px-10">
+        <StationHeader station={station} />
+      </div>
+
+      <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-[19rem_minmax(0,1fr)]">
+        <StationSidebar currentPath={currentPath} station={station} />
+
+        <main class="min-w-0 px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+          <div class="mx-auto max-w-3xl">
+            <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+              {title}
+            </h1>
+
+            <article class="station-content mt-10">
+              <slot />
+            </article>
+
+            <CodeBlock />
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .station-content :global(h2) {
+    margin-top: 3rem;
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .station-content :global(p),
+  .station-content :global(li) {
+    color: var(--color-muted);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .station-content :global(p + p) {
+    margin-top: 1.25rem;
+  }
+
+  .station-content :global(ul) {
+    display: grid;
+    gap: 0.875rem;
+    margin-top: 1.5rem;
+    padding-left: 1.25rem;
+  }
+
+  .station-content :global(li::marker) {
+    color: var(--color-brand);
+  }
+
+  .station-content :global(p a),
+  .station-content :global(li a) {
+    color: var(--color-brand);
+    font-weight: 700;
+    text-underline-offset: 0.2em;
+  }
+</style>

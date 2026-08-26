@@ -1,0 +1,59 @@
+---
+const repositoryUrl = "https://github.com/ale0aranda/scape-room";
+const issueUrl = `${repositoryUrl}/issues/new`;
+---
+
+<nav
+  class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-sm"
+  aria-label="Acciones del proyecto"
+>
+  <a
+    href={repositoryUrl}
+    target="_blank"
+    rel="noreferrer"
+    class="inline-flex items-center gap-2 text-muted transition-colors hover:text-python-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-python-red"
+  >
+    <svg
+      aria-hidden="true"
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path
+        d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"
+      ></path>
+    </svg>
+    <span>Apoya este proyecto</span>
+  </a>
+
+  <span aria-hidden="true" class="text-ink/20">·</span>
+
+  <a
+    href={issueUrl}
+    target="_blank"
+    rel="noreferrer"
+    class="inline-flex items-center gap-2 text-muted transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+  >
+    <svg
+      aria-hidden="true"
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-4-2-8-2-4 1-4 1Z"
+      ></path>
+      <path d="M4 22V3"></path>
+    </svg>
+    <span>Informar un problema</span>
+  </a>
+</nav>

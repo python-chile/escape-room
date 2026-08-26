@@ -1,0 +1,93 @@
+---
+title: "Habitación 11: Concatenación"
+station: "Estación espacial"
+order: 12
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Reporte al comando central
+
+El comando central solicita un reporte sobre las misiones, pero solo puede recibir mensajes cada tres horas.
+
+Debes enviar todas las palabras unidas y separadas por un espacio.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-11.png`}
+    alt="Comando central de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="📡 Mensaje de misión">
+  Une todas las palabras de la lista `mensaje` en un solo texto.
+</StationCallout>
+
+## Unir textos con `.join()`
+
+`.join()` une todos los elementos de una lista usando el texto que está antes del punto como separador.
+
+```python
+palabras = ["Hola", "mundo"]
+separador = " "
+
+respuesta = separador.join(palabras)
+
+print(respuesta)
+```
+
+Salida:
+
+```text
+Hola mundo
+```
+
+## Tu misión
+
+Crea una variable con un espacio y úsala para unir la lista `mensaje`.
+
+<StationDisclosure title="Pista">
+  Primero crea el separador:
+
+  ```python
+  espacio = " "
+  ```
+
+  Luego une las palabras:
+
+  ```python
+  respuesta = espacio.join(mensaje)
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`mensaje = [
+    "Misión",
+    "PySchool 2025",
+    "progreso a mitad",
+    "con pequeñas dificultades",
+    "pronto",
+    "nuevo",
+    "reporte",
+]
+
+# Escribe tu solución aquí
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "equals",
+    variable: "respuesta",
+    expected: "Misión PySchool 2025 progreso a mitad con pequeñas dificultades pronto nuevo reporte",
+    incompleteMessage: "Une las palabras y guarda el resultado en respuesta.",
+    errorMessage: "El reporte no tiene el formato correcto. Revisa el separador usado en join().",
+    successMessage: "¡Reporte enviado! El comando central recibió el estado de la misión.",
+    successHref: "/estaciones/01-estacion-espacial/12-crear-diccionario",
+    successLabel: "Ir a la habitación 12",
+  }}
+/>

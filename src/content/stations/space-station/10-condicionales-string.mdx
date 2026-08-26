@@ -1,0 +1,92 @@
+---
+title: "Habitación 10: Condicionales y string"
+station: "Estación espacial"
+order: 11
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Análisis de objetos
+
+El sistema que analiza los objetos que orbitan la estación presenta fallas en el reconocimiento de texto.
+
+Debes corregir las palabras detectadas:
+
+- Si `palabra` contiene `"meteorito"`, debe quedar en minúsculas.
+- Si `palabra` contiene `"asteroide"`, debe quedar en mayúsculas.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-10.png`}
+    alt="Sistema de análisis de objetos de la estación"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="🛰️ Reconocimiento de texto">
+  Usa condicionales para decidir cómo transformar cada palabra.
+</StationCallout>
+
+## Transformar texto
+
+`.upper()` convierte un texto a mayúsculas:
+
+```python
+palabra = "asteroide escila"
+print(palabra.upper())
+```
+
+`.lower()` convierte un texto a minúsculas:
+
+```python
+palabra = "METEORITO ARLONG"
+print(palabra.lower())
+```
+
+Para saber si un texto contiene otro texto, usa `in`:
+
+```python
+if "asteroide" in palabra:
+    print("Objeto detectado")
+```
+
+## Tu misión
+
+Completa la función `transformar_palabras()`.
+
+<StationDisclosure title="Pista">
+  Primero revisa `"asteroide"` y retorna `palabra.upper()`.
+
+  Luego revisa `"meteorito"` y retorna `palabra.lower()`.
+
+  Si no contiene ninguna de las dos, retorna la palabra sin cambios.
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Ejemplos:
+# "asteroide urania"
+# "leda asteroide"
+# "meteorito arlong"
+# "dronino meteorito"
+
+def transformar_palabras(palabra):
+    # Escribe tu solución aquí
+    return palabra`}
+  challenge={{
+    type: "python",
+    validator: `__pyschool_validated = (
+    transformar_palabras("asteroide esciLa") == "ASTEROIDE ESCILA"
+    and transformar_palabras("sofrosina asteroide") == "SOFROSINA ASTEROIDE"
+    and transformar_palabras("aarhus meteorito") == "aarhus meteorito"
+    and transformar_palabras("andura meteorito") == "andura meteorito"
+)`,
+    successMessage: "¡Análisis reparado! El sistema vuelve a reconocer los objetos en órbita.",
+    errorMessage: "La función no transforma correctamente todas las palabras. Revisa upper(), lower() e in.",
+    successHref: "/estaciones/01-estacion-espacial/11-concatenacion",
+    successLabel: "Ir a la habitación 11",
+  }}
+/>

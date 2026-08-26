@@ -1,0 +1,19 @@
+---
+import GitHubAuth from "@/components/auth/GitHubAuth.astro";
+---
+
+<header class="relative flex items-center justify-between py-5">
+  <a
+    href="/"
+    aria-label="Ir al inicio de PySchool"
+    class="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+  >
+    <img
+      src="/brand/pythonchile.png"
+      alt="Python Chile"
+      class="h-9 w-auto object-contain sm:h-10"
+    />
+  </a>
+
+  <GitHubAuth />
+</header>

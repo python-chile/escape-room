@@ -1,0 +1,52 @@
+---
+import HeroCover from "./HeroCover.astro";
+import HeroContributors from "./HeroContributors.astro";
+import HeroProjectActions from "./HeroProjectActions.astro";
+import { withBase } from "@/lib/paths";
+---
+
+<section
+  class="flex flex-1 flex-col items-center justify-center py-12 text-center sm:py-16"
+>
+  <HeroCover />
+
+  <h1
+    class="mt-3 max-w-4xl font-sketch text-5xl font-bold leading-none text-ink sm:text-6xl lg:text-7xl"
+  >
+    Aprende Python<br />
+    <span class="text-brand">en la PySchool.</span>
+  </h1>
+
+  <p
+    class="mt-7 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8"
+  >
+    Aprende los conceptos esenciales de Python aplicados al análisis de datos,
+    trabaja con conjuntos de datos reales y desarrolla habilidades para
+    explorar, visualizar y comprender información.
+  </p>
+
+  <div class="mt-9 flex flex-wrap justify-center gap-3">
+    <a
+      href={withBase("/estaciones/01-estacion-espacial")}
+      class="inline-flex items-center gap-3 rounded-lg bg-accent px-6 py-3.5 font-bold text-ink shadow-lg shadow-accent/30 transition-colors hover:bg-accent-dark"
+    >
+      Comenzar
+      <span aria-hidden="true">→</span>
+    </a>
+
+    <a
+      href="#estaciones"
+      class="inline-flex items-center gap-2 rounded-lg px-6 py-3.5 font-bold text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink"
+    >
+      Ver estaciones
+    </a>
+  </div>
+
+  <div class="mt-10">
+    <HeroContributors />
+  </div>
+
+  <div class="mt-8">
+    <HeroProjectActions />
+  </div>
+</section>

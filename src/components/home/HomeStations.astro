@@ -1,0 +1,59 @@
+---
+import { stations } from "@/data/stations/registry";
+import { withBase } from "@/lib/paths";
+---
+
+<section id="estaciones" aria-labelledby="stations-title">
+  <div class="mx-auto max-w-5xl">
+    <header class="max-w-xl">
+      <p class="font-mono text-xs font-bold tracking-widest text-brand">
+        ESTACIONES
+      </p>
+
+      <h2
+        id="stations-title"
+        class="mt-3 text-4xl font-bold tracking-tight text-ink sm:text-5xl"
+      >
+        Elige una misión.
+      </h2>
+    </header>
+
+    <ol class="mt-12 border-y border-ink/10">
+      {
+        stations.map((station) => (
+          <li class="border-b border-ink/10 last:border-b-0">
+            <a
+              href={withBase(station.href)}
+              class="group flex items-center gap-4 rounded-xl px-3 py-5 transition-colors duration-200 hover:bg-brand/4.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:gap-6 sm:px-4"
+            >
+              <span class="w-8 shrink-0 font-mono text-sm font-bold text-brand transition-colors group-hover:text-brand-dark">
+                {station.code.replace("ESTACIÓN ", "")}
+              </span>
+
+              <div class="size-16 shrink-0 overflow-hidden bg-ink/5 sm:size-20">
+                <img
+                  src={withBase(station.image)}
+                  alt=""
+                  width="160"
+                  height="160"
+                  class="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              <h3 class="min-w-0 flex-1 text-xl font-bold tracking-tight text-ink transition-colors group-hover:text-brand sm:text-2xl">
+                {station.title}
+              </h3>
+
+              <span
+                aria-hidden="true"
+                class="shrink-0 text-xl text-brand opacity-0 transition-all duration-200 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100"
+              >
+                →
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

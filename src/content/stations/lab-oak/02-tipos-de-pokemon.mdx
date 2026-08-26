@@ -1,0 +1,95 @@
+---
+title: "Habitación 02: Tipos de Pokémon"
+station: "Laboratorio Oak"
+order: 3
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Tipos de Pokémon
+
+El sistema del laboratorio sigue bloqueado.
+
+En la pantalla aparece un nuevo mensaje del Profesor Oak:
+
+<StationCallout title="Mensaje del Profesor Oak">
+  Un buen Científico de Datos debe ser capaz de responder preguntas simples con datos. ¿Cuántos Pokémon de cada tipo existen?
+</StationCallout>
+
+## Contar y graficar datos
+
+Para contar los Pokémon según su tipo principal, usa:
+
+```python
+conteo = df["Type 1"].value_counts()
+```
+
+Esto produce una tabla donde cada tipo tiene su cantidad de Pokémon.
+
+Para crear un gráfico de barras:
+
+```python
+conteo.plot(kind="bar")
+```
+
+PySchool detecta el gráfico y lo muestra automáticamente debajo de la salida. No necesitas usar `plt.show()`.
+
+<StationDisclosure title="Pista">
+  Primero guarda el conteo:
+
+  ```python
+  conteo = df["Type 1"].value_counts()
+  ```
+
+  Luego crea el gráfico y calcula el total:
+
+  ```python
+  conteo.plot(kind="bar")
+  respuesta = len(conteo)
+  ```
+</StationDisclosure>
+
+## Desafío de la sala
+
+1. Crea la variable `conteo` con la cantidad de Pokémon por `Type 1`.
+2. Genera un gráfico de barras.
+3. Guarda en `respuesta` la cantidad total de tipos de Pokémon.
+
+<PythonEditor
+  starterCode={`# Cargar el dataset
+import pandas as pd
+import matplotlib.pyplot as plt
+
+url = "/pokemon.csv"
+df = pd.read_csv(url)
+
+# Contar Pokémon por tipo
+conteo = None
+
+# Crear gráfico de barras
+# Escribe aquí el gráfico
+
+# Número total de tipos de Pokémon
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "python",
+    packages: ["pandas", "matplotlib"],
+    dataset: {
+      source: "/stations/lab-oak/pokemon.csv",
+      fileName: "pokemon.csv",
+    },
+    validator: `__pyschool_validated = (
+    len(conteo) == 18
+    and conteo.sum() == len(df)
+    and respuesta == 18
+)`,
+    successMessage: "¡Análisis completado! El gráfico revela la distribución de tipos Pokémon.",
+    errorMessage: "Revisa value_counts(), el gráfico de barras y la cantidad de tipos.",
+    successHref: "/estaciones/02-laboratorio-oak/03-estadisticas-de-combate",
+    successLabel: "Ir a la habitación 03",
+  }}
+/>

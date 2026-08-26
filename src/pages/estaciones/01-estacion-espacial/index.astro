@@ -1,0 +1,21 @@
+---
+import { getEntry, render } from "astro:content";
+
+import StationLayout from "@/layouts/StationLayout.astro";
+
+const entry = await getEntry("stations", "space-station/welcome");
+
+if (!entry) {
+  throw new Error("No se encontró la bienvenida de la Estación espacial.");
+}
+
+const { Content } = await render(entry);
+---
+
+<StationLayout
+  currentPath={Astro.url.pathname}
+  station={entry.data.station}
+  title={entry.data.title}
+>
+  <Content />
+</StationLayout>

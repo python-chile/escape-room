@@ -1,0 +1,122 @@
+---
+import GitHubAuth from "@/components/auth/GitHubAuth.astro";
+import { stations } from "@/data/stations/registry";
+
+interface Props {
+  station: string;
+}
+
+const { station } = Astro.props;
+---
+
+<header
+  class="relative flex items-center justify-between gap-4 border-b border-ink/10 py-4 sm:py-5"
+>
+  <div class="flex min-w-0 items-center gap-4 sm:gap-5">
+    <a
+      href="/"
+      aria-label="Ir al inicio de PySchool"
+      class="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+    >
+      <img
+        src="/brand/pythonchile.png"
+        alt="Python Chile"
+        class="h-8 w-auto object-contain sm:h-10"
+      />
+    </a>
+
+    <a
+      href="/"
+      class="hidden items-center gap-2 border-l border-ink/15 pl-5 text-sm font-semibold text-muted transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:inline-flex"
+    >
+      <span aria-hidden="true" class="font-mono text-base">←</span>
+      Volver al inicio
+    </a>
+  </div>
+
+  <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+    <GitHubAuth />
+
+    <details class="group relative">
+      <summary
+        class="flex cursor-pointer list-none items-center gap-2 rounded-lg bg-brand px-4 py-3 font-mono text-xs font-bold tracking-widest text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden sm:px-5"
+      >
+        <span class="hidden sm:inline">CAMBIAR MISIÓN</span>
+        <span class="sm:hidden">MISIONES</span>
+
+        <span
+          aria-hidden="true"
+          class="text-base leading-none transition-transform duration-200 group-open:rotate-45"
+        >
+          +
+        </span>
+      </summary>
+
+      <div
+        class="absolute right-0 z-20 mt-3 w-80 rounded-xl border border-ink/15 bg-white p-3 shadow-xl shadow-ink/10"
+      >
+        <p
+          class="px-2 pb-3 pt-1 font-mono text-[0.7rem] font-bold tracking-widest text-muted"
+        >
+          ELIGE UNA MISIÓN
+        </p>
+
+        <ul class="grid gap-2">
+          {
+            stations.map((item) => {
+              const isCurrent = item.name === station;
+
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={isCurrent ? "page" : undefined}
+                    class:list={[
+                      "group/item flex items-center gap-3 rounded-lg p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+                      isCurrent ? "bg-brand/8" : "hover:bg-accent/20",
+                    ]}
+                  >
+                    <img
+                      src={item.image}
+                      alt=""
+                      width="112"
+                      height="112"
+                      class="size-14 shrink-0 object-cover"
+                    />
+
+                    <span class="min-w-0 flex-1">
+                      <span class="block font-mono text-[0.7rem] font-bold tracking-widest text-muted">
+                        {item.code}
+                      </span>
+
+                      <span
+                        class:list={[
+                          "mt-1 block text-sm font-bold leading-5",
+                          isCurrent ? "text-brand" : "text-ink",
+                        ]}
+                      >
+                        {item.title}
+                      </span>
+                    </span>
+
+                    <span
+                      aria-hidden="true"
+                      class:list={[
+                        "font-mono text-sm",
+                        isCurrent
+                          ? "text-brand"
+                          : "text-muted transition-transform group-hover/item:translate-x-0.5 group-hover/item:text-ink",
+                      ]}
+                    >
+                      {isCurrent ? "•" : "→"}
+                    </span>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    </details>
+  </div>
+</header>

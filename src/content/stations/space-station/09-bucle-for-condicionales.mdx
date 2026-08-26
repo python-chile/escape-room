@@ -1,0 +1,100 @@
+---
+title: "Habitación 09: Bucle for y condicionales"
+station: "Estación espacial"
+order: 10
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Área de mantenimiento
+
+El área de mantenimiento envió una lista de objetos de la estación. Algunos ya fueron reparados, pero otros todavía necesitan atención.
+
+Crea una lista nueva con los objetos que realmente requieren mantenimiento.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-09.png`}
+    alt="Área de mantenimiento de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="🔧 Mantenimiento pendiente">
+  No gastes recursos reparando objetos que ya aparecen en la lista `reparados`.
+</StationCallout>
+
+## Tu misión
+
+Debes:
+
+- Recorrer la lista `objetos`.
+- Verificar si cada objeto no está en `reparados`.
+- Agregarlo a `por_reparar`.
+
+## `for`, `if` y `.append()`
+
+```python
+for objeto in objetos:
+    if objeto not in reparados:
+        por_reparar.append(objeto)
+```
+
+<StationDisclosure title="Pista">
+  `not in` verifica que un valor no exista en una lista.
+
+  ```python
+  if objeto not in reparados:
+  ```
+
+  `.append()` agrega un elemento al final de una lista.
+
+  ```python
+  por_reparar.append(objeto)
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`objetos = [
+    "linterna",
+    "audífonos",
+    "monitor principal",
+    "motor de enfriador",
+    "monitor de repuesto",
+    "antena",
+    "filtro gases",
+    "lentes infrarojo",
+    "teclado",
+]
+
+reparados = [
+    "monitor de repuesto",
+    "audífonos",
+    "motor de enfriador",
+]
+
+por_reparar = []
+
+# Escribe tu solución aquí
+
+print(por_reparar)`}
+  challenge={{
+    type: "python",
+    validator: `__pyschool_validated = por_reparar == [
+    "linterna",
+    "monitor principal",
+    "antena",
+    "filtro gases",
+    "lentes infrarojo",
+    "teclado",
+]`,
+    successMessage: "¡Lista de mantenimiento preparada! Los recursos se enviarán a los módulos correctos.",
+    errorMessage: "La lista no es correcta. Asegúrate de excluir todos los objetos reparados.",
+    successHref: "/estaciones/01-estacion-espacial/10-condicionales-string",
+    successLabel: "Ir a la habitación 10",
+  }}
+/>

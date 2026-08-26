@@ -1,0 +1,122 @@
+---
+type GitHubContributor = {
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  type: string;
+};
+
+type Contributor = {
+  name: string;
+  profile: string;
+  avatar: string;
+};
+
+const repository = "ale0aranda/scape-room";
+
+const contributorsUrl = `https://github.com/${repository}/graphs/contributors`;
+
+const fallbackContributors: Contributor[] = [
+  {
+    name: "ale0aranda",
+    profile: "https://github.com/ale0aranda",
+    avatar: "https://github.com/ale0aranda.png",
+  },
+  {
+    name: "Tony-Rome",
+    profile: "https://github.com/Tony-Rome",
+    avatar: "https://github.com/Tony-Rome.png",
+  },
+  {
+    name: "SebastianAndres",
+    profile: "https://github.com/sebastiandres",
+    avatar: "https://github.com/sebastiandres.png",
+  },
+];
+
+let contributors = fallbackContributors;
+let totalContributors = fallbackContributors.length;
+
+try {
+  const response = await fetch(
+    `https://api.github.com/repos/${repository}/contributors?per_page=100`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+    },
+  );
+
+  if (response.ok) {
+    const githubContributors = (await response.json()) as GitHubContributor[];
+
+    const people = githubContributors
+      .filter((contributor) => contributor.type === "User")
+      .map((contributor) => ({
+        name: contributor.login,
+        profile: contributor.html_url,
+        avatar: contributor.avatar_url,
+      }));
+
+    if (people.length > 0) {
+      contributors = people.slice(0, 5);
+      totalContributors = people.length;
+    }
+  }
+} catch {
+  // GitHub no respondió: se usa el contribuidor de respaldo.
+}
+
+const remainingContributors = Math.max(
+  totalContributors - contributors.length,
+  0,
+);
+---
+
+<div class="flex flex-col items-center gap-3">
+  <p class="font-mono text-xs font-bold tracking-widest text-muted">
+    HECHO POR
+  </p>
+
+  <ul class="flex -space-x-3" aria-label="Contribuidores de PySchool">
+    {
+      contributors.map((contributor) => (
+        <li>
+          <a
+            href={contributor.profile}
+            target="_blank"
+            rel="noreferrer"
+            class="group block overflow-hidden rounded-full ring-2 ring-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            aria-label={`Ver perfil de ${contributor.name}`}
+            title={contributor.name}
+          >
+            <img
+              src={contributor.avatar}
+              alt=""
+              width="44"
+              height="44"
+              class="size-11 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
+            />
+          </a>
+        </li>
+      ))
+    }
+
+    {
+      remainingContributors > 0 && (
+        <li>
+          <a
+            href={contributorsUrl}
+            target="_blank"
+            rel="noreferrer"
+            class="grid size-11 place-items-center rounded-full border border-dashed border-ink/30 bg-white font-mono text-xs font-extrabold text-ink/55 ring-2 ring-white transition-colors hover:border-solid hover:border-ink/55 hover:bg-ink/5 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            aria-label="Ver todos los contribuidores de PySchool"
+            title="Ver todos los contribuidores"
+          >
+            +{remainingContributors}
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</div>

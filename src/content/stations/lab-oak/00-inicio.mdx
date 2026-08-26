@@ -1,0 +1,98 @@
+---
+title: "Habitación 00: Inicio"
+station: "Laboratorio Oak"
+order: 1
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## El sistema de datos está caído
+
+Despiertas dentro de un laboratorio muy conocido.
+
+**¡Es el Laboratorio del Profesor Oak!**
+
+Sin embargo, algo no anda bien. Las puertas están bloqueadas y el sistema de datos está caído.
+
+<StationCallout title="⚠️ Sistema fuera de línea">
+  Para restaurar el laboratorio y poder avanzar, debes cargar correctamente los datos de Pokémon y revisar los primeros registros.
+</StationCallout>
+
+## ¿Cómo se cargan datos en Python?
+
+En Ciencia de Datos usamos `pandas` para trabajar con archivos y tablas.
+
+Los pasos típicos son:
+
+1. Importar la librería:
+
+   ```python
+   import pandas as pd
+   ```
+
+2. Leer un archivo CSV:
+
+   ```python
+   pokemon_data = pd.read_csv("/pokemon.csv")
+   ```
+
+3. Mostrar las primeras filas:
+
+   ```python
+   print(pokemon_data.head())
+   ```
+
+<StationDisclosure title="Pista">
+  En esta misión el archivo ya está preparado dentro del laboratorio.
+
+  Debes usar exactamente esta ruta:
+
+  ```python
+  url = "/pokemon.csv"
+  ```
+
+  Después carga los datos:
+
+  ```python
+  df = pd.read_csv(url)
+  ```
+</StationDisclosure>
+
+## Desafío de la sala
+
+Completa las siguientes variables:
+
+- `url`: con la dirección del archivo de datos.
+- `df`: con el resultado de leer los datos usando `pd.read_csv(url)`.
+
+Finalmente, muestra las primeras filas usando `print(df.head())`.
+
+<PythonEditor
+  starterCode={`# Completa los valores correctos
+import pandas as pd
+
+url = ""
+df = None
+
+# Mostrar las primeras filas
+print(df.head())`}
+  challenge={{
+    type: "python",
+    packages: ["pandas"],
+    dataset: {
+      source: "/stations/lab-oak/pokemon.csv",
+      fileName: "pokemon.csv",
+    },
+    validator: `__pyschool_validated = (
+    url == "/pokemon.csv"
+    and df.shape[0] > 0
+    and df.shape[1] > 0
+)`,
+    successMessage: "¡Datos Pokémon cargados! El sistema del Laboratorio Oak vuelve a funcionar.",
+    errorMessage: "Los datos no se cargaron correctamente. Revisa url y pd.read_csv(url).",
+    successHref: "/estaciones/02-laboratorio-oak/01-explorador-de-datos",
+    successLabel: "Ir a la habitación 01",
+  }}
+/>

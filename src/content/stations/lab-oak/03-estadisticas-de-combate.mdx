@@ -1,0 +1,96 @@
+---
+title: "Habitación 03: Estadísticas de combate"
+station: "Laboratorio Oak"
+order: 4
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Estadísticas de combate
+
+En esta sala aparece una gran pantalla con un mensaje del Profesor Oak.
+
+<StationCallout title="⚔️ Análisis de combate">
+  Cada tipo de Pokémon tiene fortalezas y debilidades. Descubre qué tipo tiene mayor ataque promedio y cuál tiene menor defensa promedio.
+</StationCallout>
+
+## Agrupar y calcular promedios
+
+`groupby()` agrupa los datos según una columna. Después, `mean()` calcula el promedio de cada grupo.
+
+```python
+promedio = df.groupby("Type 1")[
+    ["HP", "Attack", "Defense", "Speed"]
+].mean()
+```
+
+Para encontrar el mayor valor de una columna usa `.idxmax()`:
+
+```python
+tipo_mas_ataque = promedio["Attack"].idxmax()
+```
+
+Para encontrar el menor, usa `.idxmin()`:
+
+```python
+tipo_menos_defensa = promedio["Defense"].idxmin()
+```
+
+<StationDisclosure title="Pista">
+  Primero crea la tabla `promedio`.
+
+  Luego usa:
+
+  ```python
+  respuesta_ataque = promedio["Attack"].idxmax()
+  respuesta_defensa = promedio["Defense"].idxmin()
+  ```
+</StationDisclosure>
+
+## Desafío de la sala
+
+1. Agrupa los Pokémon por `Type 1`.
+2. Calcula el promedio de `HP`, `Attack`, `Defense` y `Speed`.
+3. Guarda el tipo con mayor ataque promedio en `respuesta_ataque`.
+4. Guarda el tipo con menor defensa promedio en `respuesta_defensa`.
+
+<PythonEditor
+  starterCode={`# Cargar datos
+import pandas as pd
+
+url = "/pokemon.csv"
+df = pd.read_csv(url)
+
+# Agrupar y calcular promedios
+promedio = df.groupby("Type 1")[
+    ["HP", "Attack", "Defense", "Speed"]
+].mean()
+
+# Define las respuestas
+respuesta_ataque = None
+respuesta_defensa = None
+
+print("Promedio por tipo:")
+print(promedio)
+
+print("Tipo con mayor ataque promedio:", respuesta_ataque)
+print("Tipo con menor defensa promedio:", respuesta_defensa)`}
+  challenge={{
+    type: "python",
+    packages: ["pandas"],
+    dataset: {
+      source: "/stations/lab-oak/pokemon.csv",
+      fileName: "pokemon.csv",
+    },
+    validator: `__pyschool_validated = (
+    respuesta_ataque == promedio["Attack"].idxmax()
+    and respuesta_defensa == promedio["Defense"].idxmin()
+)`,
+    successMessage: "¡Análisis de combate completado! Descubriste las fortalezas y debilidades de cada tipo.",
+    errorMessage: "Las respuestas no coinciden. Revisa idxmax() para ataque e idxmin() para defensa.",
+    successHref: "/estaciones/02-laboratorio-oak/04-visualizacion-de-combate",
+successLabel: "Ir a la habitación 04",
+  }}
+/>

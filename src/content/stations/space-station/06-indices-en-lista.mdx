@@ -1,0 +1,86 @@
+---
+title: "Habitación 06: Índices en lista"
+station: "Estación espacial"
+order: 7
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Señal de Fibonacci
+
+Te acercas al núcleo de comunicaciones. En la pantalla aparece una señal de emergencia proveniente de un satélite perdido.
+
+La señal usa la secuencia de Fibonacci.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-06.png`}
+    alt="Núcleo de comunicaciones de la estación"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="💾 Clave de acceso">
+  Extrae los elementos en los índices `0`, `2`, `10` y `-2`. Luego calcula su promedio.
+</StationCallout>
+
+## Índices de una lista
+
+Las listas guardan varios valores:
+
+```python
+lista = [1, 2, 3, 4]
+```
+
+Los índices positivos comienzan en `0`:
+
+```python
+lista[0]  # 1
+lista[2]  # 3
+```
+
+Los índices negativos cuentan desde el final:
+
+```python
+lista[-1]  # 4
+lista[-2]  # 3
+```
+
+## Tu misión
+
+Crea una lista con los cuatro valores solicitados y úsala dentro de `statistics.mean()`.
+
+<StationDisclosure title="Pista">
+  Puedes obtener un elemento de la lista con corchetes:
+
+  ```python
+  lista_fibonacci[0]
+  ```
+
+  Debes hacer lo mismo con los cuatro índices solicitados.
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Escribe tu respuesta aquí
+import statistics
+
+lista_fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
+promedio = statistics.mean([])
+print(promedio)`}
+  challenge={{
+    type: "number",
+    variable: "promedio",
+    expected: 27.75,
+    tolerance: 0.000001,
+    incompleteMessage: "Crea una lista con los cuatro valores extraídos.",
+    errorMessage: "El promedio no es correcto. Revisa los índices 0, 2, 10 y -2.",
+    successMessage: "¡Señal descifrada! El núcleo de comunicaciones vuelve a funcionar.",
+    successHref: "/estaciones/01-estacion-espacial/07-ordenar-lista",
+    successLabel: "Ir a la habitación 07",
+  }}
+/>

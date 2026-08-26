@@ -1,0 +1,105 @@
+---
+title: "Habitación 13: Manejo de elementos de una lista"
+station: "Estación espacial"
+order: 14
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Archivos de investigación
+
+El sistema de archivos del módulo de investigación está desordenado.
+
+Varios archivos comparten un sufijo, pero están mezclados. Debes agruparlos para que el equipo pueda analizarlos.
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-13.png`}
+    alt="Módulo de investigación de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="📁 Organizar archivos">
+  Cada llave del diccionario debe ser un sufijo. Su valor debe ser la lista de archivos que comparten ese sufijo.
+</StationCallout>
+
+## Obtener un sufijo
+
+Los últimos cuatro caracteres de un texto se obtienen con:
+
+```python
+sufijo = archivo[-4:]
+```
+
+Por ejemplo:
+
+```python
+archivo = "lab_ps01"
+
+print(archivo[-4:])
+```
+
+Salida:
+
+```text
+ps01
+```
+
+## Tu misión
+
+Crea un diccionario vacío y recorre la lista `archivos`.
+
+- Si el sufijo todavía no existe, crea una lista con el archivo.
+- Si ya existe, agrega el archivo a su lista.
+
+<StationDisclosure title="Pista">
+  La estructura principal es:
+
+  ```python
+  respuesta = {}
+
+  for archivo in archivos:
+      sufijo = archivo[-4:]
+
+      if sufijo not in respuesta:
+          respuesta[sufijo] = [archivo]
+      else:
+          respuesta[sufijo].append(archivo)
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`archivos = [
+    "lab_ps01",
+    "rendimiento_ec00",
+    "pruebas_tc12",
+    "quimicos_ps01",
+    "bateria_tc12",
+    "paneles_ec00",
+    "reporte_ec00",
+    "reparaciones_salas_tc12",
+    "sustancias_ps01",
+]
+
+# Escribe tu solución aquí
+respuesta = None
+
+print(respuesta)`}
+  challenge={{
+    type: "python",
+    validator: `__pyschool_validated = respuesta == {
+    "ps01": ["lab_ps01", "quimicos_ps01", "sustancias_ps01"],
+    "ec00": ["rendimiento_ec00", "paneles_ec00", "reporte_ec00"],
+    "tc12": ["pruebas_tc12", "bateria_tc12", "reparaciones_salas_tc12"],
+}`,
+    successMessage: "¡Archivos organizados! El módulo de investigación vuelve a estar operativo.",
+    errorMessage: "Los archivos no están agrupados correctamente por sufijo.",
+    successHref: "/estaciones/01-estacion-espacial/14-decodificacion-diccionario",
+    successLabel: "Ir a la habitación 14",
+  }}
+/>

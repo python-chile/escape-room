@@ -1,0 +1,93 @@
+---
+title: "Habitación 03: Operación numérica compleja"
+station: "Estación espacial"
+order: 4
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Paneles solares inestables
+
+Los paneles solares de la estación muestran lecturas inestables.
+
+Para mantener la energía funcionando, debes recalibrar la temperatura aplicando esta fórmula:
+
+```text
+((1.23 + 2.34) / (1 + (43 / 2))) + (3 * 2**1.5)
+```
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-03.png`}
+    alt="Paneles solares de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="Radiación solar">
+  Primero asigna los valores correctos a las variables. Luego arma la fórmula respetando sus paréntesis.
+</StationCallout>
+
+## Números decimales
+
+En Python los números decimales usan un punto, no una coma:
+
+```python
+temperatura = 33.5
+```
+
+La potencia se escribe con dos asteriscos:
+
+```python
+resultado = 2**3
+```
+
+## Tu misión
+
+Reemplaza `None` por la fórmula completa.
+
+<StationDisclosure title="Pista">
+  Estos son los valores que debes asignar:
+
+  ```python
+  a = 1.23
+  b = 2.34
+  c = 1
+  d = 43
+  e = 2
+  f = 3
+  g = 2
+  h = 1.5
+  ```
+
+  Usa las variables para construir la fórmula.
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Escribe tu respuesta aquí
+a = 0
+b = 0
+c = 0
+d = 0
+e = 0
+f = 0
+g = 0
+h = 0
+
+respuesta = None
+print(respuesta)`}
+  challenge={{
+    type: "number",
+    variable: "respuesta",
+expected: 8.643948040905237,    tolerance: 0.000001,
+    incompleteMessage: "Cambia None por el resultado de la fórmula.",
+    errorMessage: "La lectura aún no es correcta. Revisa los valores, los paréntesis y la potencia.",
+    successMessage: "¡Paneles solares recalibrados! La energía vuelve a ser estable.",
+    successHref: "/estaciones/01-estacion-espacial/04-promedio-de-numeros",
+    successLabel: "Ir a la habitación 04",
+  }}
+/>

@@ -1,0 +1,83 @@
+---
+title: "Habitación 04: Promedio de números"
+station: "Estación espacial"
+order: 5
+---
+
+import StationCallout from "@/components/station/StationCallout.astro";
+import StationDisclosure from "@/components/station/StationDisclosure.astro";
+import PythonEditor from "@/components/station/PythonEditor.astro";
+
+## Clima interno inestable
+
+El sistema de la estación recibe lecturas de temperatura completamente inconsistentes.
+
+Debes calcular el promedio de estas mediciones para estabilizar el clima interno:
+
+```text
+19.5, 22.3, 12, 10.01, 32, 29.99, 20.89
+```
+
+<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+  <img
+    src={`${import.meta.env.BASE_URL}stations/space-station/sala-04.png`}
+    alt="Sistema de climatización de la estación espacial"
+    width="650"
+    height="366"
+    class="w-full object-cover"
+  />
+</figure>
+
+<StationCallout title="⚙️ Sistema de climatización">
+  Guarda las mediciones en una lista y usa `statistics.mean()` para obtener el promedio.
+</StationCallout>
+
+## Listas en Python
+
+Una lista agrupa varios valores entre corchetes `[]`, separados por comas:
+
+```python
+numeros = [1.2, 2, 3.5, 4]
+```
+
+Python incluye el módulo `statistics`, que tiene la función `mean()` para calcular promedios:
+
+```python
+import statistics
+
+promedio = statistics.mean([10, 20, 30])
+print(promedio)
+```
+
+## Tu misión
+
+Agrega todas las temperaturas a la lista `numeros`. No cambies el resto del código.
+
+<StationDisclosure title="Pista">
+  Escribe los números así:
+
+  ```python
+  numeros = [19.5, 22.3, 12, 10.01, 32, 29.99, 20.89]
+  ```
+</StationDisclosure>
+
+<PythonEditor
+  starterCode={`# Escribe tu respuesta aquí
+import statistics
+
+numeros = []
+respuesta = statistics.mean(numeros)
+
+print(respuesta)`}
+  challenge={{
+    type: "number",
+    variable: "respuesta",
+    expected: 20.955714285714286,
+    tolerance: 0.000001,
+    incompleteMessage: "Agrega las temperaturas a la lista numeros.",
+    errorMessage: "El promedio no coincide. Revisa que incluiste las siete temperaturas.",
+    successMessage: "¡Clima estabilizado! La temperatura de la estación vuelve a la normalidad.",
+    successHref: "/estaciones/01-estacion-espacial/05-bucle-for",
+    successLabel: "Ir a la habitación 05",
+  }}
+/>
