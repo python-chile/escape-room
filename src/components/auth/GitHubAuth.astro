@@ -1,5 +1,7 @@
 ---
-const accountHref = `${import.meta.env.BASE_URL}cuenta`;
+import { withBase } from "@/lib/paths";
+
+const accountHref = withBase("/cuenta");
 ---
 
 <div class="flex items-center" data-github-auth>
@@ -38,18 +40,18 @@ const accountHref = `${import.meta.env.BASE_URL}cuenta`;
     />
 
     <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
-
     <span aria-hidden="true" class="text-brand">→</span>
   </a>
 </div>
 
 <script>
+  import { withBase } from "@/lib/paths";
   import { syncProgressWithCloud } from "@/lib/progress";
   import { supabase } from "@/lib/supabase";
 
   function getCallbackUrl() {
     return new URL(
-      `${import.meta.env.BASE_URL}auth/callback`,
+      withBase("/auth/callback"),
       window.location.origin,
     ).toString();
   }
@@ -60,12 +62,15 @@ const accountHref = `${import.meta.env.BASE_URL}cuenta`;
       const loginButton = root.querySelector<HTMLButtonElement>(
         "[data-github-login]",
       );
+
       const accountLink = root.querySelector<HTMLAnchorElement>(
         "[data-github-account]",
       );
+
       const avatar = root.querySelector<HTMLImageElement>(
         "[data-github-avatar]",
       );
+
       const name = root.querySelector<HTMLElement>("[data-github-name]");
 
       async function renderSession() {
@@ -82,6 +87,7 @@ const accountHref = `${import.meta.env.BASE_URL}cuenta`;
         }
 
         const metadata = user.user_metadata;
+
         const userName =
           metadata.user_name ||
           metadata.preferred_username ||
