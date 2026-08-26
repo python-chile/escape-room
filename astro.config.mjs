@@ -1,9 +1,7 @@
 import { fileURLToPath } from "node:url";
 
 import { defineConfig } from "astro/config";
-
 import mdx from "@astrojs/mdx";
-
 import tailwindcss from "@tailwindcss/vite";
 
 const isGitHubPages = process.env.DEPLOY_TARGET === "github-pages";
@@ -22,7 +20,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

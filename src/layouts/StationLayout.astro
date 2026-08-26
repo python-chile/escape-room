@@ -4,6 +4,7 @@ import "../styles/global.css";
 import CodeBlock from "@/components/station/CodeBlock.astro";
 import StationHeader from "@/components/station/StationHeader.astro";
 import StationSidebar from "@/components/station/StationSidebar.astro";
+import { withBase } from "@/lib/paths";
 
 interface Props {
   currentPath: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { currentPath, station, title } = Astro.props;
+const faviconUrl = withBase("/favicon.png");
 ---
 
 <html lang="es">
@@ -19,7 +21,7 @@ const { currentPath, station, title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={`${title} — ${station} | PySchool`} />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" href={faviconUrl} />
     <title>{title} | PySchool</title>
   </head>
 

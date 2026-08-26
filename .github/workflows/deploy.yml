@@ -1,8 +1,9 @@
-name: Deploy to GitHub Pages
+name: Deploy GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,53 +12,63 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
+    name: Construir sitio
     runs-on: ubuntu-latest
 
-    env:
-      DEPLOY_TARGET: github-pages
-      PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
-      PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
-
     steps:
-      - name: Checkout
+      - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
+      - name: Configurar pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
 
-      - name: Setup Node
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Install dependencies
+      - name: Instalar dependencias
         run: pnpm install --frozen-lockfile
 
-      - name: Build site
-        run: pnpm build
+      - name: Revisar proyecto
+        run: pnpm check
 
-      - name: Upload GitHub Pages artifact
+      - name: Ejecutar pruebas
+        run: pnpm test
+
+      - name: Construir para GitHub Pages
+        run: pnpm build
+        env:
+          DEPLOY_TARGET: github-pages
+          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir sitio construido
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
+    name: Publicar sitio
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    needs: build
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
-      - name: Deploy
+      - name: Publicar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

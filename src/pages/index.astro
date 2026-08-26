@@ -6,6 +6,9 @@ import Hero from "@/components/home/hero/Hero.astro";
 import HomeFooter from "@/components/home/HomeFooter.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
 import HomeStations from "@/components/home/HomeStations.astro";
+import { withBase } from "@/lib/paths";
+
+const faviconUrl = withBase("/favicon.png");
 ---
 
 <html lang="es">
@@ -16,7 +19,7 @@ import HomeStations from "@/components/home/HomeStations.astro";
 			name="description"
 			content="PySchool: aprende Python resolviendo estaciones interactivas."
 		/>
-		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="icon" type="image/png" href={faviconUrl} />
 		<title>PySchool — Python Chile</title>
 	</head>
 

@@ -10,10 +10,12 @@ if (!entry) {
 }
 
 const { Content } = await render(entry);
+
+const currentPath = "/estaciones/02-laboratorio-oak";
 ---
 
 <StationLayout
-  currentPath={Astro.url.pathname}
+  currentPath={currentPath}
   station={entry.data.station}
   title={entry.data.title}
 >

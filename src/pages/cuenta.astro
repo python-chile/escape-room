@@ -3,6 +3,9 @@ import "@/styles/global.css";
 
 import HomeHeader from "@/components/home/HomeHeader.astro";
 import { stationNavigations } from "@/data/stations/registry";
+import { withBase } from "@/lib/paths";
+
+const faviconUrl = withBase("/favicon.png");
 
 const stationGroups = Object.values(stationNavigations).map((navigation) => ({
   code: navigation.code,
@@ -22,7 +25,7 @@ const stationGroups = Object.values(stationNavigations).map((navigation) => ({
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content="Tu progreso y cuenta de PySchool." />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" href={faviconUrl} />
     <title>Mi cuenta | PySchool</title>
   </head>
 

@@ -1,15 +1,19 @@
 ---
 import GitHubAuth from "@/components/auth/GitHubAuth.astro";
+import { withBase } from "@/lib/paths";
+
+const homeUrl = withBase("/");
+const logoUrl = withBase("/brand/pythonchile.png");
 ---
 
 <header class="relative flex items-center justify-between py-5">
   <a
-    href="/"
+    href={homeUrl}
     aria-label="Ir al inicio de PySchool"
     class="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
   >
     <img
-      src="/brand/pythonchile.png"
+      src={logoUrl}
       alt="Python Chile"
       class="h-9 w-auto object-contain sm:h-10"
     />

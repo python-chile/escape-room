@@ -1,3 +1,9 @@
+---
+import { withBase } from "@/lib/paths";
+
+const coverUrl = withBase("/brand/pyschool-cover.png");
+---
+
 <div class="relative">
   <div
     aria-hidden="true"
@@ -6,8 +12,8 @@
   </div>
 
   <img
-    src="/brand/pyschool-cover.png"
+    src={coverUrl}
     alt="Logo de PySchool"
-    class="relative h-44 max-w-full w-auto object-contain sm:h-52"
+    class="relative h-44 w-auto max-w-full object-contain sm:h-52"
   />
 </div>

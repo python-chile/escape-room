@@ -1,12 +1,16 @@
 ---
 import GitHubAuth from "@/components/auth/GitHubAuth.astro";
 import { stations } from "@/data/stations/registry";
+import { withBase } from "@/lib/paths";
 
 interface Props {
   station: string;
 }
 
 const { station } = Astro.props;
+
+const homeUrl = withBase("/");
+const logoUrl = withBase("/brand/pythonchile.png");
 ---
 
 <header
@@ -14,19 +18,19 @@ const { station } = Astro.props;
 >
   <div class="flex min-w-0 items-center gap-4 sm:gap-5">
     <a
-      href="/"
+      href={homeUrl}
       aria-label="Ir al inicio de PySchool"
       class="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
       <img
-        src="/brand/pythonchile.png"
+        src={logoUrl}
         alt="Python Chile"
         class="h-8 w-auto object-contain sm:h-10"
       />
     </a>
 
     <a
-      href="/"
+      href={homeUrl}
       class="hidden items-center gap-2 border-l border-ink/15 pl-5 text-sm font-semibold text-muted transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:inline-flex"
     >
       <span aria-hidden="true" class="font-mono text-base">←</span>
@@ -69,7 +73,7 @@ const { station } = Astro.props;
               return (
                 <li>
                   <a
-                    href={item.href}
+                    href={withBase(item.href)}
                     aria-current={isCurrent ? "page" : undefined}
                     class:list={[
                       "group/item flex items-center gap-3 rounded-lg p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
@@ -77,7 +81,7 @@ const { station } = Astro.props;
                     ]}
                   >
                     <img
-                      src={item.image}
+                      src={withBase(item.image)}
                       alt=""
                       width="112"
                       height="112"
