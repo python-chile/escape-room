@@ -1,22 +1,13 @@
 ---
 import "@/styles/global.css";
 
+import AccountLogout from "@/components/account/AccountLogout.astro";
+import AccountProfile from "@/components/account/AccountProfile.astro";
+import AccountProgress from "@/components/account/AccountProgress.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
-import { stationNavigations } from "@/data/stations/registry";
 import { withBase } from "@/lib/paths";
 
 const faviconUrl = withBase("/favicon.png");
-
-const stationGroups = Object.values(stationNavigations).map((navigation) => ({
-  code: navigation.code,
-  title: navigation.title,
-  rooms: navigation.items
-    .filter(
-      (item): item is typeof item & { href: string } =>
-        Boolean(item.href) && item.label.startsWith("Habitación"),
-    )
-    .map((item) => item.href),
-}));
 ---
 
 <!doctype html>
@@ -43,201 +34,17 @@ const stationGroups = Object.values(stationNavigations).map((navigation) => ({
             Tu progreso
           </h1>
 
-          <div class="mt-10 border-y border-ink/15 py-6" data-account-profile>
-            <div class="flex items-center gap-4">
-              <img
-                alt=""
-                width="64"
-                height="64"
-                class="size-16 rounded-full border-2 border-ink object-cover"
-                data-account-avatar
-              />
-
-              <div class="min-w-0">
-                <p
-                  class="truncate font-mono text-base font-bold text-ink"
-                  data-account-name
-                >
-                  Cargando cuenta…
-                </p>
-
-                <p class="mt-1 font-mono text-xs tracking-widest text-muted">
-                  CONECTADO CON GITHUB
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <section class="mt-12">
-            <div class="flex items-end justify-between gap-4">
-              <div>
-                <p
-                  class="font-mono text-xs font-bold tracking-widest text-brand"
-                >
-                  AVANCE GENERAL
-                </p>
-
-                <h2 class="mt-2 text-2xl font-bold tracking-tight">
-                  Desafíos completados
-                </h2>
-              </div>
-
-              <p class="font-mono text-xl font-bold text-ink">
-                <span data-account-total>0</span>
-                <span class="text-muted">/</span>
-                <span data-account-available>0</span>
-              </p>
-            </div>
-
-            <div class="mt-5 grid gap-5">
-              {
-                stationGroups.map((station) => (
-                  <section
-                    class="border border-ink/15 bg-white p-5 shadow-[2px_2px_0_0_#101d27]"
-                    data-account-station
-                    data-room-paths={JSON.stringify(station.rooms)}
-                  >
-                    <div class="flex items-start justify-between gap-4">
-                      <div>
-                        <p class="font-mono text-[0.65rem] font-bold tracking-widest text-brand">
-                          {station.code}
-                        </p>
-
-                        <h3 class="mt-2 text-lg font-bold">{station.title}</h3>
-                      </div>
-
-                      <p class="font-mono text-sm font-bold text-ink">
-                        <span data-station-completed>0</span>
-                        <span class="text-muted">/</span>
-                        {station.rooms.length}
-                      </p>
-                    </div>
-
-                    <div class="mt-5 h-2 overflow-hidden bg-ink/10">
-                      <div
-                        class="h-full bg-brand transition-[width] duration-500"
-                        style="width: 0%"
-                        data-station-progress
-                      />
-                    </div>
-                  </section>
-                ))
-              }
-            </div>
-          </section>
-
-          <section class="mt-14 border-t border-ink/15 pt-6">
-            <button
-              type="button"
-              class="font-mono text-xs font-bold tracking-widest text-muted transition hover:text-python-red focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
-              data-account-logout
-            >
-              ↪ CERRAR SESIÓN
-            </button>
-          </section>
+          <AccountProfile />
+          <AccountProgress />
+          <AccountLogout />
         </section>
       </main>
     </div>
 
     <script>
-      import { getCompletedRooms, syncProgressWithCloud } from "@/lib/progress";
-      import { supabase } from "@/lib/supabase";
+      import { initializeAccountPages } from "@/components/account/initialize-account";
 
-      const avatar = document.querySelector<HTMLImageElement>(
-        "[data-account-avatar]",
-      );
-      const name = document.querySelector<HTMLElement>("[data-account-name]");
-      const total = document.querySelector<HTMLElement>("[data-account-total]");
-      const available = document.querySelector<HTMLElement>(
-        "[data-account-available]",
-      );
-      const logoutButton = document.querySelector<HTMLButtonElement>(
-        "[data-account-logout]",
-      );
-
-      function renderProgress() {
-        const completedRooms = getCompletedRooms();
-        let completedCount = 0;
-        let availableCount = 0;
-
-        document
-          .querySelectorAll<HTMLElement>("[data-account-station]")
-          .forEach((station) => {
-            const rooms = JSON.parse(
-              station.dataset.roomPaths ?? "[]",
-            ) as string[];
-
-            const completed = rooms.filter((room) =>
-              completedRooms.has(room),
-            ).length;
-
-            const count = station.querySelector<HTMLElement>(
-              "[data-station-completed]",
-            );
-            const bar = station.querySelector<HTMLElement>(
-              "[data-station-progress]",
-            );
-
-            if (count) {
-              count.textContent = String(completed);
-            }
-
-            if (bar) {
-              bar.style.width = `${(completed / rooms.length) * 100}%`;
-            }
-
-            completedCount += completed;
-            availableCount += rooms.length;
-          });
-
-        if (total) {
-          total.textContent = String(completedCount);
-        }
-
-        if (available) {
-          available.textContent = String(availableCount);
-        }
-      }
-
-      async function renderAccount() {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        const user = session?.user;
-
-        if (!user) {
-          window.location.replace(import.meta.env.BASE_URL);
-          return;
-        }
-
-        const metadata = user.user_metadata;
-        const userName =
-          metadata.user_name ||
-          metadata.preferred_username ||
-          metadata.name ||
-          user.email ||
-          "Cuenta GitHub";
-
-        if (avatar) {
-          avatar.src = metadata.avatar_url || "";
-        }
-
-        if (name) {
-          name.textContent = userName;
-        }
-      }
-
-      logoutButton?.addEventListener("click", async () => {
-        await supabase.auth.signOut();
-        window.location.replace(import.meta.env.BASE_URL);
-      });
-
-      window.addEventListener("pyschool-progress-change", renderProgress);
-
-      void syncProgressWithCloud().then(renderProgress);
-      void renderAccount();
-      renderProgress();
+      initializeAccountPages();
     </script>
   </body>
 </html>

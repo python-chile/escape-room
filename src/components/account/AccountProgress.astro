@@ -1,0 +1,48 @@
+---
+import AccountStationCard from "./AccountStationCard.astro";
+
+import { stationNavigations } from "@/data/stations/registry";
+
+const stationGroups = Object.values(stationNavigations).map((navigation) => ({
+  code: navigation.code,
+  title: navigation.title,
+  rooms: navigation.items
+    .filter(
+      (item): item is typeof item & { href: string } =>
+        Boolean(item.href) && item.label.startsWith("Habitación"),
+    )
+    .map((item) => item.href),
+}));
+---
+
+<section class="mt-12">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <p class="font-mono text-xs font-bold tracking-widest text-brand">
+        AVANCE GENERAL
+      </p>
+
+      <h2 class="mt-2 text-2xl font-bold tracking-tight">
+        Desafíos completados
+      </h2>
+    </div>
+
+    <p class="font-mono text-xl font-bold text-ink">
+      <span data-account-total>0</span>
+      <span class="text-muted">/</span>
+      <span data-account-available>0</span>
+    </p>
+  </div>
+
+  <div class="mt-5 grid gap-5">
+    {
+      stationGroups.map((station) => (
+        <AccountStationCard
+          code={station.code}
+          title={station.title}
+          rooms={station.rooms}
+        />
+      ))
+    }
+  </div>
+</section>
