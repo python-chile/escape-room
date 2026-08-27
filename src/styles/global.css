@@ -4,13 +4,10 @@
 @theme {
   --color-ink: #101d27;
   --color-ink-soft: #1b2b38;
-
   --color-brand: #0879e8;
   --color-brand-dark: #0669cc;
-
   --color-accent: #f2c94c;
   --color-accent-dark: #dbb534;
-
   --color-python-red: #ef2b1b;
   --color-paper: #f7f9fc;
   --color-muted: #64748b;
@@ -21,16 +18,8 @@
 }
 
 html {
-  background: var(--color-paper);
+  min-width: 320px;
+  background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-}
-
-* {
-  box-sizing: border-box;
 }

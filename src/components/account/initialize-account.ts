@@ -14,39 +14,49 @@ function getElements(root: HTMLElement) {
   };
 }
 
+function getRoomPaths(station: HTMLElement): string[] {
+  try {
+    const rooms: unknown = JSON.parse(station.dataset.roomPaths ?? "[]");
+
+    return Array.isArray(rooms)
+      ? rooms.filter((room): room is string => typeof room === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 function renderProgress(root: HTMLElement) {
   const completedRooms = getCompletedRooms();
+  const stations = root.querySelectorAll<HTMLElement>("[data-account-station]");
 
   let completedCount = 0;
   let availableCount = 0;
 
-  root
-    .querySelectorAll<HTMLElement>("[data-account-station]")
-    .forEach((station) => {
-      const rooms = JSON.parse(station.dataset.roomPaths ?? "[]") as string[];
+  stations.forEach((station) => {
+    const rooms = getRoomPaths(station);
+    const completed = rooms.filter((room) => completedRooms.has(room)).length;
+    const percentage =
+      rooms.length > 0 ? Math.round((completed / rooms.length) * 100) : 0;
 
-      const completed = rooms.filter((room) => completedRooms.has(room)).length;
+    const completedElement = station.querySelector<HTMLElement>(
+      "[data-station-completed]",
+    );
+    const progressElement = station.querySelector<HTMLElement>(
+      "[data-station-progress]",
+    );
 
-      const count = station.querySelector<HTMLElement>(
-        "[data-station-completed]",
-      );
+    if (completedElement) {
+      completedElement.textContent = String(completed);
+    }
 
-      const bar = station.querySelector<HTMLElement>("[data-station-progress]");
+    if (progressElement) {
+      progressElement.style.width = `${percentage}%`;
+    }
 
-      if (count) {
-        count.textContent = String(completed);
-      }
-
-      if (bar) {
-        const percentage =
-          rooms.length === 0 ? 0 : (completed / rooms.length) * 100;
-
-        bar.style.width = `${percentage}%`;
-      }
-
-      completedCount += completed;
-      availableCount += rooms.length;
-    });
+    completedCount += completed;
+    availableCount += rooms.length;
+  });
 
   const { total, available } = getElements(root);
 

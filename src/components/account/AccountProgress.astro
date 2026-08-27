@@ -1,17 +1,13 @@
 ---
 import AccountStationCard from "./AccountStationCard.astro";
-
 import { stationNavigations } from "@/data/stations/registry";
 
 const stationGroups = Object.values(stationNavigations).map((navigation) => ({
   code: navigation.code,
   title: navigation.title,
-  rooms: navigation.items
-    .filter(
-      (item): item is typeof item & { href: string } =>
-        Boolean(item.href) && item.label.startsWith("Habitación"),
-    )
-    .map((item) => item.href),
+  rooms: navigation.items.flatMap((item) =>
+    item.href && item.label.startsWith("Habitación") ? [item.href] : [],
+  ),
 }));
 ---
 
@@ -27,7 +23,11 @@ const stationGroups = Object.values(stationNavigations).map((navigation) => ({
       </h2>
     </div>
 
-    <p class="text-ink font-mono text-xl font-bold">
+    <p
+      class="text-ink font-mono text-xl font-bold"
+      aria-label="Desafíos completados"
+      aria-live="polite"
+    >
       <span data-account-total>0</span>
       <span class="text-muted">/</span>
       <span data-account-available>0</span>
