@@ -7,7 +7,7 @@ const accountHref = withBase("/cuenta");
 <div class="flex items-center" data-github-auth>
   <button
     type="button"
-    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest transition focus-visible:outline-2 focus-visible:outline-offset-2"
+    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-login
   >
     <svg
@@ -28,10 +28,11 @@ const accountHref = withBase("/cuenta");
   <a
     hidden
     href={accountHref}
-    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2"
+    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-account
   >
     <img
+      src=""
       alt=""
       width="28"
       height="28"
@@ -39,9 +40,9 @@ const accountHref = withBase("/cuenta");
       data-github-avatar
     />
 
-    <span class="hidden max-w-28 truncate sm:block" data-github-name> </span>
+    <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
 
-    <span aria-hidden="true" class="texttext-brand">→</span>
+    <span class="text-brand" aria-hidden="true">→</span>
   </a>
 </div>
 

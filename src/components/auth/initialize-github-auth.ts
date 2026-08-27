@@ -1,3 +1,5 @@
+import type { User } from "@supabase/supabase-js";
+
 import { withBase } from "@/lib/paths";
 import { syncProgressWithCloud } from "@/lib/progress";
 import { supabase } from "@/lib/supabase";
@@ -22,35 +24,46 @@ function getElements(root: HTMLElement): AuthElements {
   };
 }
 
-async function renderSession(root: HTMLElement) {
+function getUserName(user: User) {
+  const { user_name, preferred_username, name } = user.user_metadata;
+
+  return (
+    [user_name, preferred_username, name, user.email].find(
+      (value): value is string =>
+        typeof value === "string" && value.trim().length > 0,
+    ) ?? "Cuenta GitHub"
+  );
+}
+
+function renderUser(root: HTMLElement, user?: User) {
   const { loginButton, accountLink, avatar, name } = getElements(root);
 
+  if (!loginButton || !accountLink || !avatar || !name) {
+    return;
+  }
+
+  loginButton.hidden = Boolean(user);
+  accountLink.hidden = !user;
+
+  if (!user) {
+    return;
+  }
+
+  const avatarUrl = user.user_metadata.avatar_url;
+
+  if (typeof avatarUrl === "string") {
+    avatar.src = avatarUrl;
+  }
+
+  name.textContent = getUserName(user);
+}
+
+async function renderSession(root: HTMLElement) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const user = session?.user;
-
-  if (!user || !loginButton || !accountLink || !avatar || !name) {
-    loginButton?.removeAttribute("hidden");
-    accountLink?.setAttribute("hidden", "");
-    return;
-  }
-
-  const metadata = user.user_metadata;
-
-  const userName =
-    metadata.user_name ||
-    metadata.preferred_username ||
-    metadata.name ||
-    user.email ||
-    "Cuenta GitHub";
-
-  avatar.src = metadata.avatar_url || "";
-  name.textContent = userName;
-
-  loginButton.hidden = true;
-  accountLink.hidden = false;
+  renderUser(root, session?.user);
 }
 
 async function signIn() {
@@ -67,9 +80,9 @@ async function signIn() {
 }
 
 export function initializeGitHubAuth() {
-  const authRoots = [
-    ...document.querySelectorAll<HTMLElement>("[data-github-auth]"),
-  ];
+  const authRoots = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-github-auth]"),
+  );
 
   if (authRoots.length === 0) {
     return;
@@ -85,9 +98,9 @@ export function initializeGitHubAuth() {
     void renderSession(root);
   });
 
-  supabase.auth.onAuthStateChange((event) => {
+  supabase.auth.onAuthStateChange((event, session) => {
     authRoots.forEach((root) => {
-      void renderSession(root);
+      renderUser(root, session?.user);
     });
 
     if (event === "SIGNED_IN") {
