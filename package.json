@@ -15,10 +15,15 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:python": "playwright test",
-    "verify": "pnpm check && pnpm test && pnpm test:python && pnpm build"
+    "verify": "pnpm check && pnpm lint && pnpm format:check && pnpm test && pnpm test:python && pnpm build",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",
@@ -40,11 +45,22 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^26.3.0",
     "esbuild": "^0.28.2",
+    "eslint": "^10.9.1",
+    "eslint-plugin-astro": "^3.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.11"
   }
 }
