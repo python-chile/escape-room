@@ -1,12 +1,17 @@
+import { withBase } from "@/lib/paths";
 import { completeRoom } from "@/lib/progress";
 
 import { celebrate } from "./celebrate";
 import { getExecutionTime, MAX_LOADING_TIME } from "./constants";
 import type { PythonEditorElements } from "./dom";
-import type { RunnerDataset, RunnerMessage } from "./protocol";
+import {
+  isRunnerMessage,
+  type ParentRunnerMessage,
+  type RunnerDataset,
+  type RunnerMessage,
+} from "./protocol";
 import type { Challenge } from "./types";
 import type { PythonEditorUi } from "./ui";
-import { withBase } from "@/lib/paths";
 
 type PythonRunnerOptions = {
   challenge?: Challenge;
@@ -22,37 +27,46 @@ export function createPythonRunner({
   ui,
 }: PythonRunnerOptions) {
   let isReady = false;
-  let requestId = "";
+  let activeRequestId: string | undefined;
   let timeoutId: number | undefined;
 
   function clearRunTimeout() {
-    if (timeoutId !== undefined) {
-      window.clearTimeout(timeoutId);
-      timeoutId = undefined;
+    if (timeoutId === undefined) {
+      return;
     }
+
+    window.clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }
+
+  function postMessage(message: ParentRunnerMessage) {
+    elements.runner.contentWindow?.postMessage(message, "*");
   }
 
   function announceParentIsReady() {
-    elements.runner.contentWindow?.postMessage(
-      { type: "python-parent-ready" },
-      "*",
-    );
+    postMessage({ type: "python-parent-ready" });
   }
 
   function resetRunner() {
     clearRunTimeout();
+    activeRequestId = undefined;
     isReady = false;
     elements.runButton.disabled = true;
-    elements.runner.src = `${withBase("/python-runner.html")}?instance=${Date.now()}`;
+    elements.runner.src = `${withBase(
+      "/python-runner.html",
+    )}?instance=${Date.now()}`;
   }
 
   function finishRun(result: string, status: "success" | "error") {
     clearRunTimeout();
+    activeRequestId = undefined;
     ui.showResult(result, status);
   }
 
-  function handleExecutionStarted(message: RunnerMessage) {
-    if (message.requestId !== requestId) {
+  function handleExecutionStarted(
+    message: Extract<RunnerMessage, { type: "python-execution-started" }>,
+  ) {
+    if (message.requestId !== activeRequestId) {
       return;
     }
 
@@ -68,14 +82,14 @@ export function createPythonRunner({
     }, executionTime);
   }
 
-  function handleResult(message: RunnerMessage) {
-    if (message.requestId !== requestId) {
+  function handleResult(
+    message: Extract<RunnerMessage, { type: "python-result" }>,
+  ) {
+    if (message.requestId !== activeRequestId) {
       return;
     }
 
-    const status = message.status === "success" ? "success" : "error";
-
-    finishRun(String(message.output), status);
+    finishRun(message.output, message.status);
 
     if (message.chart) {
       ui.showChart(message.chart);
@@ -83,21 +97,23 @@ export function createPythonRunner({
       ui.clearChart();
     }
 
-    if (status !== "success" || !message.validation) {
+    if (message.status !== "success" || !message.validation) {
       return;
     }
 
-    ui.showFeedback(message.validation.feedback, message.validation.passed);
+    const { feedback, passed } = message.validation;
 
-    if (message.validation.passed) {
+    ui.showFeedback(feedback, passed);
+
+    if (passed) {
       completeRoom();
       celebrate();
     }
 
-    if (message.validation.passed && challenge?.successHref) {
+    if (passed && challenge?.successHref) {
       ui.showNextLink(
         challenge.successHref,
-        challenge.successLabel || "Continuar",
+        challenge.successLabel ?? "Continuar",
       );
     } else {
       ui.hideNextLink();
@@ -122,70 +138,80 @@ export function createPythonRunner({
   }
 
   async function run() {
-    if (!isReady || !elements.runner.contentWindow) {
+    if (!isReady || activeRequestId || !elements.runner.contentWindow) {
       return;
     }
 
-    requestId = crypto.randomUUID();
+    const requestId = crypto.randomUUID();
 
+    activeRequestId = requestId;
     ui.prepareRun();
+
+    timeoutId = window.setTimeout(() => {
+      ui.showLoadingTimeout();
+      resetRunner();
+    }, MAX_LOADING_TIME);
 
     try {
       const dataset = await loadDataset();
 
-      elements.runner.contentWindow.postMessage(
-        {
-          type: "run-python",
-          requestId,
-          code: getCode(),
-          challenge,
-          dataset,
-        },
-        "*",
-      );
+      if (
+        activeRequestId !== requestId ||
+        !isReady ||
+        !elements.runner.contentWindow
+      ) {
+        return;
+      }
 
-      timeoutId = window.setTimeout(() => {
-        ui.showLoadingTimeout();
-        resetRunner();
-      }, MAX_LOADING_TIME);
+      postMessage({
+        type: "run-python",
+        requestId,
+        code: getCode(),
+        challenge,
+        dataset,
+      });
     } catch (error) {
+      if (activeRequestId !== requestId) {
+        return;
+      }
+
+      clearRunTimeout();
+      activeRequestId = undefined;
       ui.showUnexpectedError(error);
     }
   }
 
   elements.runner.addEventListener("load", announceParentIsReady);
 
-  announceParentIsReady();
-
   window.addEventListener("message", (event) => {
-    if (event.source !== elements.runner.contentWindow) {
+    if (
+      event.source !== elements.runner.contentWindow ||
+      !isRunnerMessage(event.data)
+    ) {
       return;
     }
 
-    const message = event.data as RunnerMessage;
+    const message = event.data;
 
-    if (!message || typeof message.type !== "string") {
-      return;
-    }
+    switch (message.type) {
+      case "python-runner-ready":
+        if (!isReady) {
+          isReady = true;
+          ui.setReady();
+        }
+        break;
 
-    if (message.type === "python-runner-ready") {
-      if (!isReady) {
-        isReady = true;
-        ui.setReady();
-      }
+      case "python-execution-started":
+        handleExecutionStarted(message);
+        break;
 
-      return;
-    }
-
-    if (message.type === "python-execution-started") {
-      handleExecutionStarted(message);
-      return;
-    }
-
-    if (message.type === "python-result") {
-      handleResult(message);
+      case "python-result":
+        handleResult(message);
+        break;
     }
   });
+
+  announceParentIsReady();
 
   return {
     isReady: () => isReady,

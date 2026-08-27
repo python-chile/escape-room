@@ -1,3 +1,5 @@
+export type PythonPackage = "pandas" | "matplotlib";
+
 type Dataset = {
   source: string;
   fileName: string;
@@ -9,7 +11,7 @@ type ChallengeBase = {
   incompleteMessage?: string;
   successHref?: string;
   successLabel?: string;
-  packages?: ("pandas" | "matplotlib")[];
+  packages?: PythonPackage[];
   dataset?: Dataset;
 };
 

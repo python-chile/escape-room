@@ -15,49 +15,54 @@ function moveHintIntoEditor(editor: HTMLElement, hintSlot: HTMLElement) {
   }
 }
 
+function parseChallenge(value?: string): Challenge | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    return JSON.parse(value) as Challenge;
+  } catch {
+    return undefined;
+  }
+}
+
+function initializePythonEditor(editor: HTMLElement) {
+  const elements = getPythonEditorElements(editor);
+  const starterCode = editor.dataset.pythonStarterCode ?? "";
+  const challenge = parseChallenge(editor.dataset.pythonChallenge);
+
+  moveHintIntoEditor(editor, elements.hintSlot);
+
+  const editorView = createPythonCodeEditor(elements.codeElement, starterCode);
+  const ui = createPythonEditorUi(elements);
+  const runner = createPythonRunner({
+    challenge,
+    elements,
+    getCode: () => editorView.state.doc.toString(),
+    ui,
+  });
+
+  elements.runButton.addEventListener("click", () => {
+    void runner.run();
+  });
+
+  elements.resetButton.addEventListener("click", () => {
+    editorView.dispatch({
+      changes: {
+        from: 0,
+        to: editorView.state.doc.length,
+        insert: starterCode,
+      },
+    });
+
+    ui.resetCode(runner.isReady());
+    editorView.focus();
+  });
+}
+
 export function initializePythonEditors() {
   document
     .querySelectorAll<HTMLElement>("[data-python-editor]")
-    .forEach((editor) => {
-      const elements = getPythonEditorElements(editor);
-
-      moveHintIntoEditor(editor, elements.hintSlot);
-
-      const starterCode = editor.dataset.pythonStarterCode ?? "";
-
-      const challenge = editor.dataset.pythonChallenge
-        ? (JSON.parse(editor.dataset.pythonChallenge) as Challenge)
-        : undefined;
-
-      const editorView = createPythonCodeEditor(
-        elements.codeElement,
-        starterCode,
-      );
-
-      const ui = createPythonEditorUi(elements);
-
-      const runner = createPythonRunner({
-        challenge,
-        elements,
-        getCode: () => editorView.state.doc.toString(),
-        ui,
-      });
-
-      elements.runButton.addEventListener("click", () => {
-        void runner.run();
-      });
-
-      elements.resetButton.addEventListener("click", () => {
-        editorView.dispatch({
-          changes: {
-            from: 0,
-            to: editorView.state.doc.length,
-            insert: starterCode,
-          },
-        });
-
-        ui.resetCode(runner.isReady());
-        editorView.focus();
-      });
-    });
+    .forEach(initializePythonEditor);
 }

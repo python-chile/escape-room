@@ -1,6 +1,6 @@
-import type { CompletionContext } from "@codemirror/autocomplete";
+import type { Completion, CompletionContext } from "@codemirror/autocomplete";
 
-const pythonWords = [
+const builtinFunctions: Completion[] = [
   "print",
   "input",
   "len",
@@ -21,37 +21,46 @@ const pythonWords = [
   "abs",
   "enumerate",
   "zip",
-  "True",
-  "False",
-  "None",
 ].map((label) => ({
   label,
   type: "function",
 }));
 
+const builtinConstants: Completion[] = ["True", "False", "None"].map(
+  (label) => ({
+    label,
+    type: "constant",
+  }),
+);
+
 export function completePython(context: CompletionContext) {
-  const word = context.matchBefore(/[a-zA-Z_]\w*/);
+  const word = context.matchBefore(/[A-Za-z_]\w*/);
 
   if (!word && !context.explicit) {
     return null;
   }
 
   const variables = new Set<string>();
+  const source = context.state.doc.toString();
+  const assignments = source.matchAll(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=/gm);
 
-  for (const match of context.state.doc
-    .toString()
-    .matchAll(/^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=/gm)) {
-    variables.add(match[1]);
+  for (const match of assignments) {
+    const variable = match[1];
+
+    if (variable) {
+      variables.add(variable);
+    }
   }
+
+  const variableCompletions: Completion[] = Array.from(variables)
+    .sort()
+    .map((label) => ({
+      label,
+      type: "variable",
+    }));
 
   return {
     from: word?.from ?? context.pos,
-    options: [
-      ...[...variables].map((label) => ({
-        label,
-        type: "variable",
-      })),
-      ...pythonWords,
-    ],
+    options: [...variableCompletions, ...builtinFunctions, ...builtinConstants],
   };
 }

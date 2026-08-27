@@ -27,6 +27,9 @@ export function createPythonCodeEditor(
         }),
         keymap.of([...defaultKeymap, indentWithTab]),
         EditorView.lineWrapping,
+        EditorView.contentAttributes.of({
+          "aria-label": "Editor de código Python",
+        }),
         pythonEditorTheme,
       ],
     }),

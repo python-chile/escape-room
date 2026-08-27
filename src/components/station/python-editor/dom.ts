@@ -7,7 +7,7 @@ export type PythonEditorElements = {
   runButton: HTMLButtonElement;
   resetButton: HTMLButtonElement;
   output: HTMLElement;
-  status: HTMLElement;
+  statusText: HTMLElement;
   feedback: HTMLElement;
   nextLink: HTMLAnchorElement;
   chartContainer: HTMLElement;
@@ -15,7 +15,7 @@ export type PythonEditorElements = {
   runner: HTMLIFrameElement;
 };
 
-function requireElement<T extends Element>(
+function queryRequiredElement<T extends Element>(
   parent: HTMLElement,
   selector: string,
 ): T {
@@ -32,19 +32,22 @@ export function getPythonEditorElements(
   editor: HTMLElement,
 ): PythonEditorElements {
   return {
-    codeElement: requireElement(editor, "[data-python-code]"),
-    codePanel: requireElement(editor, "[data-python-code-panel]"),
-    workspace: requireElement(editor, "[data-python-workspace]"),
-    results: requireElement(editor, "[data-python-results]"),
-    hintSlot: requireElement(editor, "[data-python-hint-slot]"),
-    runButton: requireElement(editor, "[data-python-run]"),
-    resetButton: requireElement(editor, "[data-python-reset]"),
-    output: requireElement(editor, "[data-python-output]"),
-    status: requireElement(editor, "[data-python-status]"),
-    feedback: requireElement(editor, "[data-python-feedback]"),
-    nextLink: requireElement(editor, "[data-python-next]"),
-    chartContainer: requireElement(editor, "[data-python-chart-container]"),
-    chart: requireElement(editor, "[data-python-chart]"),
-    runner: requireElement(editor, "[data-python-runner]"),
+    codeElement: queryRequiredElement(editor, "[data-python-code]"),
+    codePanel: queryRequiredElement(editor, "[data-python-code-panel]"),
+    workspace: queryRequiredElement(editor, "[data-python-workspace]"),
+    results: queryRequiredElement(editor, "[data-python-results]"),
+    hintSlot: queryRequiredElement(editor, "[data-python-hint-slot]"),
+    runButton: queryRequiredElement(editor, "[data-python-run]"),
+    resetButton: queryRequiredElement(editor, "[data-python-reset]"),
+    output: queryRequiredElement(editor, "[data-python-output]"),
+    statusText: queryRequiredElement(editor, "[data-python-status-text]"),
+    feedback: queryRequiredElement(editor, "[data-python-feedback]"),
+    nextLink: queryRequiredElement(editor, "[data-python-next]"),
+    chartContainer: queryRequiredElement(
+      editor,
+      "[data-python-chart-container]",
+    ),
+    chart: queryRequiredElement(editor, "[data-python-chart]"),
+    runner: queryRequiredElement(editor, "[data-python-runner]"),
   };
 }

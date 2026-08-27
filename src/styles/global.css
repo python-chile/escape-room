@@ -15,6 +15,14 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-sketch: "Cabin Sketch", cursive;
+
+  --color-line: #cbd5e1;
+  --color-line-soft: #dbe5f1;
+  --color-panel: #f8fbff;
+
+  --shadow-editor: 3px 3px 0 0 var(--color-brand);
+  --shadow-panel: 2px 2px 0 0 var(--color-brand);
+  --shadow-action: 2px 2px 0 0 var(--color-ink);
 }
 
 html {

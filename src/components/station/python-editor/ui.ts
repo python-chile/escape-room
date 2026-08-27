@@ -5,7 +5,6 @@ export type PythonEditorUi = {
   hideNextLink: () => void;
   prepareRun: () => void;
   resetCode: (isReady: boolean) => void;
-  setLoading: () => void;
   setReady: () => void;
   setRunning: () => void;
   showChart: (chart: string) => void;
@@ -34,6 +33,15 @@ export function createPythonEditorUi(
     elements.workspace.classList.remove("python-workspace--with-results");
   }
 
+  function clearOutput() {
+    elements.output.textContent = "";
+    elements.feedback.hidden = true;
+    hideNextLink();
+    clearChart();
+    hideResults();
+    clearCelebration();
+  }
+
   function clearChart() {
     elements.chart.removeAttribute("src");
     elements.chartContainer.hidden = true;
@@ -49,41 +57,24 @@ export function createPythonEditorUi(
 
     prepareRun() {
       elements.runButton.disabled = true;
-      elements.status.textContent = "Cargando entorno…";
-      elements.output.textContent = "";
-      elements.feedback.hidden = true;
-
-      hideNextLink();
-      clearChart();
-      hideResults();
-      clearCelebration();
+      elements.statusText.textContent = "Cargando entorno…";
+      clearOutput();
     },
 
     resetCode(isReady) {
-      elements.output.textContent = "";
-      elements.feedback.hidden = true;
-
-      hideNextLink();
-      clearChart();
-      hideResults();
-      clearCelebration();
-
-      elements.status.textContent = isReady
+      clearOutput();
+      elements.statusText.textContent = isReady
         ? "Listo para ejecutar"
         : "Preparando entorno…";
     },
 
-    setLoading() {
-      elements.status.textContent = "Cargando entorno…";
-    },
-
     setReady() {
       elements.runButton.disabled = false;
-      elements.status.textContent = "Listo para ejecutar";
+      elements.statusText.textContent = "Listo para ejecutar";
     },
 
     setRunning() {
-      elements.status.textContent = "Ejecutando…";
+      elements.statusText.textContent = "Ejecutando…";
     },
 
     showChart(chart) {
@@ -93,7 +84,7 @@ export function createPythonEditorUi(
 
     showExecutionTimeout(executionTime) {
       showResults();
-      elements.status.textContent = "Detenido por tiempo máximo";
+      elements.statusText.textContent = "Detenido por tiempo máximo";
       elements.output.textContent = `La ejecución superó los ${executionTime / 1_000} segundos y fue detenida.`;
     },
 
@@ -107,32 +98,30 @@ export function createPythonEditorUi(
 
     showLoadingTimeout() {
       showResults();
-      elements.status.textContent = "No se pudo cargar el entorno";
+      elements.statusText.textContent = "No se pudo cargar el entorno";
       elements.output.textContent =
         "La carga de Python o de los datos tardó demasiado. Inténtalo nuevamente.";
     },
 
     showNextLink(href, label) {
-      elements.nextLink.hidden = false;
       elements.nextLink.href = href;
       elements.nextLink.textContent = `${label} →`;
+      elements.nextLink.hidden = false;
     },
 
     showResult(result, status) {
       showResults();
       elements.output.textContent = result;
-
-      elements.status.textContent =
+      elements.statusText.textContent =
         status === "success" ? "Ejecución terminada" : "Error";
-
       elements.runButton.disabled = false;
     },
 
     showUnexpectedError(error) {
       showResults();
-      elements.output.textContent = String(error);
-
-      elements.status.textContent = "Error";
+      elements.output.textContent =
+        error instanceof Error ? error.message : "Ocurrió un error inesperado.";
+      elements.statusText.textContent = "Error";
       elements.runButton.disabled = false;
     },
   };
