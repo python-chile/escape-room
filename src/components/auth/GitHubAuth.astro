@@ -7,7 +7,7 @@ const accountHref = withBase("/cuenta");
 <div class="flex items-center" data-github-auth>
   <button
     type="button"
-    class="inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest text-ink transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest transition focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-login
   >
     <svg
@@ -28,105 +28,25 @@ const accountHref = withBase("/cuenta");
   <a
     hidden
     href={accountHref}
-    class="inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold text-ink transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-account
   >
     <img
       alt=""
       width="28"
       height="28"
-      class="size-7 rounded-full border border-ink/10 object-cover"
+      class="border-ink/10 size-7 rounded-full border object-cover"
       data-github-avatar
     />
 
-    <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
-    <span aria-hidden="true" class="text-brand">→</span>
+    <span class="hidden max-w-28 truncate sm:block" data-github-name> </span>
+
+    <span aria-hidden="true" class="texttext-brand">→</span>
   </a>
 </div>
 
 <script>
-  import { withBase } from "@/lib/paths";
-  import { syncProgressWithCloud } from "@/lib/progress";
-  import { supabase } from "@/lib/supabase";
+  import { initializeGitHubAuth } from "./initialize-github-auth";
 
-  function getCallbackUrl() {
-    return new URL(
-      withBase("/auth/callback"),
-      window.location.origin,
-    ).toString();
-  }
-
-  document
-    .querySelectorAll<HTMLElement>("[data-github-auth]")
-    .forEach((root) => {
-      const loginButton = root.querySelector<HTMLButtonElement>(
-        "[data-github-login]",
-      );
-
-      const accountLink = root.querySelector<HTMLAnchorElement>(
-        "[data-github-account]",
-      );
-
-      const avatar = root.querySelector<HTMLImageElement>(
-        "[data-github-avatar]",
-      );
-
-      const name = root.querySelector<HTMLElement>("[data-github-name]");
-
-      async function renderSession() {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        const user = session?.user;
-
-        if (!user || !loginButton || !accountLink || !avatar || !name) {
-          loginButton?.removeAttribute("hidden");
-          accountLink?.setAttribute("hidden", "");
-          return;
-        }
-
-        const metadata = user.user_metadata;
-
-        const userName =
-          metadata.user_name ||
-          metadata.preferred_username ||
-          metadata.name ||
-          user.email ||
-          "Cuenta GitHub";
-
-        avatar.src = metadata.avatar_url || "";
-        name.textContent = userName;
-
-        loginButton.hidden = true;
-        accountLink.hidden = false;
-      }
-
-      loginButton?.addEventListener("click", async () => {
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "github",
-          options: {
-            redirectTo: getCallbackUrl(),
-          },
-        });
-
-        if (error) {
-          console.error(
-            "No fue posible iniciar sesión con GitHub:",
-            error.message,
-          );
-        }
-      });
-
-      supabase.auth.onAuthStateChange((event) => {
-        void renderSession();
-
-        if (event === "SIGNED_IN") {
-          void syncProgressWithCloud();
-        }
-      });
-
-      void renderSession();
-      void syncProgressWithCloud();
-    });
+  initializeGitHubAuth();
 </script>
