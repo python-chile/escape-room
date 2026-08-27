@@ -4,6 +4,8 @@ station: "Estación espacial"
 order: 2
 ---
 
+import { withBase } from "@/lib/paths";
+
 import StationCallout from "@/components/station/StationCallout.astro";
 import StationDisclosure from "@/components/station/StationDisclosure.astro";
 import PythonEditor from "@/components/station/PythonEditor.astro";
@@ -14,7 +16,7 @@ La terminal del sistema de oxígeno comienza a parpadear en rojo. Se detectó un
 
 <figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
   <img
-    src={`${import.meta.env.BASE_URL}stations/space-station/sala-01.png`}
+    src={withBase("/stations/space-station/sala-01.png")}
     alt="Terminal de emergencia de la sala B9-2"
     width="650"
     height="366"

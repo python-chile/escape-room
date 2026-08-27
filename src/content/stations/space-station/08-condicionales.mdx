@@ -4,6 +4,8 @@ station: "Estación espacial"
 order: 9
 ---
 
+import { withBase } from "@/lib/paths";
+
 import StationCallout from "@/components/station/StationCallout.astro";
 import StationDisclosure from "@/components/station/StationDisclosure.astro";
 import PythonEditor from "@/components/station/PythonEditor.astro";
@@ -16,7 +18,7 @@ Antes de enviarlos, activa el sistema de seguridad para que solo entre personal 
 
 <figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
   <img
-    src={`${import.meta.env.BASE_URL}stations/space-station/sala-08.png`}
+    src={withBase("/stations/space-station/sala-08.png")}
     alt="Protocolo de seguridad de la estación espacial"
     width="650"
     height="366"

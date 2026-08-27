@@ -4,6 +4,8 @@ station: "Estación espacial"
 order: 16
 ---
 
+import { withBase } from "@/lib/paths";
+
 import StationCallout from "@/components/station/StationCallout.astro";
 import StationDisclosure from "@/components/station/StationDisclosure.astro";
 import PythonEditor from "@/components/station/PythonEditor.astro";
@@ -16,7 +18,7 @@ Para asegurar el camino de regreso, identifica todas las combinaciones `(x, y)` 
 
 <figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
   <img
-    src={`${import.meta.env.BASE_URL}stations/space-station/sala-15.png`}
+    src={withBase("/stations/space-station/sala-15.png")}
     alt="Coordenadas espaciales de la estación"
     width="650"
     height="366"

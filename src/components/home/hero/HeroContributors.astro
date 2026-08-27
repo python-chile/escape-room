@@ -34,6 +34,12 @@ const fallbackContributors: Contributor[] = [
   },
 ];
 
+const fallbackNames = new Set(
+  fallbackContributors.map((contributor) => contributor.name.toLowerCase()),
+);
+
+const excludedContributors = new Set(["astrobot"]);
+
 let contributors = fallbackContributors;
 let totalContributors = fallbackContributors.length;
 
@@ -50,21 +56,33 @@ try {
   if (response.ok) {
     const githubContributors = (await response.json()) as GitHubContributor[];
 
-    const people = githubContributors
-      .filter((contributor) => contributor.type === "User")
+    const additionalContributors = githubContributors
+      .filter((contributor) => {
+        const login = contributor.login.toLowerCase();
+
+        return (
+          contributor.type === "User" &&
+          !fallbackNames.has(login) &&
+          !excludedContributors.has(login) &&
+          !login.endsWith("[bot]")
+        );
+      })
       .map((contributor) => ({
         name: contributor.login,
         profile: contributor.html_url,
         avatar: contributor.avatar_url,
       }));
 
-    if (people.length > 0) {
-      contributors = people.slice(0, 5);
-      totalContributors = people.length;
-    }
+    const allContributors = [
+      ...fallbackContributors,
+      ...additionalContributors,
+    ];
+
+    contributors = allContributors.slice(0, 5);
+    totalContributors = allContributors.length;
   }
 } catch {
-  // GitHub no respondió: se usa el contribuidor de respaldo.
+  // GitHub no respondió: se muestran los contribuidores de respaldo.
 }
 
 const remainingContributors = Math.max(

@@ -4,6 +4,8 @@ station: "Estación espacial"
 order: 11
 ---
 
+import { withBase } from "@/lib/paths";
+
 import StationCallout from "@/components/station/StationCallout.astro";
 import StationDisclosure from "@/components/station/StationDisclosure.astro";
 import PythonEditor from "@/components/station/PythonEditor.astro";
@@ -19,7 +21,7 @@ Debes corregir las palabras detectadas:
 
 <figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
   <img
-    src={`${import.meta.env.BASE_URL}stations/space-station/sala-10.png`}
+    src={withBase("/stations/space-station/sala-10.png")}
     alt="Sistema de análisis de objetos de la estación"
     width="650"
     height="366"
