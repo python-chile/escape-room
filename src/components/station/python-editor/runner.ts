@@ -1,15 +1,9 @@
 import { completeRoom } from "@/lib/progress";
 
 import { celebrate } from "./celebrate";
-import {
-  getExecutionTime,
-  MAX_LOADING_TIME,
-} from "./constants";
+import { getExecutionTime, MAX_LOADING_TIME } from "./constants";
 import type { PythonEditorElements } from "./dom";
-import type {
-  RunnerDataset,
-  RunnerMessage,
-} from "./protocol";
+import type { RunnerDataset, RunnerMessage } from "./protocol";
 import type { Challenge } from "./types";
 import type { PythonEditorUi } from "./ui";
 import { withBase } from "@/lib/paths";
@@ -49,14 +43,10 @@ export function createPythonRunner({
     clearRunTimeout();
     isReady = false;
     elements.runButton.disabled = true;
-    elements.runner.src =
-      `${withBase("/python-runner.html")}?instance=${Date.now()}`;
+    elements.runner.src = `${withBase("/python-runner.html")}?instance=${Date.now()}`;
   }
 
-  function finishRun(
-    result: string,
-    status: "success" | "error",
-  ) {
+  function finishRun(result: string, status: "success" | "error") {
     clearRunTimeout();
     ui.showResult(result, status);
   }
@@ -97,10 +87,7 @@ export function createPythonRunner({
       return;
     }
 
-    ui.showFeedback(
-      message.validation.feedback,
-      message.validation.passed,
-    );
+    ui.showFeedback(message.validation.feedback, message.validation.passed);
 
     if (message.validation.passed) {
       completeRoom();

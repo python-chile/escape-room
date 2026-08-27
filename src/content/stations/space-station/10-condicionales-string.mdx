@@ -19,7 +19,7 @@ Debes corregir las palabras detectadas:
 - Si `palabra` contiene `"meteorito"`, debe quedar en minúsculas.
 - Si `palabra` contiene `"asteroide"`, debe quedar en mayúsculas.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-10.png")}
     alt="Sistema de análisis de objetos de la estación"
@@ -63,9 +63,10 @@ Completa la función `transformar_palabras()`.
 <StationDisclosure title="Pista">
   Primero revisa `"asteroide"` y retorna `palabra.upper()`.
 
-  Luego revisa `"meteorito"` y retorna `palabra.lower()`.
+Luego revisa `"meteorito"` y retorna `palabra.lower()`.
 
-  Si no contiene ninguna de las dos, retorna la palabra sin cambios.
+Si no contiene ninguna de las dos, retorna la palabra sin cambios.
+
 </StationDisclosure>
 
 <PythonEditor
@@ -75,20 +76,19 @@ Completa la función `transformar_palabras()`.
 # "meteorito arlong"
 # "dronino meteorito"
 
-def transformar_palabras(palabra):
-    # Escribe tu solución aquí
-    return palabra`}
+def transformar_palabras(palabra): # Escribe tu solución aquí
+return palabra`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = (
-    transformar_palabras("asteroide esciLa") == "ASTEROIDE ESCILA"
-    and transformar_palabras("sofrosina asteroide") == "SOFROSINA ASTEROIDE"
-    and transformar_palabras("aarhus meteorito") == "aarhus meteorito"
-    and transformar_palabras("andura meteorito") == "andura meteorito"
+    validator: `\_\_pyschool_validated = (
+transformar_palabras("asteroide esciLa") == "ASTEROIDE ESCILA"
+and transformar_palabras("sofrosina asteroide") == "SOFROSINA ASTEROIDE"
+and transformar_palabras("aarhus meteorito") == "aarhus meteorito"
+and transformar_palabras("andura meteorito") == "andura meteorito"
 )`,
-    successMessage: "¡Análisis reparado! El sistema vuelve a reconocer los objetos en órbita.",
-    errorMessage: "La función no transforma correctamente todas las palabras. Revisa upper(), lower() e in.",
-    successHref: "/estaciones/01-estacion-espacial/11-concatenacion",
-    successLabel: "Ir a la habitación 11",
-  }}
+successMessage: "¡Análisis reparado! El sistema vuelve a reconocer los objetos en órbita.",
+errorMessage: "La función no transforma correctamente todas las palabras. Revisa upper(), lower() e in.",
+successHref: "/estaciones/01-estacion-espacial/11-concatenacion",
+successLabel: "Ir a la habitación 11",
+}}
 />

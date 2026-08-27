@@ -7,7 +7,10 @@ import { createPythonEditorUi } from "./ui";
 function moveHintIntoEditor(editor: HTMLElement, hintSlot: HTMLElement) {
   const hint = editor.previousElementSibling;
 
-  if (hint instanceof HTMLDetailsElement && hint.matches("[data-station-hint]")) {
+  if (
+    hint instanceof HTMLDetailsElement &&
+    hint.matches("[data-station-hint]")
+  ) {
     hintSlot.append(hint);
   }
 }

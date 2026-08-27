@@ -16,7 +16,7 @@ El comando central solicita un reporte sobre las misiones, pero solo puede recib
 
 Debes enviar todas las palabras unidas y separadas por un espacio.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-11.png")}
     alt="Comando central de la estación espacial"
@@ -56,15 +56,16 @@ Crea una variable con un espacio y úsala para unir la lista `mensaje`.
 <StationDisclosure title="Pista">
   Primero crea el separador:
 
-  ```python
-  espacio = " "
-  ```
+```python
+espacio = " "
+```
 
-  Luego une las palabras:
+Luego une las palabras:
 
-  ```python
-  respuesta = espacio.join(mensaje)
-  ```
+```python
+respuesta = espacio.join(mensaje)
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -79,10 +80,11 @@ Crea una variable con un espacio y úsala para unir la lista `mensaje`.
 ]
 
 # Escribe tu solución aquí
+
 respuesta = None
 
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: "Misión PySchool 2025 progreso a mitad con pequeñas dificultades pronto nuevo reporte",

@@ -46,39 +46,39 @@ function getItemMarker(label: string) {
   <header class="relative pb-7">
     <span
       aria-hidden="true"
-      class="absolute right-2 top-2 font-sketch text-8xl leading-none text-brand/10"
+      class="font-sketch text-brand/10 absolute top-2 right-2 text-8xl leading-none"
     >
       ✦
     </span>
 
     <span
-      class="relative inline-block -rotate-2 bg-accent px-3 py-1.5 font-mono text-xs font-bold tracking-widest text-ink shadow-[2px_2px_0_0_#101d27]"
+      class="bg-accent text-ink relative inline-block -rotate-2 px-3 py-1.5 font-mono text-xs font-bold tracking-widest shadow-[2px_2px_0_0_#101d27]"
     >
       {navigation.code}
     </span>
 
     <h2
-      class="relative mt-5 max-w-52 font-sketch text-4xl font-bold leading-[0.85] text-ink"
+      class="font-sketch text-ink relative mt-5 max-w-52 text-4xl leading-[0.85] font-bold"
     >
       {navigation.title}
     </h2>
 
     <div class="relative mt-6">
       <div class="flex items-center justify-between gap-4">
-        <p class="font-mono text-xs font-semibold text-muted">progreso local</p>
+        <p class="text-muted font-mono text-xs font-semibold">progreso local</p>
 
-        <p class="font-mono text-xs font-bold text-ink">
+        <p class="text-ink font-mono text-xs font-bold">
           <span data-station-completed-count>0</span> / {totalRooms}
         </p>
       </div>
 
       <div
-        class="mt-2 h-1.5 overflow-hidden rounded-full bg-ink/10"
+        class="bg-ink/10 mt-2 h-1.5 overflow-hidden rounded-full"
         aria-label={`Progreso: 0 de ${totalRooms} desafíos completados`}
         data-station-progress
       >
         <div
-          class="h-full rounded-full bg-brand transition-all duration-500"
+          class="bg-brand h-full rounded-full transition-all duration-500"
           style="width: 0%"
           data-station-progress-bar
         >
@@ -88,10 +88,10 @@ function getItemMarker(label: string) {
   </header>
 
   <div
-    class="station-route relative mt-8 bg-paper/70 lg:-mx-6 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:border-t lg:border-ink/10 lg:px-6 lg:pb-10 lg:pt-6"
+    class="station-route bg-paper/70 lg:border-ink/10 relative mt-8 lg:-mx-6 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:border-t lg:px-6 lg:pt-6 lg:pb-10"
     data-station-route
   >
-    <p class="px-1 font-mono text-xs font-bold tracking-widest text-muted">
+    <p class="text-muted px-1 font-mono text-xs font-bold tracking-widest">
       RECORRIDO
     </p>
 
@@ -110,7 +110,7 @@ function getItemMarker(label: string) {
                 <span
                   aria-hidden="true"
                   class:list={[
-                    "absolute left-4 top-9 h-[calc(100%-0.5rem)] border-l border-dashed",
+                    "absolute top-9 left-4 h-[calc(100%-0.5rem)] border-l border-dashed",
                     index < currentIndex ? "border-brand/35" : "border-ink/15",
                   ]}
                 />
@@ -123,7 +123,7 @@ function getItemMarker(label: string) {
                 data-station-path={item.href}
                 data-station-room={isRoom ? "true" : undefined}
                 class:list={[
-                  "station-link group relative mb-1 flex min-h-10 items-center px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+                  "station-link group focus-visible:outline-brand relative mb-1 flex min-h-10 items-center px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
                   isCurrent ? "text-brand" : "text-muted hover:text-ink",
                 ]}
               >
@@ -131,7 +131,7 @@ function getItemMarker(label: string) {
                   aria-hidden="true"
                   data-station-marker
                   class:list={[
-                    "absolute -left-11 grid size-9 place-items-center font-mono text-sm font-bold text-muted transition-colors",
+                    "text-muted absolute -left-11 grid size-9 place-items-center font-mono text-sm font-bold transition-colors",
                     isFinal ? "text-brand" : "group-hover:text-brand",
                   ]}
                 >
@@ -142,7 +142,7 @@ function getItemMarker(label: string) {
                   class:list={[
                     "relative leading-5",
                     isCurrent &&
-                      "after:absolute after:-bottom-1 after:left-0 after:h-1 after:w-full after:-rotate-1 after:bg-accent after:content-['']",
+                      "after:bg-accent after:absolute after:-bottom-1 after:left-0 after:h-1 after:w-full after:-rotate-1 after:content-['']",
                   ]}
                 >
                   {item.label}
@@ -151,7 +151,7 @@ function getItemMarker(label: string) {
                 <span
                   hidden
                   aria-label="Habitación completada"
-                  class="ml-2 font-mono text-xs font-bold text-brand"
+                  class="text-brand ml-2 font-mono text-xs font-bold"
                   data-station-complete
                 >
                   ✓

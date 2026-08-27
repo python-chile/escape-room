@@ -117,7 +117,9 @@ export async function syncProgressWithCloud() {
   const remoteRooms = new Set(data.map((room) => normalizePath(room.room_id)));
   const mergedRooms = new Set([...localRooms, ...remoteRooms]);
 
-  const pendingRooms = [...localRooms].filter((roomId) => !remoteRooms.has(roomId));
+  const pendingRooms = [...localRooms].filter(
+    (roomId) => !remoteRooms.has(roomId),
+  );
 
   if (pendingRooms.length > 0) {
     const { error: syncError } = await supabase.from("room_progress").upsert(

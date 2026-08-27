@@ -2,6 +2,6 @@ allowBuilds:
   esbuild: true
   sharp: true
 minimumReleaseAgeExclude:
-  - '@astrojs/markdown-satteri@0.3.8'
+  - "@astrojs/markdown-satteri@0.3.8"
   - astro@7.2.6
-  - '@astrojs/mdx@7.0.8'
+  - "@astrojs/mdx@7.0.8"

@@ -16,7 +16,7 @@ El sistema que monitorea las salas principales está fallando. Algunas se enfrí
 
 Debes arreglar el monitoreo. El sistema recibe temperaturas en Celsius, pero clasifica sus niveles usando Fahrenheit.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-16.png")}
     alt="Sistema de monitoreo de temperatura"
@@ -27,7 +27,8 @@ Debes arreglar el monitoreo. El sistema recibe temperaturas en Celsius, pero cla
 </figure>
 
 <StationCallout title="🌡️ Niveles de temperatura">
-  Crea una lista con el nivel de cada temperatura, manteniendo el mismo orden de la lista original.
+  Crea una lista con el nivel de cada temperatura, manteniendo el mismo orden de
+  la lista original.
 </StationCallout>
 
 La conversión es:
@@ -50,43 +51,43 @@ Corrige `monitoreo_temperatura()` para devolver una lista de niveles.
 <StationDisclosure title="Pista">
   No uses `return` dentro del bucle, porque terminaría la función después de la primera temperatura.
 
-  Primero crea una lista vacía:
+Primero crea una lista vacía:
 
-  ```python
-  niveles = []
-  ```
+```python
+niveles = []
+```
 
-  Luego agrega cada nivel con:
+Luego agrega cada nivel con:
 
-  ```python
-  niveles.append("bajo")
-  ```
+```python
+niveles.append("bajo")
+```
 
-  Retorna la lista al final de la función.
+Retorna la lista al final de la función.
+
 </StationDisclosure>
 
 <PythonEditor
   starterCode={`temperaturas = [-2, 0, 25, -1, 16]
 
-def monitoreo_temperatura(temperaturas):
-    # Escribe tu solución aquí
-    return []
+def monitoreo_temperatura(temperaturas): # Escribe tu solución aquí
+return []
 
 respuesta = monitoreo_temperatura(temperaturas)
 
 print(respuesta)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = respuesta == [
-    "muy bajo",
-    "bajo",
-    "alto",
-    "bajo",
-    "medio",
+    validator: `\_\_pyschool_validated = respuesta == [
+"muy bajo",
+"bajo",
+"alto",
+"bajo",
+"medio",
 ]`,
-    successMessage: "¡Sistema de temperatura reparado! Todas las salas vuelven a estar bajo control.",
-    errorMessage: "Los niveles no coinciden. Revisa la conversión a Fahrenheit y los rangos.",
-    successHref: "/estaciones/01-estacion-espacial/17-operacion-matematica-funciones",
-    successLabel: "Ir a la habitación 17",
-  }}
+successMessage: "¡Sistema de temperatura reparado! Todas las salas vuelven a estar bajo control.",
+errorMessage: "Los niveles no coinciden. Revisa la conversión a Fahrenheit y los rangos.",
+successHref: "/estaciones/01-estacion-espacial/17-operacion-matematica-funciones",
+successLabel: "Ir a la habitación 17",
+}}
 />

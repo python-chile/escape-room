@@ -16,7 +16,7 @@ Desde el módulo de control detectan varios objetos orbitando cerca de la estaci
 
 Debes analizar sus coordenadas para prevenir una colisión.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-07.png")}
     alt="Objetos orbitando cerca de la estación espacial"
@@ -27,7 +27,8 @@ Debes analizar sus coordenadas para prevenir una colisión.
 </figure>
 
 <StationCallout title="⚠️ Alerta de colisión">
-  Obtén tres datos: el objeto más cercano, el valor central y el objeto más lejano.
+  Obtén tres datos: el objeto más cercano, el valor central y el objeto más
+  lejano.
 </StationCallout>
 
 La lista contiene estas coordenadas:
@@ -81,27 +82,29 @@ Ordena `coordenadas` y crea una lista llamada `respuesta` con este formato:
 <StationDisclosure title="Pista">
   Puedes guardar la lista ordenada en una nueva variable:
 
-  ```python
-  lista_ordenada = coordenadas.copy()
-  lista_ordenada.sort()
-  ```
+```python
+lista_ordenada = coordenadas.copy()
+lista_ordenada.sort()
+```
 
-  Luego obtén el primer, los dos centrales y el último valor.
+Luego obtén el primer, los dos centrales y el último valor.
+
 </StationDisclosure>
 
 <PythonEditor
   starterCode={`coordenadas = [540, 320, 890, 150, 430, 270]
 
 # Escribe tu solución aquí
+
 respuesta = None
 
 print(respuesta)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = respuesta == [150, 375, 890]`,
-    successMessage: "¡Colisión evitada! Las coordenadas fueron analizadas correctamente.",
-    errorMessage: "La respuesta debe contener el valor menor, el valor central y el valor mayor.",
-    successHref: "/estaciones/01-estacion-espacial/08-condicionales",
-    successLabel: "Ir a la habitación 08",
-  }}
+    validator: `\_\_pyschool_validated = respuesta == [150, 375, 890]`,
+successMessage: "¡Colisión evitada! Las coordenadas fueron analizadas correctamente.",
+errorMessage: "La respuesta debe contener el valor menor, el valor central y el valor mayor.",
+successHref: "/estaciones/01-estacion-espacial/08-condicionales",
+successLabel: "Ir a la habitación 08",
+}}
 />

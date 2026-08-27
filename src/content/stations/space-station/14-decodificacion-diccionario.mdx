@@ -16,7 +16,7 @@ En el módulo de comunicaciones encuentras un panel que emite puntos y rayas: un
 
 Junto al panel hay un diccionario que permite traducir cada símbolo.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-14.png")}
     alt="Panel de comunicaciones con mensaje cifrado"
@@ -27,7 +27,8 @@ Junto al panel hay un diccionario que permite traducir cada símbolo.
 </figure>
 
 <StationCallout title="📖 Mensaje secreto">
-  Recorre la lista `mensaje`, busca cada símbolo en `diccionario` y une los caracteres obtenidos.
+  Recorre la lista `mensaje`, busca cada símbolo en `diccionario` y une los
+  caracteres obtenidos.
 </StationCallout>
 
 ## Tu misión
@@ -40,14 +41,15 @@ Junto al panel hay un diccionario que permite traducir cada símbolo.
 <StationDisclosure title="Pista">
   La estructura es:
 
-  ```python
-  caracteres = []
+```python
+caracteres = []
 
-  for simbolo in mensaje:
-      caracteres.append(diccionario[simbolo])
+for simbolo in mensaje:
+    caracteres.append(diccionario[simbolo])
 
-  respuesta = "".join(caracteres)
-  ```
+respuesta = "".join(caracteres)
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -62,21 +64,22 @@ Junto al panel hay un diccionario que permite traducir cada símbolo.
 ]
 
 diccionario = {
-    "._": "a", "_...": "b", "_._.": "c", "_..": "d", ".": "e",
-    ".._.": "f", "__.": "g", "....": "h", "..": "i", ".___": "j",
-    "_._": "k", "._..": "l", "__": "m", "_.": "n", "___": "o",
-    ".__.": "p", "__._": "q", "._.": "r", "...": "s", "_": "t",
-    ".._": "u", "..._": "v", ".__": "w", "_.._": "x", "_.__": "y",
-    "__..": "z", "__._.": " ", "_____": "0", ".____": "1",
-    "..___": "2", "...__": "3", "...._": "4", ".....": "5",
-    "_....": "6", "__...": "7", "___..": "8", "____.": "9",
+"._": "a", "_...": "b", "_._.": "c", "_..": "d", ".": "e",
+".._.": "f", "**.": "g", "....": "h", "..": "i", ".\_**": "j",
+"_._": "k", "._..": "l", "\_\_": "m", "_.": "n", "**\_": "o",
+".**.": "p", "**._": "q", "._.": "r", "...": "s", "_": "t",
+".._": "u", "...\_": "v", ".**": "w", "_.._": "x", "_.**": "y",
+"**..": "z", "\_\_._.": " ", "**\_**": "0", ".\_**_": "1",
+".._**": "2", "...**": "3", "...._": "4", ".....": "5",
+"_....": "6", "**...": "7", "**\_..": "8", "\_\_**.": "9",
 }
 
 # Escribe tu solución aquí
+
 respuesta = None
 
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: "el codigo secreto que se debe ocupar en el ultimo desafio es 24",

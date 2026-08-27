@@ -15,7 +15,9 @@ El sistema se reinició parcialmente, pero las puertas siguen bloqueadas.
 En la pantalla aparece un mensaje del Profesor Oak:
 
 <StationCallout title="Mensaje del Profesor Oak">
-  Un verdadero Maestro Pokémon debe conocer bien sus datos antes de analizarlos. Solo podrás avanzar si exploras la estructura y características de los Pokémon.
+  Un verdadero Maestro Pokémon debe conocer bien sus datos antes de analizarlos.
+  Solo podrás avanzar si exploras la estructura y características de los
+  Pokémon.
 </StationCallout>
 
 ## Explorar datos con pandas
@@ -33,12 +35,13 @@ df.describe()
 <StationDisclosure title="Importante">
   `df.info()` muestra la información directamente en la consola y devuelve `None`. Por eso se ejecuta solo.
 
-  En cambio, `df.describe()` devuelve una tabla, que puedes guardar en una variable:
+En cambio, `df.describe()` devuelve una tabla, que puedes guardar en una variable:
 
-  ```python
-  desc = df.describe()
-  print(desc)
-  ```
+```python
+desc = df.describe()
+print(desc)
+```
+
 </StationDisclosure>
 
 ## Desafío de la sala
@@ -55,7 +58,9 @@ url = "/pokemon.csv"
 df = pd.read_csv(url)
 
 # Explora la estructura del dataset
+
 print("Mostrando información general del dataset:")
+
 # Escribe aquí df.info()
 
 print("\\nMostrando descripción estadística del dataset:")
@@ -68,16 +73,16 @@ print(desc)`}
       source: "/stations/lab-oak/pokemon.csv",
       fileName: "pokemon.csv",
     },
-    validator: `__pyschool_validated = (
-    url == "/pokemon.csv"
-    and df.shape[0] > 0
-    and desc is not None
-    and "HP" in desc.columns
-    and "Attack" in desc.columns
+    validator: `\_\_pyschool_validated = (
+url == "/pokemon.csv"
+and df.shape[0] > 0
+and desc is not None
+and "HP" in desc.columns
+and "Attack" in desc.columns
 )`,
-    successMessage: "¡Exploración completada! Ya conoces la estructura básica de los datos Pokémon.",
-    errorMessage: "Aún faltan las estadísticas. Ejecuta df.info() y guarda df.describe() en desc.",
-    successHref: "/estaciones/02-laboratorio-oak/02-tipos-de-pokemon",
-    successLabel: "Ir a la habitación 02",
-  }}
+successMessage: "¡Exploración completada! Ya conoces la estructura básica de los datos Pokémon.",
+errorMessage: "Aún faltan las estadísticas. Ejecuta df.info() y guarda df.describe() en desc.",
+successHref: "/estaciones/02-laboratorio-oak/02-tipos-de-pokemon",
+successLabel: "Ir a la habitación 02",
+}}
 />

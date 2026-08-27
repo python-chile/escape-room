@@ -20,7 +20,7 @@ Debes calcular el promedio de estas mediciones para estabilizar el clima interno
 19.5, 22.3, 12, 10.01, 32, 29.99, 20.89
 ```
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-04.png")}
     alt="Sistema de climatización de la estación espacial"
@@ -31,7 +31,8 @@ Debes calcular el promedio de estas mediciones para estabilizar el clima interno
 </figure>
 
 <StationCallout title="⚙️ Sistema de climatización">
-  Guarda las mediciones en una lista y usa `statistics.mean()` para obtener el promedio.
+  Guarda las mediciones en una lista y usa `statistics.mean()` para obtener el
+  promedio.
 </StationCallout>
 
 ## Listas en Python
@@ -58,9 +59,10 @@ Agrega todas las temperaturas a la lista `numeros`. No cambies el resto del cód
 <StationDisclosure title="Pista">
   Escribe los números así:
 
-  ```python
-  numeros = [19.5, 22.3, 12, 10.01, 32, 29.99, 20.89]
-  ```
+```python
+numeros = [19.5, 22.3, 12, 10.01, 32, 29.99, 20.89]
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -71,7 +73,7 @@ numeros = []
 respuesta = statistics.mean(numeros)
 
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "number",
     variable: "respuesta",
     expected: 20.955714285714286,

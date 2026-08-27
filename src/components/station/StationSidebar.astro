@@ -9,22 +9,22 @@ interface Props {
 const { currentPath, station } = Astro.props;
 ---
 
-<aside class="hidden border-r border-ink/10 lg:block">
+<aside class="border-ink/10 hidden border-r lg:block">
   <div class="sticky top-0 h-dvh px-6 py-10">
     <StationNavigation currentPath={currentPath} station={station} />
   </div>
 </aside>
 
 <details
-  class="mb-10 border-2 border-ink bg-paper shadow-[3px_3px_0_0_#101d27] lg:hidden"
+  class="border-ink bg-paper mb-10 border-2 shadow-[3px_3px_0_0_#101d27] lg:hidden"
 >
   <summary
-    class="cursor-pointer px-4 py-3 font-mono text-xs font-bold tracking-widest text-ink"
+    class="text-ink cursor-pointer px-4 py-3 font-mono text-xs font-bold tracking-widest"
   >
     VER RECORRIDO
   </summary>
 
-  <div class="border-t-2 border-ink p-5">
+  <div class="border-ink border-t-2 p-5">
     <StationNavigation currentPath={currentPath} station={station} />
   </div>
 </details>

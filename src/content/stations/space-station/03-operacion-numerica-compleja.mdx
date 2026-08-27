@@ -20,7 +20,7 @@ Para mantener la energía funcionando, debes recalibrar la temperatura aplicando
 ((1.23 + 2.34) / (1 + (43 / 2))) + (3 * 2**1.5)
 ```
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-03.png")}
     alt="Paneles solares de la estación espacial"
@@ -31,7 +31,8 @@ Para mantener la energía funcionando, debes recalibrar la temperatura aplicando
 </figure>
 
 <StationCallout title="Radiación solar">
-  Primero asigna los valores correctos a las variables. Luego arma la fórmula respetando sus paréntesis.
+  Primero asigna los valores correctos a las variables. Luego arma la fórmula
+  respetando sus paréntesis.
 </StationCallout>
 
 ## Números decimales
@@ -55,18 +56,19 @@ Reemplaza `None` por la fórmula completa.
 <StationDisclosure title="Pista">
   Estos son los valores que debes asignar:
 
-  ```python
-  a = 1.23
-  b = 2.34
-  c = 1
-  d = 43
-  e = 2
-  f = 3
-  g = 2
-  h = 1.5
-  ```
+```python
+a = 1.23
+b = 2.34
+c = 1
+d = 43
+e = 2
+f = 3
+g = 2
+h = 1.5
+```
 
-  Usa las variables para construir la fórmula.
+Usa las variables para construir la fórmula.
+
 </StationDisclosure>
 
 <PythonEditor
@@ -82,7 +84,7 @@ h = 0
 
 respuesta = None
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "number",
     variable: "respuesta",
 expected: 8.643948040905237,    tolerance: 0.000001,

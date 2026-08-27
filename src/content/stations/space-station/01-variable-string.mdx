@@ -14,7 +14,7 @@ import PythonEditor from "@/components/station/PythonEditor.astro";
 
 La terminal del sistema de oxígeno comienza a parpadear en rojo. Se detectó una fuga en la sala **B9-2**.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-01.png")}
     alt="Terminal de emergencia de la sala B9-2"
@@ -43,9 +43,10 @@ Cambia el valor de la variable `respuesta` por `"Cerrar"` y ejecuta el código.
 <StationDisclosure title="Pista">
   Un texto puede escribirse con comillas dobles o simples.
 
-  ```python
-  respuesta = "Cerrar"
-  ```
+```python
+respuesta = "Cerrar"
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -53,7 +54,7 @@ Cambia el valor de la variable `respuesta` por `"Cerrar"` y ejecuta el código.
 respuesta = None
 
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: "Cerrar",

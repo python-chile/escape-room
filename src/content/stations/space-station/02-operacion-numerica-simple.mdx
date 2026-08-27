@@ -16,7 +16,7 @@ Mientras flotas por el pasillo de gravedad cero, llegas al laboratorio químico.
 
 La compuerta está completamente sellada. Un panel intermitente muestra un mensaje dejado por los primeros astronautas.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-02.png")}
     alt="Laboratorio químico de la estación espacial"
@@ -60,18 +60,19 @@ Asigna a cada variable el valor numérico que corresponde en la fórmula.
 <StationDisclosure title="Pista">
   Los valores correctos son:
 
-  ```python
-  a = 201
-  b = 759
-  c = 2
-  d = 3
-  ```
+```python
+a = 201
+b = 759
+c = 2
+d = 3
+```
 
-  No cambies esta fórmula:
+No cambies esta fórmula:
 
-  ```python
-  respuesta = (a + b) * c**d
-  ```
+```python
+respuesta = (a + b) * c**d
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -81,9 +82,9 @@ b = 1
 c = 1
 d = 0
 
-respuesta = (a + b) * c**d
+respuesta = (a + b) \* c\*\*d
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: 7680,

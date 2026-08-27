@@ -288,7 +288,8 @@ def monitoreo_temperatura(temperaturas):
 respuesta = monitoreo_temperatura(temperaturas)
 
 print(respuesta)`,
-    nextHref: "/estaciones/01-estacion-espacial/17-operacion-matematica-funciones",
+    nextHref:
+      "/estaciones/01-estacion-espacial/17-operacion-matematica-funciones",
   },
   {
     title: "Habitación 17: números primos",

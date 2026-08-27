@@ -10,11 +10,11 @@ const { href } = Astro.props;
 
 <a
   href={withBase(href)}
-  class="cta-btn group inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-bold text-ink! shadow-[2px_2px_0_0_#101d27] transition-all hover:-translate-y-0.5 hover:bg-accent-dark hover:text-ink! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+  class="cta-btn group bg-accent text-ink! hover:bg-accent-dark hover:text-ink! focus-visible:outline-brand inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-bold shadow-[2px_2px_0_0_#101d27] transition-all hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2"
 >
   <slot />
 
-  <span class="relative inline-block size-4 text-brand">
+  <span class="text-brand relative inline-block size-4">
     <svg
       class="absolute inset-0 transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-20"
       viewBox="0 0 24 24"

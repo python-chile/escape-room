@@ -31,7 +31,4 @@ export interface PythonChallenge extends ChallengeBase {
   validator: string;
 }
 
-export type Challenge =
-  | EqualsChallenge
-  | NumberChallenge
-  | PythonChallenge;
+export type Challenge = EqualsChallenge | NumberChallenge | PythonChallenge;

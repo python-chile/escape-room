@@ -16,7 +16,7 @@ Los tripulantes deben reparar una filtración de altas temperaturas provocada po
 
 Antes de enviarlos, activa el sistema de seguridad para que solo entre personal con el equipamiento correcto.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-08.png")}
     alt="Protocolo de seguridad de la estación espacial"
@@ -27,7 +27,8 @@ Antes de enviarlos, activa el sistema de seguridad para que solo entre personal 
 </figure>
 
 <StationCallout title="🛡️ Reglas de ingreso">
-  Un tripulante puede entrar solo si tiene credencial permitida (`True`) y un traje con resistencia `"Alta"`.
+  Un tripulante puede entrar solo si tiene credencial permitida (`True`) y un
+  traje con resistencia `"Alta"`.
 </StationCallout>
 
 Van a ingresar tres tripulantes:
@@ -61,9 +62,10 @@ Reemplaza los valores `None` por los valores correctos. No cambies el resto de l
 <StationDisclosure title="Pista">
   La primera condición revisa si la credencial permite el acceso.
 
-  La segunda revisa si el traje tiene resistencia `"Alta"`.
+La segunda revisa si el traje tiene resistencia `"Alta"`.
 
-  Ambas condiciones deben cumplirse para devolver `True`.
+Ambas condiciones deben cumplirse para devolver `True`.
+
 </StationDisclosure>
 
 <PythonEditor
@@ -80,8 +82,10 @@ Reemplaza los valores `None` por los valores correctos. No cambies el resto de l
     and autorizar_acceso(True, "Baja") is False
     and autorizar_acceso(False, "Alta") is False
 )`,
-    successMessage: "¡Protocolo activado! La tripulación puede reparar el panel solar de forma segura.",
-    errorMessage: "El sistema todavía autoriza a una persona incorrecta. Revisa las dos condiciones.",
+    successMessage:
+      "¡Protocolo activado! La tripulación puede reparar el panel solar de forma segura.",
+    errorMessage:
+      "El sistema todavía autoriza a una persona incorrecta. Revisa las dos condiciones.",
     successHref: "/estaciones/01-estacion-espacial/09-bucle-for-condicionales",
     successLabel: "Ir a la habitación 09",
   }}

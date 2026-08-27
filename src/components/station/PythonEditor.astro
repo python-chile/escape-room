@@ -40,16 +40,16 @@ const resolvedChallenge = challenge
       class="flex items-center justify-between gap-4 border-b border-[#dbe5f1] bg-[#f8fbff] px-5 py-3.5"
     >
       <div class="flex items-center gap-3">
-        <span class="font-mono text-base font-bold text-brand">&lt;/&gt;</span>
-        <span class="font-mono text-sm font-bold text-ink">main.py</span>
+        <span class="text-brand font-mono text-base font-bold">&lt;/&gt;</span>
+        <span class="text-ink font-mono text-sm font-bold">main.py</span>
       </div>
 
       <span
-        class="flex items-center gap-2 font-mono text-xs font-semibold text-muted"
+        class="text-muted flex items-center gap-2 font-mono text-xs font-semibold"
         aria-live="polite"
         data-python-status
       >
-        <span class="size-1.5 rounded-full bg-brand"></span>
+        <span class="bg-brand size-1.5 rounded-full"></span>
         Preparando entorno…
       </span>
     </div>
@@ -77,18 +77,18 @@ const resolvedChallenge = challenge
         <div
           class="flex items-center gap-2 border-b border-[#dbe5f1] bg-white px-5 py-3.5"
         >
-          <span class="font-mono text-sm font-bold text-brand">&gt;_</span>
-          <span class="font-mono text-xs font-bold tracking-widest text-ink">
+          <span class="text-brand font-mono text-sm font-bold">&gt;_</span>
+          <span class="text-ink font-mono text-xs font-bold tracking-widest">
             SALIDA
           </span>
         </div>
 
-        <div class="px-5 py-3 font-mono text-xs text-muted">
+        <div class="text-muted px-5 py-3 font-mono text-xs">
           $ python main.py
         </div>
 
         <pre
-          class="min-h-0 flex-1 overflow-auto border-t border-[#dbe5f1] bg-[#f8fbff] p-5 font-mono text-sm leading-7 text-ink"
+          class="text-ink min-h-0 flex-1 overflow-auto border-t border-[#dbe5f1] bg-[#f8fbff] p-5 font-mono text-sm leading-7"
           aria-live="polite"
           data-python-output>
         </pre>
@@ -96,12 +96,12 @@ const resolvedChallenge = challenge
     </div>
 
     <div
-      class="flex flex-wrap items-center gap-2 border-t border-[#dbe5f1] bg-paper px-4 py-4 sm:px-5"
+      class="bg-paper flex flex-wrap items-center gap-2 border-t border-[#dbe5f1] px-4 py-4 sm:px-5"
     >
       <button
         type="button"
         disabled
-        class="inline-flex items-center gap-3 bg-accent px-5 py-3 font-bold text-ink shadow-[2px_2px_0_0_#101d27] transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50"
+        class="bg-accent text-ink hover:bg-accent-dark inline-flex items-center gap-3 px-5 py-3 font-bold shadow-[2px_2px_0_0_#101d27] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         data-python-run
       >
         <span aria-hidden="true">▶</span>
@@ -113,7 +113,7 @@ const resolvedChallenge = challenge
 
         <button
           type="button"
-          class="grid size-10 place-items-center text-muted transition-colors hover:bg-ink/5 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          class="text-muted hover:bg-ink/5 hover:text-ink focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
           aria-label="Restablecer código"
           title="Restablecer código"
           data-python-reset
@@ -137,7 +137,7 @@ const resolvedChallenge = challenge
 
       <a
         hidden
-        class="ml-auto px-2 py-2 font-bold text-brand underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-brand-dark"
+        class="text-brand decoration-accent hover:text-brand-dark ml-auto px-2 py-2 font-bold underline decoration-2 underline-offset-4 transition-colors"
         data-python-next></a>
     </div>
   </div>
@@ -152,8 +152,8 @@ const resolvedChallenge = challenge
 
   <div hidden class="mt-8" data-python-chart-container>
     <div class="flex items-center gap-2">
-      <span class="font-mono text-sm font-bold text-brand">✦</span>
-      <p class="font-mono text-xs font-bold tracking-widest text-muted">
+      <span class="text-brand font-mono text-sm font-bold">✦</span>
+      <p class="text-muted font-mono text-xs font-bold tracking-widest">
         GRÁFICO GENERADO
       </p>
     </div>

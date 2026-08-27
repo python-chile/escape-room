@@ -23,21 +23,15 @@ function renderProgress(root: HTMLElement) {
   root
     .querySelectorAll<HTMLElement>("[data-account-station]")
     .forEach((station) => {
-      const rooms = JSON.parse(
-        station.dataset.roomPaths ?? "[]",
-      ) as string[];
+      const rooms = JSON.parse(station.dataset.roomPaths ?? "[]") as string[];
 
-      const completed = rooms.filter((room) =>
-        completedRooms.has(room),
-      ).length;
+      const completed = rooms.filter((room) => completedRooms.has(room)).length;
 
       const count = station.querySelector<HTMLElement>(
         "[data-station-completed]",
       );
 
-      const bar = station.querySelector<HTMLElement>(
-        "[data-station-progress]",
-      );
+      const bar = station.querySelector<HTMLElement>("[data-station-progress]");
 
       if (count) {
         count.textContent = String(completed);

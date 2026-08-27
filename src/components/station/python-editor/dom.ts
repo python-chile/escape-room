@@ -43,10 +43,7 @@ export function getPythonEditorElements(
     status: requireElement(editor, "[data-python-status]"),
     feedback: requireElement(editor, "[data-python-feedback]"),
     nextLink: requireElement(editor, "[data-python-next]"),
-    chartContainer: requireElement(
-      editor,
-      "[data-python-chart-container]",
-    ),
+    chartContainer: requireElement(editor, "[data-python-chart-container]"),
     chart: requireElement(editor, "[data-python-chart]"),
     runner: requireElement(editor, "[data-python-runner]"),
   };

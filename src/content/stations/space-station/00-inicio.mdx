@@ -14,7 +14,7 @@ import PythonEditor from "@/components/station/PythonEditor.astro";
 
 Estás a punto de iniciar tu viaje en la programación. La estación espacial necesita de tu ayuda para volver a funcionar.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-00.png")}
     alt="Interior de la estación espacial OASIS-9"
@@ -31,13 +31,15 @@ El comandante activó el protocolo de emergencia **PYSCHOOL-25**. Cada habitaci�
 Solo así podrán restaurar los sistemas y regresar a casa.
 
 <StationCallout title="Bienvenido a PySchool">
-  Cada habitación incluye un desafío, explicaciones y pistas. Puedes intentarlo todas las veces que necesites.
+  Cada habitación incluye un desafío, explicaciones y pistas. Puedes intentarlo
+  todas las veces que necesites.
 </StationCallout>
 
 <StationDisclosure title="Pistas y explicaciones">
   En este tipo de bloques encontrarás contexto, pistas y enlaces para ayudarte a resolver cada misión.
 
-  La primera habitación es muy sencilla: tendrás que ejecutar código Python y descubrir el código de acceso.
+La primera habitación es muy sencilla: tendrás que ejecutar código Python y descubrir el código de acceso.
+
 </StationDisclosure>
 
 ## Primera misión
@@ -48,7 +50,7 @@ El sistema solicita un código de acceso. La respuesta correcta es:
   starterCode={`codigo_acceso = "PySchool2025"
 
 print(codigo_acceso)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "codigo_acceso",
     expected: "PySchool2025",

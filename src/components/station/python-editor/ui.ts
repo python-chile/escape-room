@@ -94,8 +94,7 @@ export function createPythonEditorUi(
     showExecutionTimeout(executionTime) {
       showResults();
       elements.status.textContent = "Detenido por tiempo máximo";
-      elements.output.textContent =
-        `La ejecución superó los ${executionTime / 1_000} segundos y fue detenida.`;
+      elements.output.textContent = `La ejecución superó los ${executionTime / 1_000} segundos y fue detenida.`;
     },
 
     showFeedback(message, passed) {

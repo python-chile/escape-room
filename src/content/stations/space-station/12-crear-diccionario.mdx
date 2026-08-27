@@ -16,7 +16,7 @@ La estación comienza a presentar errores en el suministro de energía.
 
 La terminal principal necesita saber qué módulos están operativos y cuánta energía entrega cada uno.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-12.png")}
     alt="Sistema de energía de la estación espacial"
@@ -27,7 +27,8 @@ La terminal principal necesita saber qué módulos están operativos y cuánta e
 </figure>
 
 <StationCallout title="🔋 Módulos operativos">
-  Registra los módulos `PS004`, `PS014` y `PS104` junto a sus niveles de energía.
+  Registra los módulos `PS004`, `PS014` y `PS104` junto a sus niveles de
+  energía.
 </StationCallout>
 
 Los datos son:
@@ -60,13 +61,14 @@ Crea el diccionario y guárdalo en la variable `respuesta`.
 <StationDisclosure title="Pista">
   Cada llave debe ser un texto entre comillas.
 
-  ```python
-  respuesta = {
-      "PS004": 80,
-      "PS014": 120,
-      "PS104": 50,
-  }
-  ```
+```python
+respuesta = {
+    "PS004": 80,
+    "PS014": 120,
+    "PS104": 50,
+}
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -77,14 +79,14 @@ respuesta = None
 print(respuesta)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = respuesta == {
-    "PS004": 80,
-    "PS014": 120,
-    "PS104": 50,
+    validator: `\_\_pyschool_validated = respuesta == {
+"PS004": 80,
+"PS014": 120,
+"PS104": 50,
 }`,
-    successMessage: "¡Sistema energético actualizado! Los módulos operativos fueron registrados.",
-    errorMessage: "El diccionario no contiene los módulos y niveles de energía correctos.",
-    successHref: "/estaciones/01-estacion-espacial/13-manejo-de-lista",
-    successLabel: "Ir a la habitación 13",
-  }}
+successMessage: "¡Sistema energético actualizado! Los módulos operativos fueron registrados.",
+errorMessage: "El diccionario no contiene los módulos y niveles de energía correctos.",
+successHref: "/estaciones/01-estacion-espacial/13-manejo-de-lista",
+successLabel: "Ir a la habitación 13",
+}}
 />

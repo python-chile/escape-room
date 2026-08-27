@@ -15,7 +15,8 @@ El sistema del laboratorio sigue bloqueado.
 En la pantalla aparece un nuevo mensaje del Profesor Oak:
 
 <StationCallout title="Mensaje del Profesor Oak">
-  Un buen Científico de Datos debe ser capaz de responder preguntas simples con datos. ¿Cuántos Pokémon de cada tipo existen?
+  Un buen Científico de Datos debe ser capaz de responder preguntas simples con
+  datos. ¿Cuántos Pokémon de cada tipo existen?
 </StationCallout>
 
 ## Contar y graficar datos
@@ -39,16 +40,17 @@ PySchool detecta el gráfico y lo muestra automáticamente debajo de la salida. 
 <StationDisclosure title="Pista">
   Primero guarda el conteo:
 
-  ```python
-  conteo = df["Type 1"].value_counts()
-  ```
+```python
+conteo = df["Type 1"].value_counts()
+```
 
-  Luego crea el gráfico y calcula el total:
+Luego crea el gráfico y calcula el total:
 
-  ```python
-  conteo.plot(kind="bar")
-  respuesta = len(conteo)
-  ```
+```python
+conteo.plot(kind="bar")
+respuesta = len(conteo)
+```
+
 </StationDisclosure>
 
 ## Desafío de la sala
@@ -66,12 +68,15 @@ url = "/pokemon.csv"
 df = pd.read_csv(url)
 
 # Contar Pokémon por tipo
+
 conteo = None
 
 # Crear gráfico de barras
+
 # Escribe aquí el gráfico
 
 # Número total de tipos de Pokémon
+
 respuesta = None
 
 print(respuesta)`}
@@ -82,14 +87,14 @@ print(respuesta)`}
       source: "/stations/lab-oak/pokemon.csv",
       fileName: "pokemon.csv",
     },
-    validator: `__pyschool_validated = (
-    len(conteo) == 18
-    and conteo.sum() == len(df)
-    and respuesta == 18
+    validator: `\_\_pyschool_validated = (
+len(conteo) == 18
+and conteo.sum() == len(df)
+and respuesta == 18
 )`,
-    successMessage: "¡Análisis completado! El gráfico revela la distribución de tipos Pokémon.",
-    errorMessage: "Revisa value_counts(), el gráfico de barras y la cantidad de tipos.",
-    successHref: "/estaciones/02-laboratorio-oak/03-estadisticas-de-combate",
-    successLabel: "Ir a la habitación 03",
-  }}
+successMessage: "¡Análisis completado! El gráfico revela la distribución de tipos Pokémon.",
+errorMessage: "Revisa value_counts(), el gráfico de barras y la cantidad de tipos.",
+successHref: "/estaciones/02-laboratorio-oak/03-estadisticas-de-combate",
+successLabel: "Ir a la habitación 03",
+}}
 />

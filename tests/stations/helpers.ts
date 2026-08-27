@@ -55,10 +55,7 @@ export function getMdxFiles(station: StationDefinition) {
     .sort();
 }
 
-export function getRoomPath(
-  station: StationDefinition,
-  fileName: string,
-) {
+export function getRoomPath(station: StationDefinition, fileName: string) {
   const roomId = fileName.replace(/\.mdx$/, "");
 
   if (roomId === "welcome") {

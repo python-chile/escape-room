@@ -16,7 +16,7 @@ El sistema de archivos del módulo de investigación está desordenado.
 
 Varios archivos comparten un sufijo, pero están mezclados. Debes agruparlos para que el equipo pueda analizarlos.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-13.png")}
     alt="Módulo de investigación de la estación espacial"
@@ -27,7 +27,8 @@ Varios archivos comparten un sufijo, pero están mezclados. Debes agruparlos par
 </figure>
 
 <StationCallout title="📁 Organizar archivos">
-  Cada llave del diccionario debe ser un sufijo. Su valor debe ser la lista de archivos que comparten ese sufijo.
+  Cada llave del diccionario debe ser un sufijo. Su valor debe ser la lista de
+  archivos que comparten ese sufijo.
 </StationCallout>
 
 ## Obtener un sufijo
@@ -62,17 +63,18 @@ Crea un diccionario vacío y recorre la lista `archivos`.
 <StationDisclosure title="Pista">
   La estructura principal es:
 
-  ```python
-  respuesta = {}
+```python
+respuesta = {}
 
-  for archivo in archivos:
-      sufijo = archivo[-4:]
+for archivo in archivos:
+    sufijo = archivo[-4:]
 
-      if sufijo not in respuesta:
-          respuesta[sufijo] = [archivo]
-      else:
-          respuesta[sufijo].append(archivo)
-  ```
+    if sufijo not in respuesta:
+        respuesta[sufijo] = [archivo]
+    else:
+        respuesta[sufijo].append(archivo)
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -89,19 +91,20 @@ Crea un diccionario vacío y recorre la lista `archivos`.
 ]
 
 # Escribe tu solución aquí
+
 respuesta = None
 
 print(respuesta)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = respuesta == {
-    "ps01": ["lab_ps01", "quimicos_ps01", "sustancias_ps01"],
-    "ec00": ["rendimiento_ec00", "paneles_ec00", "reporte_ec00"],
-    "tc12": ["pruebas_tc12", "bateria_tc12", "reparaciones_salas_tc12"],
+    validator: `\_\_pyschool_validated = respuesta == {
+"ps01": ["lab_ps01", "quimicos_ps01", "sustancias_ps01"],
+"ec00": ["rendimiento_ec00", "paneles_ec00", "reporte_ec00"],
+"tc12": ["pruebas_tc12", "bateria_tc12", "reparaciones_salas_tc12"],
 }`,
-    successMessage: "¡Archivos organizados! El módulo de investigación vuelve a estar operativo.",
-    errorMessage: "Los archivos no están agrupados correctamente por sufijo.",
-    successHref: "/estaciones/01-estacion-espacial/14-decodificacion-diccionario",
-    successLabel: "Ir a la habitación 14",
-  }}
+successMessage: "¡Archivos organizados! El módulo de investigación vuelve a estar operativo.",
+errorMessage: "Los archivos no están agrupados correctamente por sufijo.",
+successHref: "/estaciones/01-estacion-espacial/14-decodificacion-diccionario",
+successLabel: "Ir a la habitación 14",
+}}
 />

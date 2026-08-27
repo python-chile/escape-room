@@ -16,7 +16,7 @@ Durante la revisión de los sistemas exteriores se detectaron coordenadas espaci
 
 Para asegurar el camino de regreso, identifica todas las combinaciones `(x, y)` cuya suma sea exactamente `50`.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-15.png")}
     alt="Coordenadas espaciales de la estación"
@@ -27,7 +27,8 @@ Para asegurar el camino de regreso, identifica todas las combinaciones `(x, y)` 
 </figure>
 
 <StationCallout title="🧮 Ruta segura">
-  Las coordenadas posibles están entre `1` y `30`. Guarda cada combinación válida como una tupla `(x, y)`.
+  Las coordenadas posibles están entre `1` y `30`. Guarda cada combinación
+  válida como una tupla `(x, y)`.
 </StationCallout>
 
 ## Bucle `for` anidado
@@ -55,16 +56,17 @@ Busca todas las combinaciones de `x` e `y` entre `1` y `30` cuya suma sea `50`.
 <StationDisclosure title="Pista">
   Primero crea las coordenadas y una lista vacía:
 
-  ```python
-  coordenadas = range(1, 31)
-  respuesta = []
-  ```
+```python
+coordenadas = range(1, 31)
+respuesta = []
+```
 
-  Dentro de los dos bucles, usa:
+Dentro de los dos bucles, usa:
 
-  ```python
-  if x + y == 50:
-  ```
+```python
+if x + y == 50:
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -74,22 +76,22 @@ respuesta = None
 print(respuesta)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = respuesta == [
-    (20, 30),
-    (21, 29),
-    (22, 28),
-    (23, 27),
-    (24, 26),
-    (25, 25),
-    (26, 24),
-    (27, 23),
-    (28, 22),
-    (29, 21),
-    (30, 20),
+    validator: `\_\_pyschool_validated = respuesta == [
+(20, 30),
+(21, 29),
+(22, 28),
+(23, 27),
+(24, 26),
+(25, 25),
+(26, 24),
+(27, 23),
+(28, 22),
+(29, 21),
+(30, 20),
 ]`,
-    successMessage: "¡Ruta calculada! La nave evita la zona de meteoritos.",
-    errorMessage: "Faltan coordenadas o el orden no es correcto.",
-    successHref: "/estaciones/01-estacion-espacial/16-bucle-for-condicionales",
-    successLabel: "Ir a la habitación 16",
-  }}
+successMessage: "¡Ruta calculada! La nave evita la zona de meteoritos.",
+errorMessage: "Faltan coordenadas o el orden no es correcto.",
+successHref: "/estaciones/01-estacion-espacial/16-bucle-for-condicionales",
+successLabel: "Ir a la habitación 16",
+}}
 />

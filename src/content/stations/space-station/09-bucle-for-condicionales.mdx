@@ -16,7 +16,7 @@ El área de mantenimiento envió una lista de objetos de la estación. Algunos y
 
 Crea una lista nueva con los objetos que realmente requieren mantenimiento.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-09.png")}
     alt="Área de mantenimiento de la estación espacial"
@@ -49,15 +49,16 @@ for objeto in objetos:
 <StationDisclosure title="Pista">
   `not in` verifica que un valor no exista en una lista.
 
-  ```python
-  if objeto not in reparados:
-  ```
+```python
+if objeto not in reparados:
+```
 
-  `.append()` agrega un elemento al final de una lista.
+`.append()` agrega un elemento al final de una lista.
 
-  ```python
-  por_reparar.append(objeto)
-  ```
+```python
+por_reparar.append(objeto)
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -74,9 +75,9 @@ for objeto in objetos:
 ]
 
 reparados = [
-    "monitor de repuesto",
-    "audífonos",
-    "motor de enfriador",
+"monitor de repuesto",
+"audífonos",
+"motor de enfriador",
 ]
 
 por_reparar = []
@@ -86,17 +87,17 @@ por_reparar = []
 print(por_reparar)`}
   challenge={{
     type: "python",
-    validator: `__pyschool_validated = por_reparar == [
-    "linterna",
-    "monitor principal",
-    "antena",
-    "filtro gases",
-    "lentes infrarojo",
-    "teclado",
+    validator: `\_\_pyschool_validated = por_reparar == [
+"linterna",
+"monitor principal",
+"antena",
+"filtro gases",
+"lentes infrarojo",
+"teclado",
 ]`,
-    successMessage: "¡Lista de mantenimiento preparada! Los recursos se enviarán a los módulos correctos.",
-    errorMessage: "La lista no es correcta. Asegúrate de excluir todos los objetos reparados.",
-    successHref: "/estaciones/01-estacion-espacial/10-condicionales-string",
-    successLabel: "Ir a la habitación 10",
-  }}
+successMessage: "¡Lista de mantenimiento preparada! Los recursos se enviarán a los módulos correctos.",
+errorMessage: "La lista no es correcta. Asegúrate de excluir todos los objetos reparados.",
+successHref: "/estaciones/01-estacion-espacial/10-condicionales-string",
+successLabel: "Ir a la habitación 10",
+}}
 />

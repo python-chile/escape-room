@@ -15,7 +15,9 @@ La sala está llena de pantallas mostrando batallas Pokémon.
 El Profesor Oak deja un nuevo mensaje:
 
 <StationCallout title="Mensaje del Profesor Oak">
-  Antes de elegir al Pokémon más fuerte, un buen Científico de Datos debe visualizar los datos. No siempre sumar estadísticas tiene sentido: primero observa y luego decide.
+  Antes de elegir al Pokémon más fuerte, un buen Científico de Datos debe
+  visualizar los datos. No siempre sumar estadísticas tiene sentido: primero
+  observa y luego decide.
 </StationCallout>
 
 ## Tu misión
@@ -38,17 +40,18 @@ Puedes elegir entre:
 <StationDisclosure title="Pista">
   Puedes comenzar con:
 
-  ```python
-  col_x = "Attack"
-  col_y = "Defense"
-  color = "orange"
-  ```
+```python
+col_x = "Attack"
+col_y = "Defense"
+color = "orange"
+```
 
-  Para obtener el Pokémon con mayor suma:
+Para obtener el Pokémon con mayor suma:
 
-  ```python
-  respuesta = df.loc[df["suma"].idxmax(), "Name"]
-  ```
+```python
+respuesta = df.loc[df["suma"].idxmax(), "Name"]
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -59,14 +62,17 @@ url = "/pokemon.csv"
 df = pd.read_csv(url)
 
 # Elige dos columnas
+
 col_x = None
 col_y = None
 color = None
 
 # Crear columna suma
+
 df["suma"] = df[col_x] + df[col_y]
 
 # Gráfico de dispersión
+
 plt.figure(figsize=(10, 6))
 plt.scatter(df[col_x], df[col_y], color=color)
 plt.title(f"{col_x} vs {col_y} de Pokémon")
@@ -75,13 +81,15 @@ plt.ylabel(col_y)
 plt.grid()
 
 # Top 5 Pokémon
+
 tabla_top5 = df[
-    ["Name", col_x, col_y, "suma"]
+["Name", col_x, col_y, "suma"]
 ].sort_values("suma", ascending=False).head(5)
 
 print(tabla_top5)
 
 # Nombre del Pokémon con mayor suma
+
 respuesta = None
 print(respuesta)`}
   challenge={{
@@ -91,14 +99,14 @@ print(respuesta)`}
       source: "/stations/lab-oak/pokemon.csv",
       fileName: "pokemon.csv",
     },
-    validator: `__pyschool_validated = (
-    col_x in ["Attack", "Defense", "HP", "Speed"]
-    and col_y in ["Attack", "Defense", "HP", "Speed"]
-    and respuesta == df.loc[df["suma"].idxmax(), "Name"]
+    validator: `\_\_pyschool_validated = (
+col_x in ["Attack", "Defense", "HP", "Speed"]
+and col_y in ["Attack", "Defense", "HP", "Speed"]
+and respuesta == df.loc[df["suma"].idxmax(), "Name"]
 )`,
-    successMessage: "¡Perfecto! Dominaste la visualización y el análisis de datos.",
-    errorMessage: "Revisa las columnas elegidas, la suma y el nombre del Pokémon con el mayor resultado.",
-    successHref: "/estaciones/02-laboratorio-oak/final",
-    successLabel: "Ir a la sala final",
-  }}
+successMessage: "¡Perfecto! Dominaste la visualización y el análisis de datos.",
+errorMessage: "Revisa las columnas elegidas, la suma y el nombre del Pokémon con el mayor resultado.",
+successHref: "/estaciones/02-laboratorio-oak/final",
+successLabel: "Ir a la sala final",
+}}
 />

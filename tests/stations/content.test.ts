@@ -25,10 +25,9 @@ describe("contenido de estaciones", () => {
 
           expect(title, `${fileName} no tiene title`).toBeTruthy();
 
-          expect(
-            stationName,
-            `${fileName} no tiene station correcto`,
-          ).toBe(station.name);
+          expect(stationName, `${fileName} no tiene station correcto`).toBe(
+            station.name,
+          );
 
           expect(
             Number.isFinite(order),

@@ -16,7 +16,7 @@ El equipo llegó al núcleo de la estación espacial. Una compuerta blindada blo
 
 Los registros indican que la contraseña se obtiene usando el código secreto encontrado en la habitación anterior.
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-17.png")}
     alt="Núcleo de la estación espacial"
@@ -47,19 +47,20 @@ Por ejemplo, `2`, `3`, `5` y `7` son primos.
 <StationDisclosure title="Pista">
   Comienza con estas variables:
 
-  ```python
-  codigo_secreto = 24
-  suma = 0
-  contador = 0
-  numero = 2
-  ```
+```python
+codigo_secreto = 24
+suma = 0
+contador = 0
+numero = 2
+```
 
-  Cada vez que encuentres un primo:
+Cada vez que encuentres un primo:
 
-  ```python
-  suma += numero
-  contador += 1
-  ```
+```python
+suma += numero
+contador += 1
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -68,10 +69,11 @@ def es_primo(numero):
     pass
 
 # Calcula la suma de los primeros 24 números primos
+
 respuesta = None
 
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: 963,

@@ -20,7 +20,7 @@ En su pantalla aparece un mensaje:
 Ingresa la suma correcta de la secuencia del 1 al 1000.
 ```
 
-<figure class="mt-8 overflow-hidden border border-ink/10 bg-paper">
+<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
   <img
     src={withBase("/stations/space-station/sala-05.png")}
     alt="Compuerta de alta seguridad de la estación"
@@ -31,7 +31,8 @@ Ingresa la suma correcta de la secuencia del 1 al 1000.
 </figure>
 
 <StationCallout title="🧮 Secuencia numérica">
-  Asigna los valores correctos a las variables `a` y `b` para sumar todos los números desde 1 hasta 1000.
+  Asigna los valores correctos a las variables `a` y `b` para sumar todos los
+  números desde 1 hasta 1000.
 </StationCallout>
 
 ## El bucle `for`
@@ -58,11 +59,12 @@ No cambies el bucle. Solo asigna los límites correctos a `a` y `b`.
 <StationDisclosure title="Pista">
   `range()` no incluye el valor final.
 
-  Si quieres llegar hasta `1000`, el segundo valor debe ser `1001`.
+Si quieres llegar hasta `1000`, el segundo valor debe ser `1001`.
 
-  ```python
-  range(1, 1001)
-  ```
+```python
+range(1, 1001)
+```
+
 </StationDisclosure>
 
 <PythonEditor
@@ -72,11 +74,11 @@ b = 1
 suma = 0
 
 for numero in range(a, b):
-    suma = numero + suma
+suma = numero + suma
 
 respuesta = suma
 print(respuesta)`}
-  challenge={{
+challenge={{
     type: "equals",
     variable: "respuesta",
     expected: 500500,
