@@ -1,48 +1,34 @@
 ---
-import "../styles/global.css";
-
 import HeroBackdrop from "@/components/home/hero/HeroBackdrop.astro";
 import Hero from "@/components/home/hero/Hero.astro";
 import HomeFooter from "@/components/home/HomeFooter.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
 import HomeStations from "@/components/home/HomeStations.astro";
-import { withBase } from "@/lib/paths";
-
-const faviconUrl = withBase("/favicon.png");
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta
-			name="description"
-			content="PySchool: aprende Python resolviendo estaciones interactivas."
-		/>
-		<link rel="icon" type="image/png" href={faviconUrl} />
-		<title>PySchool — Python Chile</title>
-	</head>
+<BaseLayout
+	title="PySchool"
+	description="PySchool: aprende Python resolviendo estaciones interactivas."
+>
+	<main>
+		<section class="relative isolate min-h-dvh overflow-hidden">
+			<HeroBackdrop />
 
-	<body class="bg-white text-ink">
-		<main>
-			<section class="relative isolate min-h-dvh overflow-hidden">
-				<HeroBackdrop />
-
-				<div
-					class="relative mx-auto flex min-h-dvh max-w-6xl flex-col px-6 py-6 sm:px-10"
-				>
-					<HomeHeader />
-					<Hero />
-				</div>
-			</section>
-
-			<div class="border-t border-ink/10 px-6 py-20 sm:px-10 sm:py-28">
-				<HomeStations />
+			<div
+				class="relative mx-auto flex min-h-dvh max-w-6xl flex-col px-6 py-6 sm:px-10"
+			>
+				<HomeHeader />
+				<Hero />
 			</div>
-		</main>
+		</section>
 
-		<div class="mx-auto max-w-6xl px-6 pb-6 sm:px-10">
-			<HomeFooter />
+		<div class="border-t border-ink/10 px-6 py-20 sm:px-10 sm:py-28">
+			<HomeStations />
 		</div>
-	</body>
-</html>
+	</main>
+
+	<div class="mx-auto max-w-6xl px-6 pb-6 sm:px-10">
+		<HomeFooter />
+	</div>
+</BaseLayout>

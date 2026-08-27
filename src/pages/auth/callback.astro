@@ -1,40 +1,37 @@
 ---
-import "@/styles/global.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Conectando cuenta | PySchool</title>
-  </head>
+<BaseLayout
+  title="Conectando cuenta"
+  description="Conectando tu cuenta de GitHub con PySchool."
+  bodyClass="grid min-h-dvh place-items-center bg-paper text-ink"
+  robots="noindex, nofollow"
+>
+  <main class="text-center">
+    <p class="font-mono text-xs font-bold tracking-widest text-brand">
+      PYSCHOOL
+    </p>
 
-  <body class="grid min-h-dvh place-items-center bg-paper text-ink">
-    <main class="text-center">
-      <p class="font-mono text-xs font-bold tracking-widest text-brand">
-        PY SCHOOL
-      </p>
+    <h1 class="mt-3 font-sketch text-4xl font-bold">Conectando tu cuenta…</h1>
 
-      <h1 class="mt-3 font-sketch text-4xl font-bold">Conectando tu cuenta…</h1>
+    <p class="mt-3 text-muted">Estamos recuperando tu progreso.</p>
+  </main>
 
-      <p class="mt-3 text-muted">Estamos recuperando tu progreso.</p>
-    </main>
+  <script>
+    import { withBase } from "@/lib/paths";
+    import { supabase } from "@/lib/supabase";
 
-    <script>
-      import { supabase } from "@/lib/supabase";
+    const code = new URLSearchParams(window.location.search).get("code");
 
-      const code = new URLSearchParams(window.location.search).get("code");
+    if (code) {
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-      if (code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
-
-        if (error) {
-          console.error("No fue posible iniciar sesión:", error.message);
-        }
+      if (error) {
+        console.error("No fue posible iniciar sesión:", error.message);
       }
+    }
 
-      window.location.replace(import.meta.env.BASE_URL);
-    </script>
-  </body>
-</html>
+    window.location.replace(withBase("/"));
+  </script>
+</BaseLayout>

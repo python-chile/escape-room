@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  title: string;
+  description: string;
+  bodyClass?: string;
+  robots?: string;
+}
+
+const {
+  title,
+  description,
+  bodyClass = "bg-white text-ink",
+  robots = "index, follow",
+} = Astro.props;
+
+const faviconUrl = withBase("/favicon.png");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+
+    <link rel="icon" type="image/png" href={faviconUrl} />
+
+    <title>{title} — PySchool</title>
+
+    <slot name="head" />
+  </head>
+
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

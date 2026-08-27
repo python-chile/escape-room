@@ -1,50 +1,40 @@
 ---
-import "@/styles/global.css";
-
 import AccountLogout from "@/components/account/AccountLogout.astro";
 import AccountProfile from "@/components/account/AccountProfile.astro";
 import AccountProgress from "@/components/account/AccountProgress.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
-import { withBase } from "@/lib/paths";
-
-const faviconUrl = withBase("/favicon.png");
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Tu progreso y cuenta de PySchool." />
-    <link rel="icon" type="image/png" href={faviconUrl} />
-    <title>Mi cuenta | PySchool</title>
-  </head>
-
-  <body class="bg-paper text-ink">
-    <div class="min-h-dvh">
-      <div class="mx-auto max-w-7xl px-6 sm:px-10">
-        <HomeHeader />
-      </div>
-
-      <main class="mx-auto max-w-3xl px-6 py-14 sm:px-10 sm:py-20">
-        <section class="mt-10" data-account>
-          <h1
-            class="mt-3 font-sketch text-5xl font-bold leading-none sm:text-6xl"
-          >
-            Tu progreso
-          </h1>
-
-          <AccountProfile />
-          <AccountProgress />
-          <AccountLogout />
-        </section>
-      </main>
+<BaseLayout
+  title="Mi cuenta"
+  description="Tu progreso y cuenta de PySchool."
+  bodyClass="bg-paper text-ink"
+  robots="noindex, nofollow"
+>
+  <div class="min-h-dvh">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10">
+      <HomeHeader />
     </div>
 
-    <script>
-      import { initializeAccountPages } from "@/components/account/initialize-account";
+    <main class="mx-auto max-w-3xl px-6 py-14 sm:px-10 sm:py-20">
+      <section class="mt-10" data-account>
+        <h1
+          class="mt-3 font-sketch text-5xl font-bold leading-none sm:text-6xl"
+        >
+          Tu progreso
+        </h1>
 
-      initializeAccountPages();
-    </script>
-  </body>
-</html>
+        <AccountProfile />
+        <AccountProgress />
+        <AccountLogout />
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { initializeAccountPages } from "@/components/account/initialize-account";
+
+    initializeAccountPages();
+  </script>
+</BaseLayout>
