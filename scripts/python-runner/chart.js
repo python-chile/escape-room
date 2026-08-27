@@ -13,9 +13,11 @@ if "matplotlib.pyplot" in sys.modules:
     import matplotlib.pyplot as plt
 
     if plt.get_fignums():
+        figure = plt.gcf()
+
         try:
             with io.BytesIO() as buffer:
-                plt.savefig(
+                figure.savefig(
                     buffer,
                     format="png",
                     bbox_inches="tight",

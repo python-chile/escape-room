@@ -1,8 +1,12 @@
-const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/";
+const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 
 const ALLOWED_PACKAGES = new Set(["pandas", "matplotlib"]);
-
 const VALID_FILE_NAME = /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/;
+
+const MATPLOTLIB_SETUP_SCRIPT = `
+import matplotlib
+matplotlib.use("Agg", force=True)
+`;
 
 let pyodidePromise;
 
@@ -14,10 +18,9 @@ export function getPyodide() {
 
     pyodidePromise = globalThis
       .loadPyodide({
-        indexURL: PYODIDE_URL,
+        indexURL: PYODIDE_INDEX_URL,
       })
       .catch((error) => {
-        // Permite reintentar la carga si falla.
         pyodidePromise = undefined;
         throw error;
       });
@@ -87,13 +90,17 @@ function validateDataset(dataset) {
   return dataset;
 }
 
-export async function prepareRuntime(runtime, challenge, dataset) {
-  const packages = getAllowedPackages(challenge);
-
+async function loadPackages(runtime, packages) {
   for (const packageName of packages) {
     await runtime.loadPackage(packageName);
   }
 
+  if (packages.includes("matplotlib")) {
+    await runtime.runPythonAsync(MATPLOTLIB_SETUP_SCRIPT);
+  }
+}
+
+function writeDataset(runtime, dataset) {
   if (!dataset) {
     return;
   }
@@ -104,4 +111,11 @@ export async function prepareRuntime(runtime, challenge, dataset) {
     `/${validatedDataset.fileName}`,
     validatedDataset.content,
   );
+}
+
+export async function prepareRuntime(runtime, challenge, dataset) {
+  const packages = getAllowedPackages(challenge);
+
+  await loadPackages(runtime, packages);
+  writeDataset(runtime, dataset);
 }
