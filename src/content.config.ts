@@ -9,12 +9,10 @@ const stations = defineCollection({
     generateId: ({ entry }) => entry.replace(/\.mdx$/, ""),
   }),
   schema: z.object({
-    title: z.string(),
-    station: z.string(),
+    title: z.string().trim().min(1),
+    station: z.string().trim().min(1),
     order: z.number().int().nonnegative(),
   }),
 });
 
-export const collections = {
-  stations,
-};
+export const collections = { stations };

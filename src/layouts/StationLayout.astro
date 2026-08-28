@@ -1,7 +1,7 @@
 ---
-import CodeBlock from "@/components/station/CodeBlock.astro";
-import StationHeader from "@/components/station/StationHeader.astro";
-import StationSidebar from "@/components/station/StationSidebar.astro";
+import CodeBlocks from "@/components/station/content/CodeBlocks.astro";
+import StationHeader from "@/components/station/navigation/Header.astro";
+import StationSidebar from "@/components/station/navigation/Sidebar.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
@@ -27,17 +27,20 @@ const { currentPath, station, title } = Astro.props;
       <StationSidebar currentPath={currentPath} station={station} />
 
       <main class="min-w-0 px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
-        <div class="mx-auto max-w-3xl">
-          <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        <article class="mx-auto max-w-3xl" aria-labelledby="station-room-title">
+          <h1
+            id="station-room-title"
+            class="text-ink mt-4 text-4xl font-bold tracking-tight sm:text-5xl"
+          >
             {title}
           </h1>
 
-          <article class="station-content mt-10">
+          <div class="station-content mt-10">
             <slot />
-          </article>
+          </div>
+        </article>
 
-          <CodeBlock />
-        </div>
+        <CodeBlocks />
       </main>
     </div>
   </div>
@@ -51,6 +54,14 @@ const { currentPath, station, title } = Astro.props;
       line-height: 1.2;
     }
 
+    .station-content :global(h3) {
+      margin-top: 2.25rem;
+      font-size: 1.375rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+    }
+
     .station-content :global(p),
     .station-content :global(li) {
       color: var(--color-muted);
@@ -62,22 +73,41 @@ const { currentPath, station, title } = Astro.props;
       margin-top: 1.25rem;
     }
 
-    .station-content :global(ul) {
+    .station-content :global(ul),
+    .station-content :global(ol) {
       display: grid;
       gap: 0.875rem;
       margin-top: 1.5rem;
       padding-left: 1.25rem;
     }
 
+    .station-content :global(ul) {
+      list-style-type: disc;
+    }
+
+    .station-content :global(ol) {
+      list-style-type: decimal;
+    }
+
     .station-content :global(li::marker) {
       color: var(--color-brand);
+      font-family: var(--font-mono);
+      font-weight: 700;
     }
 
     .station-content :global(p a),
     .station-content :global(li a) {
       color: var(--color-brand);
       font-weight: 700;
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-accent);
+      text-decoration-thickness: 2px;
       text-underline-offset: 0.2em;
+    }
+
+    .station-content :global(p a:hover),
+    .station-content :global(li a:hover) {
+      color: var(--color-brand-dark);
     }
   </style>
 </BaseLayout>

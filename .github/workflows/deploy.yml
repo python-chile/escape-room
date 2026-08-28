@@ -19,6 +19,7 @@ jobs:
   build:
     name: Construir sitio
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Descargar repositorio
@@ -44,15 +45,15 @@ jobs:
       - name: Ejecutar pruebas
         run: pnpm test
 
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Construir para GitHub Pages
         run: pnpm build
         env:
           DEPLOY_TARGET: github-pages
           PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
-
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v5
 
       - name: Subir sitio construido
         uses: actions/upload-pages-artifact@v3
@@ -61,12 +62,13 @@ jobs:
 
   deploy:
     name: Publicar sitio
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    needs: build
 
     steps:
       - name: Publicar en GitHub Pages

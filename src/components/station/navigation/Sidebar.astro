@@ -1,5 +1,5 @@
 ---
-import StationNavigation from "@/components/station/StationNavigation.astro";
+import Navigation from "./Navigation.astro";
 
 interface Props {
   currentPath: string;
@@ -11,7 +11,7 @@ const { currentPath, station } = Astro.props;
 
 <aside class="border-ink/10 hidden border-r lg:block">
   <div class="sticky top-0 h-dvh px-6 py-10">
-    <StationNavigation currentPath={currentPath} station={station} />
+    <Navigation currentPath={currentPath} station={station} />
   </div>
 </aside>
 
@@ -25,6 +25,6 @@ const { currentPath, station } = Astro.props;
   </summary>
 
   <div class="border-ink border-t-2 p-5">
-    <StationNavigation currentPath={currentPath} station={station} />
+    <Navigation currentPath={currentPath} station={station} />
   </div>
 </details>

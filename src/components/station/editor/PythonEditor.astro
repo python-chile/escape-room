@@ -1,7 +1,7 @@
 ---
 import { withBase } from "@/lib/paths";
 
-import type { Challenge } from "./python-editor/types";
+import type { Challenge } from "./types";
 
 interface Props {
   starterCode: string;
@@ -180,7 +180,7 @@ const resolvedChallenge = challenge
 </div>
 
 <script>
-  import { initializePythonEditors } from "./python-editor/initialize";
+  import { initializePythonEditors } from "./initialize";
 
   initializePythonEditors();
 </script>

@@ -1,21 +1,41 @@
 ---
-import "../styles/global.css";
+import { SEO } from "astro-seo";
 
 import { withBase } from "@/lib/paths";
+
+import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
   bodyClass?: string;
-  robots?: string;
+  image?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const {
   title,
   description,
   bodyClass = "bg-white text-ink",
-  robots = "index, follow",
+  image = "/brand/pyschool-cover.png",
+  noindex = false,
+  nofollow = false,
 } = Astro.props;
+
+const siteName = "PySchool";
+
+const fullTitle = title === siteName ? siteName : `${title} — ${siteName}`;
+
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  Astro.site ?? Astro.url.origin,
+).toString();
+
+const imageUrl = new URL(
+  withBase(image),
+  Astro.site ?? Astro.url.origin,
+).toString();
 
 const faviconUrl = withBase("/favicon.png");
 ---
@@ -24,13 +44,49 @@ const faviconUrl = withBase("/favicon.png");
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    <meta name="robots" content={robots} />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={title}
+      titleTemplate={title === siteName ? "%s" : `%s — ${siteName}`}
+      description={description}
+      canonical={canonicalUrl}
+      noindex={noindex}
+      nofollow={nofollow}
+      robotsExtras="max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+      openGraph={{
+        basic: {
+          title: fullTitle,
+          type: "website",
+          image: imageUrl,
+          url: canonicalUrl,
+        },
+        optional: {
+          description,
+          locale: "es_CL",
+          siteName,
+        },
+        image: {
+          secureUrl: imageUrl,
+          type: "image/png",
+          alt: "PySchool — Aprende Python resolviendo desafíos",
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        title: fullTitle,
+        description,
+        image: imageUrl,
+        imageAlt: "PySchool — Aprende Python resolviendo desafíos",
+      }}
+    />
 
     <link rel="icon" type="image/png" href={faviconUrl} />
 
-    <title>{title} — PySchool</title>
+    <meta name="theme-color" content="#f7f9fc" />
 
     <slot name="head" />
   </head>

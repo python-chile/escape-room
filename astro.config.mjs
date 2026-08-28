@@ -1,23 +1,27 @@
-import { fileURLToPath } from "node:url";
+import process from "node:process";
+import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 const isGitHubPages = process.env.DEPLOY_TARGET === "github-pages";
 
+const deploymentConfig = isGitHubPages
+  ? {
+      site: "https://ale0aranda.github.io",
+      base: "/scape-room",
+    }
+  : {};
+
 export default defineConfig({
-  site: isGitHubPages ? "https://ale0aranda.github.io" : undefined,
-  base: isGitHubPages ? "/scape-room" : undefined,
-
+  ...deploymentConfig,
   integrations: [mdx()],
-
   markdown: {
     shikiConfig: {
       theme: "github-light",
     },
   },
-
   vite: {
     plugins: [tailwindcss()],
     resolve: {
