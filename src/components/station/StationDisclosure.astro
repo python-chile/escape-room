@@ -6,21 +6,24 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<details data-station-hint class="group relative">
+<details class="group relative" data-station-hint>
   <summary
-    class="text-muted hover:bg-accent/25 hover:text-ink flex h-10 cursor-pointer list-none items-center gap-2 px-3 font-mono text-xs font-bold tracking-widest transition-colors"
+    class="text-muted hover:bg-accent/25 hover:text-ink flex h-10 cursor-pointer list-none items-center gap-2 px-3 font-mono text-xs font-bold tracking-widest uppercase transition-colors"
   >
-    <span class="text-brand">✦</span>
-    {title.toUpperCase()}
+    <span class="text-brand" aria-hidden="true">✦</span>
+
+    {title}
+
     <span
       class="ml-1 text-base font-normal transition-transform group-open:rotate-45"
+      aria-hidden="true"
     >
       +
     </span>
   </summary>
 
   <div
-    class="border-ink/20 text-muted absolute bottom-full left-0 z-20 mb-3 w-80 border bg-white p-4 text-base leading-7 shadow-[3px_3px_0_0_#101d27]"
+    class="border-ink/20 text-muted shadow-action absolute bottom-full left-0 z-20 mb-3 w-64 border bg-white p-4 text-base leading-7 sm:w-80"
   >
     <slot />
   </div>

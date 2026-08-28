@@ -6,7 +6,10 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<aside class="border-brand bg-brand/5 mt-8 border-l-4 px-5 py-4">
+<aside
+  class="border-brand bg-brand/5 mt-8 border-l-4 px-5 py-4"
+  aria-label={title}
+>
   <p class="text-brand font-mono text-xs font-bold tracking-widest">
     {title}
   </p>

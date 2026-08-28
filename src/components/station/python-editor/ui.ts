@@ -25,11 +25,13 @@ export function createPythonEditorUi(
 
   function showResults() {
     elements.results.hidden = false;
+    elements.results.classList.add("flex");
     elements.workspace.classList.add("python-workspace--with-results");
   }
 
   function hideResults() {
     elements.results.hidden = true;
+    elements.results.classList.remove("flex");
     elements.workspace.classList.remove("python-workspace--with-results");
   }
 

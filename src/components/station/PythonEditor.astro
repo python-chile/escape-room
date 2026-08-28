@@ -42,6 +42,7 @@ const resolvedChallenge = challenge
         <span class="text-brand font-mono text-base font-bold">
           &lt;/&gt;
         </span>
+
         <span class="text-ink font-mono text-sm font-bold"> main.py </span>
       </div>
 
@@ -51,21 +52,19 @@ const resolvedChallenge = challenge
         aria-live="polite"
       >
         <span class="bg-brand size-1.5 rounded-full" aria-hidden="true"></span>
+
         <span data-python-status-text>Preparando entorno…</span>
       </div>
     </div>
 
-    <div class="python-workspace grid" data-python-workspace>
-      <div
-        class="python-code-panel min-h-80 min-w-0 lg:h-full lg:min-h-0"
-        data-python-code-panel
-      >
+    <div class="grid min-h-96 lg:h-128 lg:min-h-0" data-python-workspace>
+      <div class="min-h-80 min-w-0 lg:h-full lg:min-h-0" data-python-code-panel>
         <div class="h-full overflow-hidden bg-white" data-python-code></div>
       </div>
 
       <section
         hidden
-        class="python-results bg-panel min-h-80 min-w-0 flex-col lg:h-full lg:min-h-0"
+        class="border-line-soft bg-panel min-h-80 min-w-0 flex-col border-t lg:h-full lg:min-h-0 lg:border-t-0 lg:border-l"
         aria-label="Resultado de la ejecución"
         data-python-results
       >
@@ -78,6 +77,7 @@ const resolvedChallenge = challenge
           >
             &gt;_
           </span>
+
           <span class="text-ink font-mono text-xs font-bold tracking-widest">
             SALIDA
           </span>
@@ -155,6 +155,7 @@ const resolvedChallenge = challenge
       <span class="text-brand font-mono text-sm font-bold" aria-hidden="true">
         ✦
       </span>
+
       <p class="text-muted font-mono text-xs font-bold tracking-widest">
         GRÁFICO GENERADO
       </p>
@@ -185,31 +186,9 @@ const resolvedChallenge = challenge
 </script>
 
 <style>
-  .python-workspace {
-    min-height: 24rem;
-  }
-
-  .python-results {
-    display: flex;
-    border-top: 1px solid var(--color-line-soft);
-  }
-
   @media (min-width: 64rem) {
-    .python-workspace {
-      height: 31rem;
-      min-height: 0;
-    }
-
     .python-workspace--with-results {
       grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
-    }
-
-    .python-workspace--with-results .python-code-panel {
-      border-right: 1px solid var(--color-line-soft);
-    }
-
-    .python-results {
-      border-top: 0;
     }
   }
 </style>
