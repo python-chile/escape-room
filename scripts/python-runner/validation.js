@@ -1,7 +1,6 @@
 import { readVariable } from "./runtime.js";
 
 const VALIDATED_VARIABLE = "__pyschool_validated";
-
 const FEEDBACK_VARIABLE = "__pyschool_feedback";
 
 const DEFAULT_TOLERANCE = 0.000001;
@@ -22,20 +21,20 @@ function createIncompleteResult(challenge) {
   };
 }
 
-async function validatePythonChallenge(runtime, challenge) {
-  runtime.globals.set(VALIDATED_VARIABLE, false);
-
-  runtime.globals.set(FEEDBACK_VARIABLE, "");
+async function validatePythonChallenge(runtime, namespace, challenge) {
+  namespace.set(VALIDATED_VARIABLE, false);
+  namespace.set(FEEDBACK_VARIABLE, "");
 
   try {
-    await runtime.runPythonAsync(challenge.validator);
+    await runtime.runPythonAsync(challenge.validator, {
+      globals: namespace,
+    });
 
-    const validationResult = readVariable(runtime, VALIDATED_VARIABLE);
+    const validationResult = readVariable(namespace, VALIDATED_VARIABLE);
 
-    const feedbackResult = readVariable(runtime, FEEDBACK_VARIABLE);
+    const feedbackResult = readVariable(namespace, FEEDBACK_VARIABLE);
 
     const passed = validationResult.value === true;
-
     const feedback = String(feedbackResult.value || "");
 
     return {
@@ -45,9 +44,8 @@ async function validatePythonChallenge(runtime, challenge) {
         (passed ? challenge.successMessage : challenge.errorMessage),
     };
   } finally {
-    runtime.globals.delete(VALIDATED_VARIABLE);
-
-    runtime.globals.delete(FEEDBACK_VARIABLE);
+    namespace.delete(VALIDATED_VARIABLE);
+    namespace.delete(FEEDBACK_VARIABLE);
   }
 }
 
@@ -59,26 +57,23 @@ function validateEqualsChallenge(result, challenge) {
 
 function validateNumberChallenge(result, challenge) {
   const value = result.value;
-
   const isNumber = typeof value === "number" && Number.isFinite(value);
-
   const tolerance = challenge.tolerance ?? DEFAULT_TOLERANCE;
-
   const passed = isNumber && Math.abs(value - challenge.expected) < tolerance;
 
   return createValidationResult(passed, challenge);
 }
 
-export async function validateChallenge(runtime, challenge) {
+export async function validateChallenge(runtime, namespace, challenge) {
   if (!challenge) {
     return null;
   }
 
   if (challenge.type === "python") {
-    return validatePythonChallenge(runtime, challenge);
+    return validatePythonChallenge(runtime, namespace, challenge);
   }
 
-  const result = readVariable(runtime, challenge.variable);
+  const result = readVariable(namespace, challenge.variable);
 
   if (!result.exists || result.value === null) {
     return createIncompleteResult(challenge);

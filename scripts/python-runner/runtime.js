@@ -29,15 +29,25 @@ export function getPyodide() {
   return pyodidePromise;
 }
 
-export function readVariable(runtime, variableName) {
-  if (!runtime.globals.has(variableName)) {
+export function createExecutionNamespace(runtime) {
+  const createDictionary = runtime.globals.get("dict");
+
+  try {
+    return createDictionary();
+  } finally {
+    createDictionary.destroy?.();
+  }
+}
+
+export function readVariable(namespace, variableName) {
+  if (!namespace.has(variableName)) {
     return {
       exists: false,
       value: undefined,
     };
   }
 
-  const pythonValue = runtime.globals.get(variableName);
+  const pythonValue = namespace.get(variableName);
 
   if (typeof pythonValue?.toJs !== "function") {
     return {

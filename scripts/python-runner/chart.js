@@ -30,14 +30,16 @@ if "matplotlib.pyplot" in sys.modules:
             plt.close("all")
 `;
 
-export async function captureChart(runtime) {
-  await runtime.runPythonAsync(CAPTURE_CHART_SCRIPT);
+export async function captureChart(runtime, namespace) {
+  await runtime.runPythonAsync(CAPTURE_CHART_SCRIPT, {
+    globals: namespace,
+  });
 
   try {
-    const chart = readVariable(runtime, CHART_VARIABLE);
+    const chart = readVariable(namespace, CHART_VARIABLE);
 
     return String(chart.value ?? "");
   } finally {
-    runtime.globals.delete(CHART_VARIABLE);
+    namespace.delete(CHART_VARIABLE);
   }
 }

@@ -1,7 +1,11 @@
 /* global window */
 import { captureChart } from "./chart.js";
 import { appendOutput, send } from "./messages.js";
-import { getPyodide, prepareRuntime } from "./runtime.js";
+import {
+  createExecutionNamespace,
+  getPyodide,
+  prepareRuntime,
+} from "./runtime.js";
 import { validateChallenge } from "./validation.js";
 
 const MAX_CODE_LENGTH = 8_000;
@@ -63,8 +67,10 @@ function sendExecutionSuccess({ requestId, output, validation, chart }) {
   });
 }
 
-async function executeStudentCode(runtime, code) {
-  const result = await runtime.runPythonAsync(code);
+async function executeStudentCode(runtime, namespace, code) {
+  const result = await runtime.runPythonAsync(code, {
+    globals: namespace,
+  });
 
   try {
     return result === undefined ? undefined : String(result);
@@ -91,34 +97,36 @@ async function handleRunRequest(message) {
   try {
     const runtime = await getPyodide();
 
-    // La preparación de paquetes y datos no debe
-    // aparecer en la consola del estudiante.
     silenceRuntimeOutput(runtime);
 
     await prepareRuntime(runtime, challenge, dataset);
 
-    // Desde este punto se captura la salida producida
-    // durante la ejecución y validación del desafío.
     captureRuntimeOutput(runtime, appendRuntimeOutput);
 
     sendExecutionStarted(requestId);
 
-    const result = await executeStudentCode(runtime, code);
+    const namespace = createExecutionNamespace(runtime);
 
-    if (result !== undefined) {
-      appendRuntimeOutput(result);
+    try {
+      const result = await executeStudentCode(runtime, namespace, code);
+
+      if (result !== undefined) {
+        appendRuntimeOutput(result);
+      }
+
+      const chart = await captureChart(runtime, namespace);
+
+      const validation = await validateChallenge(runtime, namespace, challenge);
+
+      sendExecutionSuccess({
+        requestId,
+        output,
+        validation,
+        chart,
+      });
+    } finally {
+      namespace.destroy?.();
     }
-
-    const chart = await captureChart(runtime);
-
-    const validation = await validateChallenge(runtime, challenge);
-
-    sendExecutionSuccess({
-      requestId,
-      output,
-      validation,
-      chart,
-    });
   } catch (error) {
     sendExecutionError(requestId, appendOutput(output, String(error)));
   }
