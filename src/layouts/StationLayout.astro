@@ -3,12 +3,13 @@ import CodeBlocks from "@/components/station/content/CodeBlocks.astro";
 import StationHeader from "@/components/station/navigation/Header.astro";
 import StationSidebar from "@/components/station/navigation/Sidebar.astro";
 import type { StationNavigation } from "@/data/stations/navigation";
+import type { Station } from "@/data/stations/registry";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
   currentPath: string;
   navigation: StationNavigation;
-  station: string;
+  station: Station;
   title: string;
 }
 
@@ -17,12 +18,12 @@ const { currentPath, navigation, station, title } = Astro.props;
 
 <BaseLayout
   title={title}
-  description={`${title} — ${station} | PySchool`}
+  description={`${title} — ${station.name} | PySchool`}
   bodyClass="bg-white text-ink"
 >
   <div class="min-h-dvh">
     <div class="mx-auto max-w-7xl px-6 sm:px-10">
-      <StationHeader station={station} />
+      <StationHeader stationId={station.id} />
     </div>
 
     <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-[19rem_minmax(0,1fr)]">

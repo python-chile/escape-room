@@ -43,7 +43,7 @@ const navigation = await getStationNavigation(stationConfig);
 <StationLayout
   currentPath={stationConfig.href}
   navigation={navigation}
-  station={entry.data.station}
+  station={stationConfig}
   title={entry.data.title}
 >
   <Content />

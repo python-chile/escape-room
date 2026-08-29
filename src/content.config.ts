@@ -10,7 +10,6 @@ const stations = defineCollection({
   }),
   schema: z.object({
     title: z.string().trim().min(1),
-    station: z.string().trim().min(1),
     order: z.number().int().nonnegative(),
   }),
 });

@@ -20,18 +20,19 @@ describe("contenido de estaciones", () => {
           const frontmatter = getFrontmatter(filePath);
 
           const title = getFrontmatterValue(frontmatter, "title");
-          const stationName = getFrontmatterValue(frontmatter, "station");
-          const order = Number(getFrontmatterValue(frontmatter, "order"));
+          const orderValue = getFrontmatterValue(frontmatter, "order");
+          const order = Number(orderValue);
 
           expect(title, `${fileName} no tiene title`).toBeTruthy();
 
-          expect(stationName, `${fileName} no tiene station correcto`).toBe(
-            station.name,
-          );
+          expect(
+            orderValue,
+            `${fileName} no tiene el campo order`,
+          ).toBeTruthy();
 
           expect(
-            Number.isFinite(order),
-            `${fileName} no tiene order válido`,
+            Number.isInteger(order) && order >= 0,
+            `${fileName} no tiene un order entero no negativo`,
           ).toBe(true);
 
           orders.push(order);

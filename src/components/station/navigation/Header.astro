@@ -4,10 +4,10 @@ import { stations } from "@/data/stations/registry";
 import { withBase } from "@/lib/paths";
 
 interface Props {
-  station: string;
+  stationId: string;
 }
 
-const { station } = Astro.props;
+const { stationId } = Astro.props;
 
 const homeUrl = withBase("/");
 const logoUrl = withBase("/brand/pythonchile.png");
@@ -68,7 +68,7 @@ const logoUrl = withBase("/brand/pythonchile.png");
         <ul class="grid gap-2">
           {
             stations.map((item) => {
-              const isCurrent = item.name === station;
+              const isCurrent = item.id === stationId;
 
               return (
                 <li>
