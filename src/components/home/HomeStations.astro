@@ -1,21 +1,32 @@
 ---
 import { stations } from "@/data/stations/registry";
+
 import { withBase } from "@/lib/paths";
 ---
 
-<section id="estaciones" aria-labelledby="stations-title">
-  <div class="mx-auto max-w-5xl">
-    <header class="max-w-xl">
-      <p class="text-brand font-mono text-xs font-bold tracking-widest">
-        ESTACIONES
-      </p>
+<section id="estaciones" aria-labelledby="stations-title" class="relative">
+  <img
+    src={withBase("/decorations/station-snake.png")}
+    alt=""
+    aria-hidden="true"
+    width="320"
+    height="480"
+    loading="lazy"
+    class="pointer-events-none absolute top-12 -left-16 hidden w-32 object-contain select-none lg:block xl:-left-12 xl:w-36"
+  />
 
+  <div class="mx-auto max-w-5xl">
+    <header class="mx-auto max-w-3xl text-center">
       <h2
         id="stations-title"
-        class="text-ink mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+        class="font-sketch text-ink mt-4 text-5xl leading-none font-bold tracking-tight sm:text-6xl"
       >
-        Elige una misión.
+        Elige una <span class="text-brand">misión.</span>
       </h2>
+
+      <p class="text-muted mt-5 text-lg">
+        Cada estación es una aventura distinta.
+      </p>
     </header>
 
     <ol class="border-ink/10 mt-12 border-y">
