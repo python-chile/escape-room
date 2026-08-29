@@ -1,5 +1,9 @@
 import { createPythonCodeEditor } from "./code-editor";
 import { getPythonEditorElements } from "./dom";
+import {
+  getErrorHelpPreference,
+  setErrorHelpPreference,
+} from "./python-error-help";
 import { createPythonRunner } from "./runner";
 import type { Challenge } from "./types";
 import { createPythonEditorUi } from "./ui";
@@ -35,7 +39,20 @@ function initializePythonEditor(editor: HTMLElement) {
   moveHintIntoEditor(editor, elements.hintSlot);
 
   const editorView = createPythonCodeEditor(elements.codeElement, starterCode);
+
   const ui = createPythonEditorUi(elements);
+  const errorHelpEnabled = getErrorHelpPreference();
+
+  elements.errorHelpToggle.checked = errorHelpEnabled;
+  ui.setErrorHelpEnabled(errorHelpEnabled);
+
+  elements.errorHelpToggle.addEventListener("change", () => {
+    const enabled = elements.errorHelpToggle.checked;
+
+    setErrorHelpPreference(enabled);
+    ui.setErrorHelpEnabled(enabled);
+  });
+
   const runner = createPythonRunner({
     challenge,
     elements,
