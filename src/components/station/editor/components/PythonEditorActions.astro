@@ -1,0 +1,60 @@
+<footer
+  class="border-line-soft bg-paper flex flex-wrap items-center gap-2 border-t px-4 py-4 sm:px-5"
+>
+  <button
+    type="button"
+    disabled
+    class="bg-accent text-ink shadow-action hover:bg-accent-dark focus-visible:outline-brand inline-flex items-center gap-3 px-5 py-3 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    data-python-run
+  >
+    <span aria-hidden="true">▶</span>
+    Ejecutar código
+  </button>
+
+  <div class="flex items-center gap-1">
+    <div data-python-hint-slot></div>
+
+    <button
+      type="button"
+      class="text-muted hover:bg-ink/5 hover:text-ink focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      aria-label="Restablecer código"
+      title="Restablecer código"
+      data-python-reset
+    >
+      <svg
+        aria-hidden="true"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+        <path d="M3 4v5h5"></path>
+      </svg>
+    </button>
+  </div>
+
+  <label
+    class="text-muted hover:bg-ink/5 hover:text-ink flex cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium transition-colors"
+    title="Mostrar explicaciones sencillas para errores comunes de Python"
+  >
+    <input
+      type="checkbox"
+      class="accent-brand size-4"
+      data-python-error-help-toggle
+    />
+
+    <span>Explicar errores</span>
+  </label>
+
+  <a
+    hidden
+    class="text-brand decoration-accent hover:text-brand-dark ml-auto px-2 py-2 font-bold underline decoration-2 underline-offset-4 transition-colors"
+    data-python-next
+  >
+  </a>
+</footer>
