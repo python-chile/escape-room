@@ -2,7 +2,11 @@ import { withBase } from "@/lib/paths";
 import { completeRoom } from "@/lib/progress";
 
 import { celebrate } from "./celebrate";
-import { getExecutionTime, MAX_LOADING_TIME } from "./constants";
+import {
+  getExecutionTime,
+  MAX_DATASET_SIZE_BYTES,
+  MAX_LOADING_TIME,
+} from "./constants";
 import type { PythonEditorElements } from "./dom";
 import {
   isRunnerMessage,
@@ -19,6 +23,10 @@ type PythonRunnerOptions = {
   getCode: () => string;
   ui: PythonEditorUi;
 };
+
+function getUtf8Size(value: string): number {
+  return new TextEncoder().encode(value).byteLength;
+}
 
 export function createPythonRunner({
   challenge,
@@ -131,9 +139,28 @@ export function createPythonRunner({
       throw new Error("No fue posible cargar los datos de la misión.");
     }
 
+    const declaredSize = Number(response.headers.get("content-length"));
+
+    if (
+      Number.isFinite(declaredSize) &&
+      declaredSize > MAX_DATASET_SIZE_BYTES
+    ) {
+      throw new Error(
+        "El archivo de datos supera el límite permitido de 2 MB.",
+      );
+    }
+
+    const content = await response.text();
+
+    if (getUtf8Size(content) > MAX_DATASET_SIZE_BYTES) {
+      throw new Error(
+        "El archivo de datos supera el límite permitido de 2 MB.",
+      );
+    }
+
     return {
       fileName: challenge.dataset.fileName,
-      content: await response.text(),
+      content,
     };
   }
 

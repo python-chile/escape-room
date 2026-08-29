@@ -3,6 +3,8 @@ const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 const ALLOWED_PACKAGES = new Set(["pandas", "matplotlib"]);
 const VALID_FILE_NAME = /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/;
 
+const MAX_DATASET_SIZE_BYTES = 2_000_000;
+
 const MATPLOTLIB_SETUP_SCRIPT = `
 import matplotlib
 matplotlib.use("Agg", force=True)
@@ -84,6 +86,10 @@ function getAllowedPackages(challenge) {
   return uniquePackages;
 }
 
+function getUtf8Size(value) {
+  return new globalThis.TextEncoder().encode(value).byteLength;
+}
+
 function validateDataset(dataset) {
   const isValid =
     typeof dataset === "object" &&
@@ -95,6 +101,10 @@ function validateDataset(dataset) {
 
   if (!isValid) {
     throw new Error("El archivo de datos no es válido.");
+  }
+
+  if (getUtf8Size(dataset.content) > MAX_DATASET_SIZE_BYTES) {
+    throw new Error("El archivo de datos supera el límite permitido de 2 MB.");
   }
 
   return dataset;

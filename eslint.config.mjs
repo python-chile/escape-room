@@ -5,6 +5,7 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   {
     ignores: [
+      ".astro/**",
       "dist/**",
       "node_modules/**",
       "coverage/**",
@@ -13,11 +14,9 @@ export default tseslint.config(
       "public/python-runner.html",
     ],
   },
-
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,
-
   {
     files: ["**/*.astro"],
     languageOptions: {
