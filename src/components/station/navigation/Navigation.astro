@@ -1,40 +1,33 @@
 ---
-import { stationNavigations } from "@/data/stations/registry";
+import type {
+  StationNavigation,
+  StationNavigationItem,
+} from "@/data/stations/navigation";
 import { withBase } from "@/lib/paths";
 
 interface Props {
   currentPath: string;
-  station: string;
+  navigation: StationNavigation;
 }
 
-const { currentPath, station } = Astro.props;
+const { currentPath, navigation } = Astro.props;
 
-const navigation = stationNavigations[station];
-
-if (!navigation) {
-  throw new Error(`No existe navegación para la estación "${station}".`);
-}
-
-const links = navigation.items.filter(
-  (item): item is typeof item & { href: string } => Boolean(item.href),
-);
-
+const links = navigation.items;
 const currentIndex = links.findIndex((item) => item.href === currentPath);
 
-const rooms = links.filter((item) => item.label.startsWith("Habitación"));
-
+const rooms = links.filter((item) => item.type === "room");
 const totalRooms = rooms.length;
 
-function getItemMarker(label: string) {
-  if (label === "Bienvenida") {
+function getItemMarker(item: StationNavigationItem) {
+  if (item.type === "welcome") {
     return "→";
   }
 
-  if (label.toLowerCase().includes("final")) {
+  if (item.type === "final") {
     return "✦";
   }
 
-  return label.match(/\d{2}/)?.[0] ?? "•";
+  return item.label.match(/\d{2}/)?.[0] ?? "•";
 }
 ---
 
@@ -99,10 +92,10 @@ function getItemMarker(label: string) {
       {
         links.map((item, index) => {
           const isCurrent = item.href === currentPath;
-          const isFinal = item.label.toLowerCase().includes("final");
+          const isFinal = item.type === "final";
           const isLast = index === links.length - 1;
-          const isRoom = item.label.startsWith("Habitación");
-          const marker = getItemMarker(item.label);
+          const isRoom = item.type === "room";
+          const marker = getItemMarker(item);
 
           return (
             <li class="relative pl-11">
@@ -233,6 +226,7 @@ function getItemMarker(label: string) {
   updateAllNavigations();
 
   window.addEventListener("pyschool-progress-change", updateAllNavigations);
+
   window.addEventListener("storage", updateAllNavigations);
 </script>
 

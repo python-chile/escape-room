@@ -11,35 +11,25 @@ describe("navegación de estaciones", () => {
         expect(files).toContain("welcome.mdx");
       });
 
-      it("no tiene rutas del menú sin habitación", () => {
-        const availablePaths = files.map((fileName) =>
-          getRoomPath(station, fileName),
-        );
-
-        for (const item of station.navigation) {
-          if (!item.href) {
-            continue;
-          }
-
-          expect(
-            availablePaths,
-            `${item.label} apunta a una habitación inexistente: ${item.href}`,
-          ).toContain(item.href);
-        }
+      it("incluye una habitación final", () => {
+        expect(files).toContain("final.mdx");
       });
 
-      it("incluye todas las habitaciones dentro del menú", () => {
-        const navigationPaths = station.navigation
-          .map((item) => item.href)
-          .filter((href): href is string => Boolean(href));
+      it("genera rutas públicas únicas", () => {
+        const paths = files.map((fileName) => getRoomPath(station, fileName));
 
+        expect(new Set(paths).size).toBe(paths.length);
+      });
+
+      it("usa la ruta base para la bienvenida", () => {
+        expect(getRoomPath(station, "welcome.mdx")).toBe(station.basePath);
+      });
+
+      it("genera las habitaciones bajo la ruta de la estación", () => {
         for (const fileName of files) {
           const roomPath = getRoomPath(station, fileName);
 
-          expect(
-            navigationPaths,
-            `${fileName} existe, pero no aparece en la navegación`,
-          ).toContain(roomPath);
+          expect(roomPath.startsWith(station.basePath)).toBe(true);
         }
       });
     });

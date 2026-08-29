@@ -1,12 +1,18 @@
 ---
 import AccountStationCard from "./AccountStationCard.astro";
-import { stationNavigations } from "@/data/stations/registry";
 
-const stationGroups = Object.values(stationNavigations).map((navigation) => ({
+import { getStationNavigation } from "@/data/stations/navigation";
+import { stations as stationDefinitions } from "@/data/stations/registry";
+
+const stationNavigations = await Promise.all(
+  stationDefinitions.map((station) => getStationNavigation(station)),
+);
+
+const stationGroups = stationNavigations.map((navigation) => ({
   code: navigation.code,
   title: navigation.title,
   rooms: navigation.items.flatMap((item) =>
-    item.href && item.label.startsWith("Habitación") ? [item.href] : [],
+    item.type === "room" ? [item.href] : [],
   ),
 }));
 ---

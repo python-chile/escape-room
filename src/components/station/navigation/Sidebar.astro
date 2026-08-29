@@ -1,17 +1,19 @@
 ---
+import type { StationNavigation } from "@/data/stations/navigation";
+
 import Navigation from "./Navigation.astro";
 
 interface Props {
   currentPath: string;
-  station: string;
+  navigation: StationNavigation;
 }
 
-const { currentPath, station } = Astro.props;
+const { currentPath, navigation } = Astro.props;
 ---
 
 <aside class="border-ink/10 hidden border-r lg:block">
   <div class="sticky top-0 h-dvh px-6 py-10">
-    <Navigation currentPath={currentPath} station={station} />
+    <Navigation currentPath={currentPath} navigation={navigation} />
   </div>
 </aside>
 
@@ -25,6 +27,6 @@ const { currentPath, station } = Astro.props;
   </summary>
 
   <div class="border-ink border-t-2 p-5">
-    <Navigation currentPath={currentPath} station={station} />
+    <Navigation currentPath={currentPath} navigation={navigation} />
   </div>
 </details>

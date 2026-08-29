@@ -1,0 +1,52 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import { getStationNavigation } from "@/data/stations/navigation";
+import { stations, type Station } from "@/data/stations/registry";
+import StationLayout from "@/layouts/StationLayout.astro";
+
+type Props = {
+  entry: CollectionEntry<"stations">;
+  stationConfig: Station;
+};
+
+export async function getStaticPaths() {
+  const entries = await getCollection("stations");
+
+  return stations.flatMap((station) => {
+    const prefix = `${station.id}/`;
+
+    return entries
+      .filter(
+        (entry) =>
+          entry.id.startsWith(prefix) && entry.id !== `${station.id}/welcome`,
+      )
+      .map((entry) => ({
+        params: {
+          station: station.slug,
+          room: entry.id.replace(prefix, ""),
+        },
+        props: {
+          entry,
+          stationConfig: station,
+        },
+      }));
+  });
+}
+
+const { entry, stationConfig } = Astro.props;
+const { Content } = await render(entry);
+
+const room = entry.id.replace(`${stationConfig.id}/`, "");
+const currentPath = `${stationConfig.href}/${room}`;
+const navigation = await getStationNavigation(stationConfig);
+---
+
+<StationLayout
+  currentPath={currentPath}
+  navigation={navigation}
+  station={entry.data.station}
+  title={entry.data.title}
+>
+  <Content />
+</StationLayout>

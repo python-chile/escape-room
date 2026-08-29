@@ -1,0 +1,50 @@
+---
+import { getEntry, render, type CollectionEntry } from "astro:content";
+
+import { getStationNavigation } from "@/data/stations/navigation";
+import { stations, type Station } from "@/data/stations/registry";
+import StationLayout from "@/layouts/StationLayout.astro";
+
+type Props = {
+  entry: CollectionEntry<"stations">;
+  stationConfig: Station;
+};
+
+export async function getStaticPaths() {
+  return Promise.all(
+    stations.map(async (station) => {
+      const entry = await getEntry("stations", `${station.id}/welcome`);
+
+      if (!entry) {
+        throw new Error(
+          `No se encontró la bienvenida de la estación "${station.name}".`,
+        );
+      }
+
+      return {
+        params: {
+          station: station.slug,
+        },
+        props: {
+          entry,
+          stationConfig: station,
+        },
+      };
+    }),
+  );
+}
+
+const { entry, stationConfig } = Astro.props;
+const { Content } = await render(entry);
+
+const navigation = await getStationNavigation(stationConfig);
+---
+
+<StationLayout
+  currentPath={stationConfig.href}
+  navigation={navigation}
+  station={entry.data.station}
+  title={entry.data.title}
+>
+  <Content />
+</StationLayout>

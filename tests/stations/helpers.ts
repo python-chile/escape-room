@@ -1,36 +1,21 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-import {
-  SPACE_STATION_PATH,
-  spaceStationNavigation,
-  type StationNavigationItem,
-} from "../../src/data/stations/spaceStation";
-import { LAB_OAK_PATH, labOakNavigation } from "@/data/stations/lab-oak";
+import { stations as stationRegistry } from "@/data/stations/registry";
 
 export type StationDefinition = {
   name: string;
   contentDirectory: string;
   basePath: string;
-  navigation: StationNavigationItem[];
 };
 
 export const projectRoot = process.cwd();
 
-export const stations: StationDefinition[] = [
-  {
-    name: "Estación espacial",
-    contentDirectory: "space-station",
-    basePath: SPACE_STATION_PATH,
-    navigation: spaceStationNavigation,
-  },
-  {
-    name: "Laboratorio Oak",
-    contentDirectory: "lab-oak",
-    basePath: LAB_OAK_PATH,
-    navigation: labOakNavigation,
-  },
-];
+export const stations: StationDefinition[] = stationRegistry.map((station) => ({
+  name: station.name,
+  contentDirectory: station.id,
+  basePath: station.href,
+}));
 
 export function getStationDirectory(station: StationDefinition) {
   return join(

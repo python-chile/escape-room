@@ -2,15 +2,17 @@
 import CodeBlocks from "@/components/station/content/CodeBlocks.astro";
 import StationHeader from "@/components/station/navigation/Header.astro";
 import StationSidebar from "@/components/station/navigation/Sidebar.astro";
+import type { StationNavigation } from "@/data/stations/navigation";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
   currentPath: string;
+  navigation: StationNavigation;
   station: string;
   title: string;
 }
 
-const { currentPath, station, title } = Astro.props;
+const { currentPath, navigation, station, title } = Astro.props;
 ---
 
 <BaseLayout
@@ -24,7 +26,7 @@ const { currentPath, station, title } = Astro.props;
     </div>
 
     <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-[19rem_minmax(0,1fr)]">
-      <StationSidebar currentPath={currentPath} station={station} />
+      <StationSidebar currentPath={currentPath} navigation={navigation} />
 
       <main class="min-w-0 px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
         <article class="mx-auto max-w-3xl" aria-labelledby="station-room-title">
