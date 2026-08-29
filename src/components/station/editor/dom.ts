@@ -13,6 +13,11 @@ export type PythonEditorElements = {
   chartContainer: HTMLElement;
   chart: HTMLImageElement;
   runner: HTMLIFrameElement;
+  errorHelpToggle: HTMLInputElement;
+  errorHelp: HTMLElement;
+  errorHelpName: HTMLElement;
+  errorHelpExplanation: HTMLElement;
+  errorHelpSuggestion: HTMLElement;
 };
 
 function queryRequiredElement<T extends Element>(
@@ -49,5 +54,22 @@ export function getPythonEditorElements(
     ),
     chart: queryRequiredElement(editor, "[data-python-chart]"),
     runner: queryRequiredElement(editor, "[data-python-runner]"),
+    errorHelpToggle: queryRequiredElement(
+      editor,
+      "[data-python-error-help-toggle]",
+    ),
+    errorHelp: queryRequiredElement(editor, "[data-python-error-help]"),
+    errorHelpName: queryRequiredElement(
+      editor,
+      "[data-python-error-help-name]",
+    ),
+    errorHelpExplanation: queryRequiredElement(
+      editor,
+      "[data-python-error-help-explanation]",
+    ),
+    errorHelpSuggestion: queryRequiredElement(
+      editor,
+      "[data-python-error-help-suggestion]",
+    ),
   };
 }
