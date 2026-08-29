@@ -3,17 +3,20 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, URL } from "node:url";
 
-const SCRIPT_PLACEHOLDER = "__PYTHON_RUNNER_SCRIPT__";
+const RUNNER_PLACEHOLDER = "__PYTHON_RUNNER_SCRIPT__";
+const WORKER_PLACEHOLDER = "__PYTHON_WORKER_SCRIPT__";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 
-const entryPath = resolve(projectRoot, "scripts/python-runner/main.js");
+const runnerEntryPath = resolve(projectRoot, "scripts/python-runner/main.js");
+
+const workerEntryPath = resolve(projectRoot, "scripts/python-runner/worker.js");
 
 const templatePath = resolve(projectRoot, "templates/python-runner.html");
 
 const outputPath = resolve(projectRoot, "public/python-runner.html");
 
-async function bundleRunner() {
+async function bundleScript(entryPath, outputName) {
   const result = await build({
     entryPoints: [entryPath],
     bundle: true,
@@ -24,7 +27,7 @@ async function bundleRunner() {
     legalComments: "none",
     treeShaking: true,
     write: false,
-    outfile: "python-runner.js",
+    outfile: outputName,
   });
 
   const outputFile = result.outputFiles.find((file) =>
@@ -32,33 +35,44 @@ async function bundleRunner() {
   );
 
   if (!outputFile) {
-    throw new Error("esbuild no generó el bundle del runner.");
+    throw new Error(`esbuild no generó el bundle esperado: ${outputName}.`);
   }
 
   return outputFile.text;
 }
 
-function injectScript(template, script) {
-  const occurrences = template.split(SCRIPT_PLACEHOLDER).length - 1;
+function injectScript(template, placeholder, script) {
+  const occurrences = template.split(placeholder).length - 1;
 
   if (occurrences !== 1) {
     throw new Error(
-      `La plantilla debe contener exactamente una vez el marcador ${SCRIPT_PLACEHOLDER}.`,
+      `La plantilla debe contener exactamente una vez el marcador ${placeholder}.`,
     );
   }
 
   const safeScript = script.replace(/<\/script/gi, "<\\/script");
 
-  return template.replace(SCRIPT_PLACEHOLDER, safeScript);
+  return template.replace(placeholder, safeScript);
 }
 
 async function buildPythonRunner() {
-  const [template, script] = await Promise.all([
+  const [template, runnerScript, workerScript] = await Promise.all([
     readFile(templatePath, "utf8"),
-    bundleRunner(),
+    bundleScript(runnerEntryPath, "python-runner.js"),
+    bundleScript(workerEntryPath, "python-worker.js"),
   ]);
 
-  const html = injectScript(template, script);
+  const templateWithWorker = injectScript(
+    template,
+    WORKER_PLACEHOLDER,
+    workerScript,
+  );
+
+  const html = injectScript(
+    templateWithWorker,
+    RUNNER_PLACEHOLDER,
+    runnerScript,
+  );
 
   await mkdir(dirname(outputPath), {
     recursive: true,
