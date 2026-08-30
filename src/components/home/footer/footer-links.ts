@@ -16,8 +16,8 @@ export const socialLinks = [
     featured: false,
   },
   {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/company/pythonchile",
+    name: "Instagram",
+    href: "https://www.instagram.com/pythonchiledev",
     featured: false,
   },
 ];
