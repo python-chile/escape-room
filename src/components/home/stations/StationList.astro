@@ -4,7 +4,10 @@ import { stations } from "@/data/stations/registry";
 import StationListItem from "./StationListItem.astro";
 ---
 
-<ol>
+<ol
+  aria-label="Estaciones disponibles"
+  class="space-y-12 sm:space-y-14 lg:space-y-16"
+>
   {
     stations.map((station, index) => (
       <StationListItem

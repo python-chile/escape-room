@@ -6,20 +6,28 @@ interface Props {
   href: string;
   objectiveLead: string;
   objectiveRest: string;
-  reverse: boolean;
+  reverse?: boolean;
 }
 
-const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
+const {
+  title,
+  href,
+  objectiveLead,
+  objectiveRest,
+  reverse = false,
+} = Astro.props;
 ---
 
 <a
   href={withBase(href)}
   class:list={[
-    "group block rounded-xl py-4 pl-8 outline-offset-4",
-    "focus-visible:outline-2 focus-visible:outline-(--station-accent)",
-    "max-md:p-0 max-md:pt-6",
-    reverse &&
-      "order-1 justify-self-end pr-8 pl-0 text-right max-md:order-0 max-md:justify-self-auto max-md:pr-0 max-md:text-left",
+    "group block w-full rounded-xl px-0 pt-6",
+    "focus-visible:outline-2 focus-visible:outline-offset-4",
+    "focus-visible:outline-(--station-accent)",
+    "md:py-4",
+    reverse
+      ? "md:order-1 md:justify-self-end md:pr-8 md:text-right"
+      : "md:pl-8",
   ]}
 >
   <h3
@@ -27,7 +35,7 @@ const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
       "text-ink max-w-md text-3xl leading-tight font-bold tracking-tight transition-colors",
       "group-hover:text-(--station-accent)",
       "sm:text-4xl",
-      reverse && "ml-auto max-md:ml-0",
+      reverse && "md:ml-auto",
     ]}
   >
     {title}
@@ -36,7 +44,7 @@ const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
   <p
     class:list={[
       "text-ink mt-4 max-w-md text-xl leading-snug sm:text-2xl",
-      reverse && "ml-auto max-md:ml-0",
+      reverse && "md:ml-auto",
     ]}
   >
     <span class="objective-action font-bold text-(--station-accent)">
@@ -46,7 +54,7 @@ const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
 
     <span
       aria-hidden="true"
-      class="ml-2 inline-block font-mono font-bold text-(--station-accent) transition-transform group-hover:translate-x-1"
+      class="ml-2 inline-block font-mono font-bold text-(--station-accent)"
     >
       →
     </span>
@@ -66,10 +74,10 @@ const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
     left: -0.08rem;
     height: 0.16rem;
     border-radius: 9999px 70% 9999px 65%;
-    background: var(--station-accent);
+    background-color: var(--station-accent);
     content: "";
+    opacity: 0.9;
     transform: rotate(-1.5deg) skewX(-8deg);
     transform-origin: left center;
-    opacity: 0.9;
   }
 </style>

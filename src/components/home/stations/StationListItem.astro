@@ -10,7 +10,7 @@ interface Props {
   objectiveLead: string;
   objectiveRest: string;
   accent: string;
-  reverse: boolean;
+  reverse?: boolean;
 }
 
 const {
@@ -21,14 +21,14 @@ const {
   objectiveLead,
   objectiveRest,
   accent,
-  reverse,
+  reverse = false,
 } = Astro.props;
 
-const stationNumber = code.replace("ESTACIÓN ", "");
+const stationNumber = code.replace(/^ESTACIÓN\s+/i, "");
 ---
 
 <li
-  class="relative grid min-h-72 grid-cols-2 items-center max-md:block max-md:min-h-0"
+  class="relative grid grid-cols-1 items-center gap-8 md:min-h-64 md:grid-cols-2 md:gap-0"
   style={`--station-accent: ${accent}`}
 >
   <StationVisual

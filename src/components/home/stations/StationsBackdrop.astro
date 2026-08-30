@@ -2,36 +2,43 @@
   aria-hidden="true"
   class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
 >
-  <div class="stations-grid absolute inset-x-0 top-9 bottom-0"></div>
+  <div class="stations-grid absolute inset-x-0 top-9 bottom-0 opacity-40"></div>
 
   <svg
-    class="absolute top-0 left-0 z-10 h-9 w-full"
     viewBox="0 0 1440 36"
     preserveAspectRatio="none"
+    class="absolute inset-x-0 top-0 z-10 h-9 w-full"
   >
     <defs>
       <pattern
-        id="torn-paper"
+        id="stations-torn-paper"
         width="120"
         height="36"
         patternUnits="userSpaceOnUse"
       >
         <path
           d="M0 0H120V19L109 16L99 21L88 15L76 20L64 14L53 19L41 15L30 20L18 16L8 19L0 17Z"
-          fill="#ffffff"></path>
+          class="fill-white"></path>
+
         <path
           d="M0 17L8 19L18 16L30 20L41 15L53 19L64 14L76 20L88 15L99 21L109 16L120 19"
           fill="none"
-          stroke="#cbd5e1"
-          stroke-width="0.75"></path>
+          stroke-width="0.75"
+          class="stroke-slate-300"></path>
       </pattern>
 
-      <filter id="torn-shadow" x="-20%" y="-40%" width="140%" height="200%">
+      <filter
+        id="stations-torn-shadow"
+        x="-20%"
+        y="-40%"
+        width="140%"
+        height="200%"
+      >
         <feDropShadow
           dx="0"
           dy="1.5"
           stdDeviation="1.1"
-          flood-color="#0f172a"
+          flood-color="var(--color-ink)"
           flood-opacity="0.07"></feDropShadow>
       </filter>
     </defs>
@@ -39,49 +46,54 @@
     <rect
       width="1440"
       height="36"
-      fill="url(#torn-paper)"
-      filter="url(#torn-shadow)"></rect>
+      fill="url(#stations-torn-paper)"
+      filter="url(#stations-torn-shadow)"></rect>
 
     <path
       d="M240 29C270 26 292 32 318 28C344 24 366 31 392 28C412 26 428 30 452 28"
       fill="none"
-      stroke="#0879e8"
       stroke-width="2.5"
-      stroke-linecap="round"></path>
+      stroke-linecap="round"
+      class="stroke-brand"></path>
+
     <path
       d="M246 31.5C273 30.5 296 33 322 31"
       fill="none"
-      stroke="#0879e8"
       stroke-width="1"
       stroke-linecap="round"
-      opacity="0.45"></path>
+      class="stroke-brand opacity-40"></path>
   </svg>
 </div>
 
 <style>
   .stations-grid {
-    opacity: 0.4;
     background-image:
-      linear-gradient(to right, rgb(16 29 39 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(16 29 39 / 0.05) 1px, transparent 1px);
-    background-size: 5.25rem 5.25rem;
-
-    -webkit-mask-image: radial-gradient(
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 3.5rem 3.5rem;
+    mask-image: radial-gradient(
       ellipse 75% 65% at 50% 25%,
       black 35%,
       transparent 100%
     );
-
-    mask-image: radial-gradient(
+    -webkit-mask-image: radial-gradient(
       ellipse 75% 65% at 50% 25%,
       black 35%,
       transparent 100%
     );
   }
 
-  @media (max-width: 767px) {
+  @media (min-width: 48rem) {
     .stations-grid {
-      background-size: 3.5rem 3.5rem;
+      background-size: 5rem 5rem;
     }
   }
 </style>

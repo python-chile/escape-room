@@ -8,17 +8,17 @@ import StationsBackdrop from "./StationsBackdrop.astro";
 <section
   id="estaciones"
   aria-labelledby="stations-title"
-  class="bg-paper relative isolate overflow-hidden px-6 pt-24 pb-20 sm:px-10 sm:pt-28 sm:pb-28"
+  class="bg-paper relative isolate scroll-mt-20 overflow-hidden px-6 pt-24 pb-20 sm:scroll-mt-24 sm:px-10 sm:pt-28 sm:pb-28"
 >
   <StationsBackdrop />
 
   <img
     src={withBase("/decorations/station-snake.png")}
     alt=""
-    aria-hidden="true"
     width="320"
     height="480"
     loading="lazy"
+    decoding="async"
     class="pointer-events-none absolute top-1/2 -left-4 z-20 hidden w-36 -translate-y-1/2 object-contain select-none lg:block xl:left-0 xl:w-44"
   />
 
@@ -26,12 +26,14 @@ import StationsBackdrop from "./StationsBackdrop.astro";
     <header class="mx-auto max-w-3xl text-center">
       <h2
         id="stations-title"
-        class="font-sketch text-ink text-5xl leading-none font-bold tracking-tight sm:text-6xl"
+        class="font-sketch text-ink text-5xl leading-none font-bold tracking-tight text-balance sm:text-6xl"
       >
         Elige una <span class="text-brand">misión.</span>
       </h2>
     </header>
 
-    <StationList />
+    <div class="mt-16 sm:mt-20">
+      <StationList />
+    </div>
   </div>
 </section>

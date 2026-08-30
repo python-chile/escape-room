@@ -6,45 +6,48 @@ interface Props {
   title: string;
   href: string;
   image: string;
-  reverse: boolean;
+  reverse?: boolean;
 }
 
-const { number, title, href, image, reverse } = Astro.props;
+const { number, title, href, image, reverse = false } = Astro.props;
 ---
 
 <div
   class:list={[
-    "relative flex items-center justify-end pr-12",
-    "max-md:justify-start max-md:p-0",
-    reverse && "order-2 justify-start pr-0 pl-12 max-md:order-0 max-md:pl-0",
+    "relative flex items-center justify-center",
+    reverse
+      ? "md:order-2 md:justify-start md:pl-12"
+      : "md:justify-end md:pr-12",
   ]}
 >
   <a
     href={withBase(href)}
     aria-label={`Explorar ${title}`}
     class:list={[
-      "group flex items-center gap-6 rounded-xl outline-offset-8",
+      "group flex flex-col items-center gap-3 rounded-xl outline-offset-8",
       "focus-visible:outline-2 focus-visible:outline-(--station-accent)",
-      "max-md:gap-4",
-      reverse && "flex-row-reverse max-md:flex-row",
+      "md:flex-row md:gap-6",
+      reverse && "md:flex-row-reverse",
     ]}
   >
     <span
       aria-hidden="true"
-      class="station-number font-sketch shrink-0 text-8xl leading-none font-bold text-transparent opacity-60 transition-opacity group-hover:opacity-80 max-md:text-6xl max-md:opacity-50"
+      class="station-number font-sketch shrink-0 text-5xl leading-none font-bold text-transparent opacity-50 transition-opacity group-hover:opacity-80 md:text-8xl md:opacity-60"
     >
       {number}
     </span>
 
     <div
-      class="station-image relative size-56 shrink-0 overflow-hidden rounded-full border-4 border-(--station-accent) bg-white max-md:size-40"
+      class="station-image relative size-40 shrink-0 overflow-hidden rounded-full border-4 border-(--station-accent) bg-white md:size-56"
     >
       <img
         src={withBase(image)}
         alt=""
         width="448"
         height="448"
-        class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+        decoding="async"
+        class="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
       />
     </div>
   </a>
@@ -52,7 +55,7 @@ const { number, title, href, image, reverse } = Astro.props;
 
 <style>
   .station-number {
-    -webkit-text-stroke: 0.1rem var(--station-accent);
+    -webkit-text-stroke: 0.075rem var(--station-accent);
   }
 
   .station-image {
@@ -61,9 +64,9 @@ const { number, title, href, image, reverse } = Astro.props;
       0 0 0 0.44rem var(--station-accent);
   }
 
-  @media (max-width: 767px) {
+  @media (min-width: 48rem) {
     .station-number {
-      -webkit-text-stroke-width: 0.075rem;
+      -webkit-text-stroke-width: 0.1rem;
     }
   }
 </style>
