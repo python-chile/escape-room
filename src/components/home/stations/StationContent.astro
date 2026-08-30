@@ -1,0 +1,75 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  title: string;
+  href: string;
+  objectiveLead: string;
+  objectiveRest: string;
+  reverse: boolean;
+}
+
+const { title, href, objectiveLead, objectiveRest, reverse } = Astro.props;
+---
+
+<a
+  href={withBase(href)}
+  class:list={[
+    "group block rounded-xl py-4 pl-8 outline-offset-4",
+    "focus-visible:outline-2 focus-visible:outline-(--station-accent)",
+    "max-md:p-0 max-md:pt-6",
+    reverse &&
+      "order-1 justify-self-end pr-8 pl-0 text-right max-md:order-0 max-md:justify-self-auto max-md:pr-0 max-md:text-left",
+  ]}
+>
+  <h3
+    class:list={[
+      "text-ink max-w-md text-3xl leading-tight font-bold tracking-tight transition-colors",
+      "group-hover:text-(--station-accent)",
+      "sm:text-4xl",
+      reverse && "ml-auto max-md:ml-0",
+    ]}
+  >
+    {title}
+  </h3>
+
+  <p
+    class:list={[
+      "text-ink mt-4 max-w-md text-xl leading-snug sm:text-2xl",
+      reverse && "ml-auto max-md:ml-0",
+    ]}
+  >
+    <span class="objective-action font-bold text-(--station-accent)">
+      {objectiveLead}
+    </span>{" "}
+    {objectiveRest}
+
+    <span
+      aria-hidden="true"
+      class="ml-2 inline-block font-mono font-bold text-(--station-accent) transition-transform group-hover:translate-x-1"
+    >
+      →
+    </span>
+  </p>
+</a>
+
+<style>
+  .objective-action {
+    position: relative;
+    display: inline-block;
+  }
+
+  .objective-action::after {
+    position: absolute;
+    right: -0.08rem;
+    bottom: 0.02rem;
+    left: -0.08rem;
+    height: 0.16rem;
+    border-radius: 9999px 70% 9999px 65%;
+    background: var(--station-accent);
+    content: "";
+    transform: rotate(-1.5deg) skewX(-8deg);
+    transform-origin: left center;
+    opacity: 0.9;
+  }
+</style>
