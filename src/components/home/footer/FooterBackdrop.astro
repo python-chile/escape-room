@@ -1,0 +1,56 @@
+<div
+  aria-hidden="true"
+  class="footer-grid pointer-events-none absolute inset-0 -z-10"
+>
+</div>
+
+<svg
+  aria-hidden="true"
+  viewBox="0 0 1440 32"
+  preserveAspectRatio="none"
+  fill="none"
+  class="pointer-events-none absolute inset-x-0 top-0 z-10 h-8 w-full"
+>
+  <path
+    d="M0 13C75 5 121 22 196 13C269 4 323 22 397 13C471 4 526 22 600 13C674 4 729 22 803 13C877 4 932 22 1006 13C1080 4 1135 22 1209 13C1283 4 1337 21 1440 10"
+    stroke-width="3"
+    class="stroke-brand"></path>
+
+  <path
+    d="M0 19C75 11 121 28 196 19C269 10 323 28 397 19C471 10 526 28 600 19C674 10 729 28 803 19C877 10 932 28 1006 19C1080 10 1135 28 1209 19C1283 10 1337 27 1440 16"
+    stroke-width="2"
+    class="stroke-brand/40"></path>
+</svg>
+
+<span
+  aria-hidden="true"
+  class="font-sketch text-brand/5 pointer-events-none absolute bottom-14 left-1/2 -z-10 hidden -translate-x-1/2 scale-125 text-9xl leading-none font-bold whitespace-nowrap select-none md:block lg:scale-150"
+>
+  PYSCHOOL
+</span>
+
+<style>
+  .footer-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 3.5rem 3.5rem;
+    opacity: 0.45;
+    mask-image: linear-gradient(to bottom, black 20%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent);
+  }
+
+  @media (min-width: 48rem) {
+    .footer-grid {
+      background-size: 5rem 5rem;
+    }
+  }
+</style>

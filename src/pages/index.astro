@@ -1,7 +1,7 @@
 ---
 import HeroBackdrop from "@/components/home/hero/HeroBackdrop.astro";
 import Hero from "@/components/home/hero/Hero.astro";
-import HomeFooter from "@/components/home/HomeFooter.astro";
+import Footer from "@/components/home/footer/Footer.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
 import HomeStations from "@/components/home/stations/Stations.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -26,7 +26,5 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <HomeStations />
   </main>
 
-  <div class="mx-auto max-w-6xl px-6 pb-6 sm:px-10">
-    <HomeFooter />
-  </div>
+  <Footer />
 </BaseLayout>
