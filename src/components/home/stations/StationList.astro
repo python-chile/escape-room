@@ -1,0 +1,18 @@
+---
+import { stations } from "@/data/stations/registry";
+
+import StationListItem from "./StationListItem.astro";
+---
+
+<ol class="border-ink/10 mt-12 border-y">
+  {
+    stations.map((station) => (
+      <StationListItem
+        code={station.code}
+        title={station.title}
+        href={station.href}
+        image={station.image}
+      />
+    ))
+  }
+</ol>

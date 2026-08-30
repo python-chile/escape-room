@@ -1,0 +1,48 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  code: string;
+  title: string;
+  href: string;
+  image: string;
+}
+
+const { code, title, href, image } = Astro.props;
+---
+
+<li class="border-ink/10 border-b last:border-b-0">
+  <a
+    href={withBase(href)}
+    class="group hover:bg-brand/4.5 focus-visible:outline-brand flex items-center gap-4 px-3 py-5 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 sm:gap-6 sm:px-4"
+  >
+    <span
+      class="text-brand group-hover:text-brand-dark w-8 shrink-0 font-mono text-sm font-bold transition-colors"
+    >
+      {code.replace("ESTACIÓN ", "")}
+    </span>
+
+    <div class="bg-ink/5 size-16 shrink-0 overflow-hidden sm:size-20">
+      <img
+        src={withBase(image)}
+        alt=""
+        width="160"
+        height="160"
+        class="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+    </div>
+
+    <h3
+      class="text-ink group-hover:text-brand min-w-0 flex-1 text-xl font-bold tracking-tight transition-colors sm:text-2xl"
+    >
+      {title}
+    </h3>
+
+    <span
+      aria-hidden="true"
+      class="text-brand shrink-0 -translate-x-2 text-xl opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+    >
+      →
+    </span>
+  </a>
+</li>
