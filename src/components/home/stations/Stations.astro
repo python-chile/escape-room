@@ -3,6 +3,8 @@ import { withBase } from "@/lib/paths";
 
 import StationList from "./StationList.astro";
 import StationsBackdrop from "./StationsBackdrop.astro";
+
+const snakeUrl = withBase("/decorations/station-snake.png");
 ---
 
 <section
@@ -13,7 +15,7 @@ import StationsBackdrop from "./StationsBackdrop.astro";
   <StationsBackdrop />
 
   <img
-    src={withBase("/decorations/station-snake.png")}
+    src={snakeUrl}
     alt=""
     width="320"
     height="480"

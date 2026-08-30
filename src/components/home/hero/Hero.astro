@@ -3,6 +3,8 @@ import HeroCover from "./HeroCover.astro";
 import HeroContributors from "./HeroContributors.astro";
 import HeroProjectActions from "./HeroProjectActions.astro";
 import { withBase } from "@/lib/paths";
+
+const startUrl = withBase("/estaciones/01-estacion-espacial");
 ---
 
 <section
@@ -27,7 +29,7 @@ import { withBase } from "@/lib/paths";
 
   <div class="mt-9 flex flex-wrap justify-center gap-3">
     <a
-      href={withBase("/estaciones/01-estacion-espacial")}
+      href={startUrl}
       class="bg-accent text-ink shadow-accent/30 hover:bg-accent-dark inline-flex items-center gap-3 rounded-lg px-6 py-3.5 font-bold shadow-lg transition-colors"
     >
       Comenzar
