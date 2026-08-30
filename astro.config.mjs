@@ -10,7 +10,7 @@ const isGitHubPages = process.env.DEPLOY_TARGET === "github-pages";
 const deploymentConfig = isGitHubPages
   ? {
       site: "https://python-chile.github.io",
-      base: "/scape-room",
+      base: "/escape-room",
     }
   : {};
 
