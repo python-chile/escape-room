@@ -1,7 +1,8 @@
 ---
-import HeroBackdrop from "@/components/home/hero/HeroBackdrop.astro";
-import Hero from "@/components/home/hero/Hero.astro";
 import Footer from "@/components/home/footer/Footer.astro";
+import Hero from "@/components/home/hero/Hero.astro";
+import HeroBackdrop from "@/components/home/hero/HeroBackdrop.astro";
+import HomeGrid from "@/components/home/HomeGrid.astro";
 import HomeHeader from "@/components/home/HomeHeader.astro";
 import HomeStations from "@/components/home/stations/Stations.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -11,20 +12,27 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   title="PySchool"
   description="PySchool: aprende Python resolviendo estaciones interactivas."
 >
-  <main id="main-content">
-    <div class="relative isolate min-h-dvh overflow-hidden">
-      <HeroBackdrop />
+  <div class="bg-paper relative isolate overflow-hidden">
+    <HomeGrid />
 
-      <div
-        class="relative mx-auto flex min-h-dvh max-w-6xl flex-col px-6 py-6 sm:px-10"
-      >
-        <HomeHeader />
-        <Hero />
+    <main id="main-content" class="relative z-10">
+      <div class="relative min-h-dvh">
+        <HeroBackdrop />
+
+        <div class="relative flex min-h-dvh flex-col py-6">
+          <div class="mx-auto w-full max-w-7xl px-6 sm:px-10">
+            <HomeHeader />
+          </div>
+
+          <Hero />
+        </div>
       </div>
+
+      <HomeStations />
+    </main>
+
+    <div class="relative z-10">
+      <Footer />
     </div>
-
-    <HomeStations />
-  </main>
-
-  <Footer />
+  </div>
 </BaseLayout>

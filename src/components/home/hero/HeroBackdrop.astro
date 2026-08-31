@@ -1,118 +1,78 @@
+---
+const dataCode = `datos = [1, 2, 3]
+for d in datos:
+    print(d)`;
+
+const loopCode = `for dato in lista:
+    print(dato)`;
+
+const conditionCode = `x = 10
+if x > 5:
+    print("mayor")`;
+
+const functionCode = `def sumar(a, b):
+    return a + b`;
+---
+
 <div
   aria-hidden="true"
   class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
 >
-  <div class="lab-grid absolute inset-0"></div>
+  <div
+    class="bg-brand/5 absolute top-32 -left-32 size-96 rounded-full blur-3xl"
+  >
+  </div>
 
-  <div class="lab-blob lab-blob-left"></div>
-  <div class="lab-blob lab-blob-right"></div>
+  <div
+    class="bg-brand/5 absolute -right-32 bottom-0 size-96 rounded-full blur-3xl"
+  >
+  </div>
 
-  <span class="code-fragment code-lambda">lambda</span>
-  <span class="code-fragment code-def">def</span>
-  <span class="code-fragment code-true">True</span>
-  <span class="code-fragment code-for">for dato in lista:</span>
-  <span class="code-fragment code-list">[1, 2, 3]</span>
-  <span class="code-fragment code-print">print()</span>
-  <span class="code-fragment code-if">if</span>
+  <pre
+    class="text-ink/10 absolute top-44 left-1/3 hidden font-mono text-xs leading-6 font-semibold whitespace-pre md:block">{dataCode}</pre>
+
+  <pre
+    class="text-ink/10 absolute top-36 right-16 hidden font-mono text-xs leading-6 font-semibold whitespace-pre lg:block">{loopCode}</pre>
+
+  <pre
+    class="text-ink/10 absolute bottom-24 left-16 hidden font-mono text-xs leading-6 font-semibold whitespace-pre md:block">{conditionCode}</pre>
+
+  <pre
+    class="text-ink/10 absolute right-24 bottom-20 hidden font-mono text-xs leading-6 font-semibold whitespace-pre lg:block">{functionCode}</pre>
+
+  <svg
+    viewBox="0 0 100 32"
+    fill="none"
+    class="text-brand/40 absolute top-32 left-8 hidden h-8 w-24 lg:block"
+  >
+    <path
+      d="M3 25C18 13 29 7 43 2"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"></path>
+
+    <path
+      d="M22 29C37 17 50 10 65 5"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"></path>
+  </svg>
+
+  <svg
+    viewBox="0 0 100 32"
+    fill="none"
+    class="text-brand/40 absolute right-8 bottom-24 hidden h-8 w-24 lg:block"
+  >
+    <path
+      d="M35 27C51 17 63 10 78 4"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"></path>
+
+    <path
+      d="M56 30C70 21 82 14 96 9"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"></path>
+  </svg>
 </div>
-
-<style>
-  .lab-grid {
-    opacity: 0.45;
-    background-image:
-      linear-gradient(to right, rgb(16 29 39 / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(16 29 39 / 0.045) 1px, transparent 1px);
-    background-size: 5.25rem 5.25rem;
-  }
-
-  .lab-blob {
-    position: absolute;
-    border-radius: 9999px;
-    background: rgb(8 121 232 / 0.09);
-    filter: blur(64px);
-  }
-
-  .lab-blob-left {
-    top: 12%;
-    left: -12rem;
-    width: 34rem;
-    height: 34rem;
-  }
-
-  .lab-blob-right {
-    right: -12rem;
-    bottom: 4rem;
-    width: 38rem;
-    height: 38rem;
-  }
-
-  .code-fragment {
-    position: absolute;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgb(16 29 39 / 0.14);
-  }
-
-  .code-lambda {
-    top: 3.5rem;
-    left: 34%;
-  }
-
-  .code-def {
-    top: 15rem;
-    right: 7%;
-    font-size: 1.125rem;
-    font-weight: 700;
-  }
-
-  .code-true {
-    top: 13%;
-    right: 27%;
-  }
-
-  .code-for {
-    top: 31%;
-    left: 5%;
-  }
-
-  .code-list {
-    bottom: 11%;
-    left: 8%;
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-
-  .code-print {
-    bottom: 4%;
-    left: 49%;
-    font-size: 1.875rem;
-    font-weight: 600;
-    color: rgb(16 29 39 / 0.1);
-  }
-
-  .code-if {
-    right: 7%;
-    bottom: 26%;
-    font-size: 1.125rem;
-    font-weight: 700;
-  }
-
-  @media (max-width: 767px) {
-    .code-lambda,
-    .code-true,
-    .code-list,
-    .code-print,
-    .code-if {
-      display: none;
-    }
-
-    .lab-blob-left {
-      left: -18rem;
-    }
-
-    .lab-blob-right {
-      right: -22rem;
-    }
-  }
-</style>

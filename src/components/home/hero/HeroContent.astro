@@ -1,0 +1,129 @@
+---
+import HeroNavigation from "./HeroNavigation.astro";
+---
+
+<div class="text-center lg:text-left">
+  <div class="relative inline-flex -rotate-1">
+    <p
+      class="text-brand relative z-10 px-5 py-3 font-mono text-xs font-bold tracking-widest sm:text-sm"
+    >
+      APRENDE HACIENDO
+    </p>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 240 52"
+      preserveAspectRatio="none"
+      fill="none"
+      class="text-brand pointer-events-none absolute inset-0 size-full overflow-visible"
+    >
+      <path
+        d="M3 4C58 3 110 5 166 3C192 2 216 3 237 4L238 48C184 49 129 47 73 49C45 50 22 49 3 48C2 34 3 18 3 4Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="label-border"></path>
+
+      <path
+        d="M5 6C61 5 111 6 165 5"
+        stroke="currentColor"
+        stroke-width="0.75"
+        stroke-linecap="round"
+        opacity="0.35"></path>
+    </svg>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 40 36"
+      fill="none"
+      class="text-brand pointer-events-none absolute -top-7 -right-10 size-10"
+    >
+      <path
+        pathLength="1"
+        d="M10 17L12 3"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        class="spark spark-1"></path>
+
+      <path
+        pathLength="1"
+        d="M20 21L31 11"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        class="spark spark-2"></path>
+
+      <path
+        pathLength="1"
+        d="M23 29L38 30"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        class="spark spark-3"></path>
+    </svg>
+  </div>
+
+  <h1
+    id="hero-title"
+    class="font-sketch text-ink mt-8 text-5xl leading-none font-bold tracking-tight sm:text-6xl lg:text-7xl"
+  >
+    <span class="block lg:whitespace-nowrap">Aprende Python</span>
+    <span class="text-brand block lg:whitespace-nowrap"> en la PySchool. </span>
+  </h1>
+
+  <p
+    class="text-muted mx-auto mt-8 max-w-xl text-base leading-7 sm:text-lg sm:leading-8 lg:mx-0"
+  >
+    Aprende programación resolviendo misiones interactivas, con desafíos que
+    avanzan contigo.
+  </p>
+
+  <HeroNavigation />
+</div>
+<style>
+  .label-border {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: label-draw 600ms ease forwards;
+  }
+
+  .spark {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: spark-draw 400ms ease forwards;
+  }
+
+  .spark-1 {
+    animation-delay: 500ms;
+  }
+
+  .spark-2 {
+    animation-delay: 600ms;
+  }
+
+  .spark-3 {
+    animation-delay: 700ms;
+  }
+
+  @keyframes label-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes spark-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .label-border,
+    .spark {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

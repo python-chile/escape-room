@@ -1,0 +1,29 @@
+<div
+  aria-hidden="true"
+  class="home-grid pointer-events-none absolute inset-0 z-0"
+>
+</div>
+
+<style>
+  .home-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-ink) 5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 3.5rem 3.5rem;
+    opacity: 0.45;
+  }
+
+  @media (min-width: 48rem) {
+    .home-grid {
+      background-size: 5rem 5rem;
+    }
+  }
+</style>

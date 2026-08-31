@@ -1,33 +1,35 @@
 ---
-const repositoryUrl = "https://github.com/python-chile/escape-room";
+const repositoryUrl = "https://github.com/python-chile/pyschool";
 const issueUrl = `${repositoryUrl}/issues/new`;
 ---
 
 <nav
-  class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-sm"
   aria-label="Acciones del proyecto"
+  class="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-base"
 >
   <a
     href={repositoryUrl}
     target="_blank"
-    rel="noreferrer"
-    class="text-muted hover:text-python-red focus-visible:outline-python-red inline-flex items-center gap-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+    rel="noopener noreferrer"
+    class="text-muted hover:text-python-red focus-visible:outline-python-red inline-flex items-center gap-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
   >
     <svg
       aria-hidden="true"
-      width="17"
-      height="17"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      class="size-5 shrink-0"
     >
       <path
         d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"
       ></path>
     </svg>
+
     <span>Apoya este proyecto</span>
   </a>
 
@@ -36,24 +38,26 @@ const issueUrl = `${repositoryUrl}/issues/new`;
   <a
     href={issueUrl}
     target="_blank"
-    rel="noreferrer"
-    class="text-muted hover:text-brand focus-visible:outline-brand inline-flex items-center gap-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+    rel="noopener noreferrer"
+    class="text-muted hover:text-brand focus-visible:outline-brand inline-flex items-center gap-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
   >
     <svg
       aria-hidden="true"
-      width="17"
-      height="17"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      class="size-5 shrink-0"
     >
       <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-4-2-8-2-4 1-4 1Z"
       ></path>
       <path d="M4 22V3"></path>
     </svg>
+
     <span>Informar un problema</span>
   </a>
 </nav>

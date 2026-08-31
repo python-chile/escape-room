@@ -6,7 +6,7 @@ const homeUrl = withBase("/");
 const logoUrl = withBase("/brand/pythonchile.png");
 ---
 
-<header class="relative flex items-center justify-between py-5">
+<header class="relative z-30 flex items-center justify-between py-5">
   <a
     href={homeUrl}
     aria-label="Ir al inicio de PySchool"
@@ -19,20 +19,38 @@ const logoUrl = withBase("/brand/pythonchile.png");
     />
   </a>
 
-  <GitHubAuth />
+  <div class="relative pt-3">
+    <GitHubAuth />
+  </div>
 
   <style>
     .logo-link {
-      transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+      transition: transform 250ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+
+    .logo-underline path {
+      fill: none;
+      stroke: var(--color-brand);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 180;
+      stroke-dashoffset: 180;
+      transition: stroke-dashoffset 400ms ease;
     }
 
     .logo-link:hover,
     .logo-link:focus-visible {
-      transform: scale(1.06) rotate(-2deg);
+      transform: scale(1.04) rotate(-1deg);
+    }
+
+    .logo-link:hover .logo-underline path,
+    .logo-link:focus-visible .logo-underline path {
+      stroke-dashoffset: 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .logo-link {
+      .logo-link,
+      .logo-underline path {
         transition: none;
       }
     }
