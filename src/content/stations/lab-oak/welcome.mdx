@@ -1,29 +1,43 @@
 ---
-title: "Bienvenida"
+title: Bienvenida
 order: 0
 ---
 
-import StationCallout from "@/components/station/content/Callout.astro";
-import StationStartLink from "@/components/station/navigation/StartLink.astro";
+import StationWelcome from "@/components/station/welcome/StationWelcome.astro";
 
-## Bienvenido al Laboratorio Oak
-
-El Profesor Oak necesita tu ayuda. Su sistema de investigación Pokémon se apagó después de una falla en el laboratorio.
-
-Durante esta aventura aprenderás Python aplicado al análisis de datos mientras restauras los sistemas del laboratorio.
-
-<StationCallout title="🧪 Tu misión">
-  Explora datos de Pokémon, resuelve desafíos con Python y recupera los
-  registros del laboratorio.
-</StationCallout>
-
-## Objetivos
-
-- Introducir conceptos esenciales de Python aplicados al análisis de datos.
-- Aprender a trabajar con conjuntos de datos reales y entender su estructura.
-- Desarrollar habilidades de exploración, visualización y análisis de información.
-- Escribir y ejecutar código directamente en el navegador, sin instalaciones adicionales.
-
-<StationStartLink href="/estaciones/02-laboratorio-oak/00-inicio">
-  Iniciar Laboratorio Oak
-</StationStartLink>
+<StationWelcome
+  stationCode="ESTACIÓN 02"
+  title="Bienvenido al Laboratorio Oak"
+  description="Una falla apagó el sistema de investigación Pokémon del Profesor Oak. Los registros siguen intactos, pero necesitan ser explorados y recuperados."
+  mission="Analizar los datos Pokémon y restaurar el sistema de investigación."
+  objectives={[
+    "Explorar conjuntos de datos reales.",
+    "Descubrir la estructura y los tipos de datos.",
+    "Calcular estadísticas y encontrar patrones.",
+    "Crear visualizaciones utilizando Python.",
+  ]}
+  level="Principiante — intermedio"
+  rooms={5}
+  image="/stations/lab-oak/lab-oak.webp"
+  imageAlt="Profesor Oak dentro de su laboratorio Pokémon"
+  startHref="/estaciones/02-laboratorio-oak/00-inicio"
+  startLabel="Entrar al laboratorio"
+  visualLabel="ESTADO DEL LABORATORIO"
+  statuses={[
+    {
+      label: "POKÉDEX",
+      value: "OFF",
+      state: "danger",
+    },
+    {
+      label: "REGISTROS",
+      value: "RECUPERABLES",
+      state: "warning",
+    },
+    {
+      label: "DATOS",
+      value: "100%",
+      state: "normal",
+    },
+  ]}
+/>

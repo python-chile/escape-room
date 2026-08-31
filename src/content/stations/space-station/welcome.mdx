@@ -3,15 +3,45 @@ title: Bienvenida
 order: 0
 ---
 
-import StationStartLink from "@/components/station/navigation/StartLink.astro";
+import StationWelcome from "@/components/station/welcome/StationWelcome.astro";
 
-## Objetivos
-
-- Introducir los conceptos esenciales de Python aplicados al análisis de datos.
-- Aprender a trabajar con conjuntos de datos reales y entender su estructura.
-- Desarrollar habilidades de exploración, visualización y análisis de información.
-- Escribir y ejecutar código directamente en el navegador, sin instalaciones adicionales.
-
-<StationStartLink href="/estaciones/01-estacion-espacial/00-inicio">
-  Iniciar misión
-</StationStartLink>
+<StationWelcome
+  stationCode="ESTACIÓN 01"
+  title="Bienvenido a OASIS-9"
+  description="Año 2079. Una tormenta solar ha bloqueado los sistemas principales de la estación. Tu código es la única forma de recuperarlos."
+  mission="Reactivar los sistemas principales utilizando Python."
+  objectives={[
+    "Recuperar los sistemas dañados de OASIS-9.",
+    "Completar 18 habitaciones conectadas.",
+    "Aprender variables, listas, ciclos, condicionales y funciones.",
+  ]}
+  level="Principiante"
+  rooms={18}
+  image="/stations/space-station/space-station.webp"
+  imageAlt="Estación espacial OASIS-9 orbitando en el espacio"
+  startHref="/estaciones/01-estacion-espacial/00-inicio"
+  startLabel="Iniciar misión"
+  visualLabel="ESTADO DEL SISTEMA"
+  statuses={[
+    {
+      label: "ENERGÍA",
+      value: "23%",
+      state: "warning",
+    },
+    {
+      label: "COMUNICACIONES",
+      value: "OFF",
+      state: "danger",
+    },
+    {
+      label: "NAVEGACIÓN",
+      value: "OFF",
+      state: "danger",
+    },
+    {
+      label: "SOPORTE VITAL",
+      value: "68%",
+      state: "warning",
+    },
+  ]}
+/>

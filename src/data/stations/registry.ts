@@ -24,7 +24,7 @@ export const stations: Station[] = [
     code: "ESTACIÓN 01",
     title: "Estación espacial",
     href: "/estaciones/01-estacion-espacial",
-    image: "/stations/space-station/space-station.png",
+    image: "/stations/space-station/space-station.webp",
 
     presentation: {
       objective: {
@@ -41,7 +41,7 @@ export const stations: Station[] = [
     code: "ESTACIÓN 02",
     title: "Laboratorio Pokémon",
     href: "/estaciones/02-laboratorio-oak",
-    image: "/stations/lab-oak/lab-oak.png",
+    image: "/stations/lab-oak/lab-oak.webp",
 
     presentation: {
       objective: {
