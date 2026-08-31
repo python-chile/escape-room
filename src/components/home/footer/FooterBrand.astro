@@ -1,3 +1,7 @@
+---
+import PrimaryActionLink from "@/components/ui/PrimaryActionLink.astro";
+---
+
 <section aria-labelledby="footer-heading" class="relative z-20 max-w-2xl">
   <h2
     id="footer-heading"
@@ -7,11 +11,11 @@
     <span class="text-brand block">APRENDIENDO.</span>
   </h2>
 
-  <a
-    href="#estaciones"
-    class="border-brand text-brand hover:bg-brand focus-visible:outline-brand mt-9 inline-flex w-full items-center justify-center gap-4 rounded-xl border-2 px-6 py-4 text-base font-bold transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 sm:w-auto sm:text-lg"
-  >
-    <span>Explorar estaciones</span>
-    <span aria-hidden="true" class="text-xl leading-none">→</span>
-  </a>
+  <div class="mt-9">
+    <PrimaryActionLink
+      href="#estaciones"
+      label="Explorar estaciones"
+      fullWidth
+    />
+  </div>
 </section>

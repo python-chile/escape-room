@@ -1,0 +1,75 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  href: string;
+  label: string;
+  fullWidth?: boolean;
+}
+
+const { href, label, fullWidth = false } = Astro.props;
+
+const resolvedHref = href.startsWith("#") ? href : withBase(href);
+---
+
+<a
+  href={resolvedHref}
+  class:list={[
+    "primary-action border-brand text-brand focus-visible:outline-brand relative isolate inline-flex items-center justify-center gap-3 overflow-hidden rounded-xl border-2 px-6 py-4 text-base font-bold focus-visible:outline-2 focus-visible:outline-offset-4 sm:text-lg",
+    fullWidth ? "w-full sm:w-auto" : "w-auto",
+  ]}
+>
+  <span>{label}</span>
+
+  <span aria-hidden="true" class="primary-action-arrow text-xl leading-none">
+    →
+  </span>
+</a>
+
+<style>
+  .primary-action {
+    transition: color 250ms ease;
+  }
+
+  .primary-action::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--color-brand);
+    content: "";
+    opacity: 0;
+    transform: scale(0);
+    transition:
+      opacity 300ms ease,
+      transform 300ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .primary-action:hover,
+  .primary-action:focus-visible {
+    color: white;
+  }
+
+  .primary-action:hover::before,
+  .primary-action:focus-visible::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .primary-action-arrow {
+    transition: opacity 250ms ease;
+  }
+
+  .primary-action:hover .primary-action-arrow,
+  .primary-action:focus-visible .primary-action-arrow {
+    opacity: 0.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .primary-action,
+    .primary-action::before,
+    .primary-action-arrow {
+      transition: none;
+    }
+  }
+</style>

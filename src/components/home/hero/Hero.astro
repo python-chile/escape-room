@@ -1,48 +1,66 @@
 ---
-import HeroCover from "./HeroCover.astro";
-import HeroContributors from "./HeroContributors.astro";
-import HeroProjectActions from "./HeroProjectActions.astro";
 import { withBase } from "@/lib/paths";
+
+import HeroContributors from "./HeroContributors.astro";
+import HeroCover from "./HeroCover.astro";
+import HeroProjectActions from "./HeroProjectActions.astro";
 
 const startUrl = withBase("/estaciones/01-estacion-espacial");
 ---
 
 <section
+  aria-labelledby="hero-title"
   class="flex flex-1 flex-col items-center justify-center py-12 text-center sm:py-16"
 >
   <HeroCover />
 
   <h1
-    class="font-sketch text-ink mt-3 max-w-4xl text-5xl leading-none font-bold sm:text-6xl lg:text-7xl"
+    id="hero-title"
+    class="font-sketch text-ink mt-3 max-w-4xl text-5xl leading-none font-bold text-balance sm:text-6xl lg:text-7xl"
   >
     Aprende Python<br />
     <span class="text-brand">en la PySchool.</span>
   </h1>
 
   <p
-    class="text-muted mt-7 max-w-xl text-base leading-7 sm:text-lg sm:leading-8"
+    class="text-muted mt-7 max-w-xl text-base leading-7 text-pretty sm:text-lg sm:leading-8"
   >
     Aprende los conceptos esenciales de Python aplicados al análisis de datos,
     trabaja con conjuntos de datos reales y desarrolla habilidades para
     explorar, visualizar y comprender información.
   </p>
 
-  <div class="mt-9 flex flex-wrap justify-center gap-3">
+  <nav
+    aria-label="Acciones principales"
+    class="mt-9 flex w-full max-w-md flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row"
+  >
     <a
       href={startUrl}
-      class="bg-accent text-ink shadow-accent/30 hover:bg-accent-dark inline-flex items-center gap-3 rounded-lg px-6 py-3.5 font-bold shadow-lg transition-colors"
+      class="hero-btn-primary border-brand text-brand focus-visible:outline-brand relative isolate inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-xl border-2 px-6 py-4 text-base font-bold focus-visible:outline-2 focus-visible:outline-offset-4 sm:w-auto sm:text-lg"
     >
-      Comenzar
-      <span aria-hidden="true">→</span>
+      <span>Comenzar</span>
+
+      <span aria-hidden="true" class="hero-btn-arrow text-xl leading-none">
+        →
+      </span>
     </a>
 
     <a
       href="#estaciones"
-      class="text-ink/70 hover:bg-ink/5 hover:text-ink inline-flex items-center gap-2 rounded-lg px-6 py-3.5 font-bold transition-colors"
+      class="hero-btn-secondary text-ink/70 hover:text-brand focus-visible:outline-brand relative inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-4 text-base font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 sm:w-auto sm:text-lg"
     >
-      Ver estaciones
+      <span>Ver estaciones</span>
+
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 140 8"
+        preserveAspectRatio="none"
+        class="hero-btn-underline absolute inset-x-6 bottom-1 h-2 overflow-visible"
+      >
+        <path d="M2 4.5C25 1 55 7 80 3.5S130 1 138 4"></path>
+      </svg>
     </a>
-  </div>
+  </nav>
 
   <div class="mt-10">
     <HeroContributors />
@@ -52,3 +70,67 @@ const startUrl = withBase("/estaciones/01-estacion-espacial");
     <HeroProjectActions />
   </div>
 </section>
+
+<style>
+  .hero-btn-primary {
+    transition: color 250ms ease;
+  }
+
+  .hero-btn-primary::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--color-brand);
+    content: "";
+    opacity: 0;
+    transform: scale(0);
+    transition:
+      opacity 300ms ease,
+      transform 300ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .hero-btn-primary:hover,
+  .hero-btn-primary:focus-visible {
+    color: white;
+  }
+
+  .hero-btn-primary:hover::before,
+  .hero-btn-primary:focus-visible::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .hero-btn-arrow {
+    transition: opacity 250ms ease;
+  }
+
+  .hero-btn-primary:hover .hero-btn-arrow,
+  .hero-btn-primary:focus-visible .hero-btn-arrow {
+    opacity: 0.75;
+  }
+
+  .hero-btn-underline path {
+    fill: none;
+    stroke: var(--color-brand);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 130;
+    stroke-dashoffset: 130;
+    transition: stroke-dashoffset 450ms ease;
+  }
+
+  .hero-btn-secondary:hover .hero-btn-underline path,
+  .hero-btn-secondary:focus-visible .hero-btn-underline path {
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-btn-primary,
+    .hero-btn-primary::before,
+    .hero-btn-arrow,
+    .hero-btn-underline path {
+      transition: none;
+    }
+  }
+</style>
