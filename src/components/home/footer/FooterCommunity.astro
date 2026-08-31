@@ -1,0 +1,36 @@
+---
+import { socialLinks } from "./footer-links";
+---
+
+<section aria-labelledby="community-heading">
+  <h2
+    id="community-heading"
+    class="text-muted font-mono text-xs font-bold tracking-widest"
+  >
+    COMUNIDAD
+  </h2>
+
+  <nav aria-label="Redes sociales de Python Chile" class="mt-6">
+    <ul class="flex flex-col gap-4">
+      {
+        socialLinks.map((social) => (
+          <li>
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "inline-flex items-center gap-2 rounded-sm font-bold transition-colors",
+                "focus-visible:outline-brand focus-visible:outline-2 focus-visible:outline-offset-4",
+                social.featured ? "text-brand" : "text-ink hover:text-brand",
+              ]}
+            >
+              <span>{social.name}</span>
+              <span class="sr-only">(abre en una pestaña nueva)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</section>

@@ -1,0 +1,25 @@
+---
+import { stations } from "@/data/stations/registry";
+
+import StationListItem from "./StationListItem.astro";
+---
+
+<ol
+  aria-label="Estaciones disponibles"
+  class="space-y-12 sm:space-y-14 lg:space-y-16"
+>
+  {
+    stations.map((station, index) => (
+      <StationListItem
+        code={station.code}
+        title={station.title}
+        href={station.href}
+        image={station.image}
+        objectiveLead={station.presentation.objective.lead}
+        objectiveRest={station.presentation.objective.rest}
+        accent={station.presentation.accent}
+        reverse={index % 2 !== 0}
+      />
+    ))
+  }
+</ol>

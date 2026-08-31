@@ -1,0 +1,49 @@
+---
+import StationContent from "./StationContent.astro";
+import StationVisual from "./StationVisual.astro";
+
+interface Props {
+  code: string;
+  title: string;
+  href: string;
+  image: string;
+  objectiveLead: string;
+  objectiveRest: string;
+  accent: string;
+  reverse?: boolean;
+}
+
+const {
+  code,
+  title,
+  href,
+  image,
+  objectiveLead,
+  objectiveRest,
+  accent,
+  reverse = false,
+} = Astro.props;
+
+const stationNumber = code.replace(/^ESTACIÓN\s+/i, "");
+---
+
+<li
+  class="relative grid grid-cols-1 items-center gap-8 md:min-h-64 md:grid-cols-2 md:gap-0"
+  style={`--station-accent: ${accent}`}
+>
+  <StationVisual
+    number={stationNumber}
+    title={title}
+    href={href}
+    image={image}
+    reverse={reverse}
+  />
+
+  <StationContent
+    title={title}
+    href={href}
+    objectiveLead={objectiveLead}
+    objectiveRest={objectiveRest}
+    reverse={reverse}
+  />
+</li>

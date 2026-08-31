@@ -1,52 +1,26 @@
 ---
-import HeroCover from "./HeroCover.astro";
+import HeroContent from "./HeroContent.astro";
 import HeroContributors from "./HeroContributors.astro";
+import HeroIllustration from "./HeroIllustration.astro";
 import HeroProjectActions from "./HeroProjectActions.astro";
-import { withBase } from "@/lib/paths";
 ---
 
 <section
-  class="flex flex-1 flex-col items-center justify-center py-12 text-center sm:py-16"
+  aria-labelledby="hero-title"
+  class="flex flex-1 items-center py-12 sm:py-16"
 >
-  <HeroCover />
+  <div class="mx-auto w-full max-w-7xl px-6 sm:px-10">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <HeroContent />
+      <HeroIllustration />
+    </div>
 
-  <h1
-    class="font-sketch text-ink mt-3 max-w-4xl text-5xl leading-none font-bold sm:text-6xl lg:text-7xl"
-  >
-    Aprende Python<br />
-    <span class="text-brand">en la PySchool.</span>
-  </h1>
+    <div class="mt-12 flex justify-center">
+      <HeroContributors />
+    </div>
 
-  <p
-    class="text-muted mt-7 max-w-xl text-base leading-7 sm:text-lg sm:leading-8"
-  >
-    Aprende los conceptos esenciales de Python aplicados al análisis de datos,
-    trabaja con conjuntos de datos reales y desarrolla habilidades para
-    explorar, visualizar y comprender información.
-  </p>
-
-  <div class="mt-9 flex flex-wrap justify-center gap-3">
-    <a
-      href={withBase("/estaciones/01-estacion-espacial")}
-      class="bg-accent text-ink shadow-accent/30 hover:bg-accent-dark inline-flex items-center gap-3 rounded-lg px-6 py-3.5 font-bold shadow-lg transition-colors"
-    >
-      Comenzar
-      <span aria-hidden="true">→</span>
-    </a>
-
-    <a
-      href="#estaciones"
-      class="text-ink/70 hover:bg-ink/5 hover:text-ink inline-flex items-center gap-2 rounded-lg px-6 py-3.5 font-bold transition-colors"
-    >
-      Ver estaciones
-    </a>
-  </div>
-
-  <div class="mt-10">
-    <HeroContributors />
-  </div>
-
-  <div class="mt-8">
-    <HeroProjectActions />
+    <div class="mt-8 flex justify-center">
+      <HeroProjectActions />
+    </div>
   </div>
 </section>

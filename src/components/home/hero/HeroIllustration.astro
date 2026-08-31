@@ -1,0 +1,17 @@
+---
+import { withBase } from "@/lib/paths";
+const heroSnakeUrl = withBase("/decorations/hero-snake.png");
+---
+
+<div aria-hidden="true" class="flex items-center justify-center lg:justify-end">
+  <img
+    src={heroSnakeUrl}
+    alt=""
+    width="896"
+    height="896"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+    class="h-auto w-full max-w-lg object-contain sm:max-w-xl lg:w-2xl lg:max-w-none xl:w-2xl"
+  />
+</div>

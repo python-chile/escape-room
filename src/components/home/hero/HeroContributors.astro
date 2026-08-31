@@ -12,7 +12,7 @@ type Contributor = {
   avatar: string;
 };
 
-const repository = "ale0aranda/scape-room";
+const repository = "python-chile/pyschool";
 
 const contributorsUrl = `https://github.com/${repository}/graphs/contributors`;
 
@@ -91,29 +91,31 @@ const remainingContributors = Math.max(
 );
 ---
 
-<div class="flex flex-col items-center gap-3">
-  <p class="text-muted font-mono text-xs font-bold tracking-widest">
+<div class="flex flex-col items-center gap-4">
+  <p class="text-muted font-mono text-sm font-bold tracking-widest">
     HECHO POR
   </p>
 
-  <ul class="flex -space-x-3" aria-label="Contribuidores de PySchool">
+  <ul aria-label="Contribuidores de PySchool" class="flex -space-x-4">
     {
       contributors.map((contributor) => (
         <li>
           <a
             href={contributor.profile}
             target="_blank"
-            rel="noreferrer"
-            class="group focus-visible:outline-brand block overflow-hidden rounded-full ring-2 ring-white focus-visible:outline-2 focus-visible:outline-offset-2"
+            rel="noopener noreferrer"
             aria-label={`Ver perfil de ${contributor.name}`}
             title={contributor.name}
+            class="group focus-visible:outline-brand block overflow-hidden rounded-full ring-4 ring-white focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <img
               src={contributor.avatar}
               alt=""
-              width="44"
-              height="44"
-              class="size-11 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
+              width="56"
+              height="56"
+              loading="lazy"
+              decoding="async"
+              class="size-14 rounded-full object-cover transition-transform duration-200 group-hover:scale-105"
             />
           </a>
         </li>
@@ -126,10 +128,10 @@ const remainingContributors = Math.max(
           <a
             href={contributorsUrl}
             target="_blank"
-            rel="noreferrer"
-            class="border-ink/30 text-ink/55 hover:border-ink/55 hover:bg-ink/5 hover:text-ink focus-visible:outline-brand grid size-11 place-items-center rounded-full border border-dashed bg-white font-mono text-xs font-extrabold ring-2 ring-white transition-colors hover:border-solid focus-visible:outline-2 focus-visible:outline-offset-2"
+            rel="noopener noreferrer"
             aria-label="Ver todos los contribuidores de PySchool"
             title="Ver todos los contribuidores"
+            class="border-ink/30 text-ink/55 hover:border-ink/55 hover:bg-ink/5 hover:text-ink focus-visible:outline-brand grid size-14 place-items-center rounded-full border border-dashed font-mono text-sm font-extrabold ring-4 ring-white transition-colors hover:border-solid focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             +{remainingContributors}
           </a>

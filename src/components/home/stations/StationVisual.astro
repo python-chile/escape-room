@@ -1,0 +1,72 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  number: string;
+  title: string;
+  href: string;
+  image: string;
+  reverse?: boolean;
+}
+
+const { number, title, href, image, reverse = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    "relative flex items-center justify-center",
+    reverse
+      ? "md:order-2 md:justify-start md:pl-12"
+      : "md:justify-end md:pr-12",
+  ]}
+>
+  <a
+    href={withBase(href)}
+    aria-label={`Explorar ${title}`}
+    class:list={[
+      "group flex flex-col items-center gap-3 rounded-xl outline-offset-8",
+      "focus-visible:outline-2 focus-visible:outline-(--station-accent)",
+      "md:flex-row md:gap-6",
+      reverse && "md:flex-row-reverse",
+    ]}
+  >
+    <span
+      aria-hidden="true"
+      class="station-number font-sketch shrink-0 text-5xl leading-none font-bold text-transparent opacity-50 transition-opacity group-hover:opacity-80 md:text-8xl md:opacity-60"
+    >
+      {number}
+    </span>
+
+    <div
+      class="station-image relative size-40 shrink-0 overflow-hidden rounded-full border-4 border-(--station-accent) md:size-56"
+    >
+      <img
+        src={withBase(image)}
+        alt=""
+        width="448"
+        height="448"
+        loading="lazy"
+        decoding="async"
+        class="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+      />
+    </div>
+  </a>
+</div>
+
+<style>
+  .station-number {
+    -webkit-text-stroke: 0.075rem var(--station-accent);
+  }
+
+  .station-image {
+    box-shadow:
+      0 0 0 0.3rem var(--color-paper),
+      0 0 0 0.44rem var(--station-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .station-number {
+      -webkit-text-stroke-width: 0.1rem;
+    }
+  }
+</style>

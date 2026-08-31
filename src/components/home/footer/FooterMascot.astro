@@ -1,0 +1,41 @@
+---
+import { withBase } from "@/lib/paths";
+const mascotUrl = withBase("/decorations/footer-snake.png");
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute right-0 -bottom-10 z-10 hidden w-72 select-none md:block lg:right-6 lg:w-80 xl:right-0 xl:w-96"
+>
+  <img
+    src={mascotUrl}
+    alt=""
+    width="1024"
+    height="1024"
+    loading="lazy"
+    class="relative z-10 w-full object-contain"
+  />
+</div>
+
+<style>
+  .mascot-scratch {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mascot-scratch-primary {
+    stroke: var(--color-brand);
+    stroke-width: 4;
+  }
+
+  .mascot-scratch-secondary {
+    stroke: rgb(8 121 232 / 0.6);
+    stroke-width: 3;
+  }
+
+  .mascot-scratch-light {
+    stroke: rgb(8 121 232 / 0.3);
+    stroke-width: 2;
+  }
+</style>

@@ -1,34 +1,33 @@
 ---
 import { withBase } from "@/lib/paths";
 
+import GitHubIcon from "./GitHubIcon.astro";
+
 const accountHref = withBase("/cuenta");
 ---
 
 <div class="flex items-center" data-github-auth>
   <button
     type="button"
-    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-2 font-mono text-xs font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+    class="github-auth-button group text-ink hover:text-brand focus-visible:outline-brand relative inline-flex items-center gap-3 rounded-lg px-4 py-2.5 font-mono text-xs font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-login
   >
     <svg
+      class="sketchbox pointer-events-none absolute inset-0"
+      viewBox="0 0 130 44"
+      preserveAspectRatio="none"
       aria-hidden="true"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="currentColor"
     >
-      <path
-        d="M12 2C6.48 2 2 6.58 2 12.24c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.2-3.37-1.2-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.06 1.54 1.06.9 1.58 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.4c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.8-4.58 5.06.36.32.68.93.68 1.88 0 1.36-.01 2.45-.01 2.79 0 .27.18.59.69.49A10.27 10.27 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z"
+      <path d="M4 6 C 2 20, 3 30, 5 40 L 122 41 C 126 30, 125 15, 124 4 L 6 3 Z"
       ></path>
     </svg>
-
+    <GitHubIcon />
     <span>SIGN IN</span>
   </button>
-
   <a
     hidden
     href={accountHref}
-    class="text-ink hover:border-accent focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+    class="text-ink hover:border-accent hover:text-brand focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
     data-github-account
   >
     <img
@@ -42,12 +41,39 @@ const accountHref = withBase("/cuenta");
 
     <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
 
-    <span class="text-brand" aria-hidden="true">→</span>
+    <span aria-hidden="true" class="text-brand">→</span>
   </a>
+
+  <script>
+    import { initializeGitHubAuth } from "./initialize-github-auth";
+
+    initializeGitHubAuth();
+  </script>
+
+  <style>
+    .sketchbox path {
+      fill: none;
+      stroke: var(--color-brand);
+      stroke-width: 1.6;
+      stroke-dasharray: 260;
+      stroke-dashoffset: 260;
+      transition: stroke-dashoffset 0.55s ease;
+    }
+
+    :global(.github-auth-button:hover) .sketchbox path,
+    :global(.github-auth-button:focus-visible) .sketchbox path {
+      stroke-dashoffset: 0;
+    }
+
+    :global(.github-auth-button:hover) :global(.github-icon),
+    :global(.github-auth-button:focus-visible) :global(.github-icon) {
+      transform: scale(1.08) rotate(4deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sketchbox path {
+        transition: none;
+      }
+    }
+  </style>
 </div>
-
-<script>
-  import { initializeGitHubAuth } from "./initialize-github-auth";
-
-  initializeGitHubAuth();
-</script>

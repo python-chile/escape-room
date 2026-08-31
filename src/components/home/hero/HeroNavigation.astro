@@ -1,0 +1,54 @@
+---
+import PrimaryActionLink from "@/components/ui/PrimaryActionLink.astro";
+---
+
+<nav
+  aria-label="Acciones principales"
+  class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start"
+>
+  <PrimaryActionLink
+    href="/estaciones/01-estacion-espacial"
+    label="Comenzar"
+    fullWidth
+  />
+
+  <a
+    href="#estaciones"
+    class="hero-secondary text-ink/70 hover:text-brand focus-visible:outline-brand relative inline-flex w-full items-center justify-center gap-3 rounded-xl px-6 py-4 text-base font-bold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 sm:w-auto sm:text-lg"
+  >
+    <span>Ver estaciones</span>
+    <span aria-hidden="true" class="text-brand">→</span>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 140 8"
+      preserveAspectRatio="none"
+      class="pointer-events-none absolute right-6 bottom-1 left-6 h-2 w-auto overflow-visible"
+    >
+      <path pathLength="1" d="M2 4.5C25 1 55 7 80 3.5S130 1 138 4"></path>
+    </svg>
+  </a>
+</nav>
+
+<style>
+  .hero-secondary path {
+    fill: none;
+    stroke: var(--color-brand);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 450ms ease;
+  }
+
+  .hero-secondary:hover path,
+  .hero-secondary:focus-visible path {
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-secondary path {
+      transition: none;
+    }
+  }
+</style>
