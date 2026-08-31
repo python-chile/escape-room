@@ -12,6 +12,14 @@ type Contributor = {
   avatar: string;
 };
 
+function getOptimizedAvatarUrl(url: string) {
+  const avatarUrl = new URL(url);
+
+  avatarUrl.searchParams.set("size", "112");
+
+  return avatarUrl.toString();
+}
+
 const repository = "python-chile/pyschool";
 
 const contributorsUrl = `https://github.com/${repository}/graphs/contributors`;
@@ -20,17 +28,17 @@ const fallbackContributors: Contributor[] = [
   {
     name: "ale0aranda",
     profile: "https://github.com/ale0aranda",
-    avatar: "https://github.com/ale0aranda.png",
+    avatar: getOptimizedAvatarUrl("https://github.com/ale0aranda.png"),
   },
   {
     name: "Tony-Rome",
     profile: "https://github.com/Tony-Rome",
-    avatar: "https://github.com/Tony-Rome.png",
+    avatar: getOptimizedAvatarUrl("https://github.com/Tony-Rome.png"),
   },
   {
     name: "SebastianAndres",
     profile: "https://github.com/sebastiandres",
-    avatar: "https://github.com/sebastiandres.png",
+    avatar: getOptimizedAvatarUrl("https://github.com/sebastiandres.png"),
   },
 ];
 
@@ -70,7 +78,7 @@ try {
       .map((contributor) => ({
         name: contributor.login,
         profile: contributor.html_url,
-        avatar: contributor.avatar_url,
+        avatar: getOptimizedAvatarUrl(contributor.avatar_url),
       }));
 
     const allContributors = [

@@ -1,5 +1,6 @@
 ---
 import { withBase } from "@/lib/paths";
+
 const heroSnakeUrl = withBase("/decorations/hero-snake.webp");
 ---
 
@@ -7,10 +8,10 @@ const heroSnakeUrl = withBase("/decorations/hero-snake.webp");
   <img
     src={heroSnakeUrl}
     alt=""
-    width="896"
+    width="1344"
     height="896"
     loading="eager"
-    decoding="async"
+    decoding="sync"
     fetchpriority="high"
     class="h-auto w-full max-w-lg object-contain sm:max-w-xl lg:w-2xl lg:max-w-none xl:w-2xl"
   />
