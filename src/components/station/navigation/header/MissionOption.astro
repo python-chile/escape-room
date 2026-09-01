@@ -1,0 +1,72 @@
+---
+import type { Station } from "@/data/stations/registry";
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  station: Station;
+  isCurrent: boolean;
+}
+
+const { station, isCurrent } = Astro.props;
+
+const stationUrl = withBase(station.href);
+---
+
+<li>
+  <a
+    href={stationUrl}
+    aria-current={isCurrent ? "page" : undefined}
+    class:list={[
+      "group focus-visible:outline-brand relative flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 sm:gap-4 sm:rounded-2xl sm:p-3",
+      isCurrent
+        ? "border-brand/20 bg-brand/10"
+        : "hover:border-brand/15 hover:bg-brand/5 border-transparent",
+    ]}
+  >
+    <span
+      aria-hidden="true"
+      class:list={[
+        "relative size-12 shrink-0 overflow-hidden rounded-xl ring-2 transition-colors sm:size-16 sm:rounded-2xl",
+        isCurrent ? "ring-brand" : "group-hover:ring-brand/25 ring-transparent",
+      ]}
+    >
+      <img
+        src={withBase(station.image)}
+        alt=""
+        width="128"
+        height="128"
+        loading="lazy"
+        decoding="async"
+        class="size-full object-cover"
+      />
+    </span>
+
+    <span class="min-w-0 flex-1">
+      <span
+        class="text-muted block font-mono text-xs font-bold tracking-widest"
+      >
+        {station.code}
+      </span>
+
+      <span
+        class:list={[
+          "mt-0.5 block text-sm leading-5 font-bold sm:text-base",
+          isCurrent ? "text-brand" : "text-ink group-hover:text-brand",
+        ]}
+      >
+        {station.title}
+      </span>
+    </span>
+
+    {
+      isCurrent && (
+        <span
+          aria-hidden="true"
+          class="bg-brand grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold text-white"
+        >
+          ✓
+        </span>
+      )
+    }
+  </a>
+</li>

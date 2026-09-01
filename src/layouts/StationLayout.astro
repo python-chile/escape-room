@@ -21,96 +21,119 @@ const { currentPath, navigation, station, title } = Astro.props;
   description={`${title} — ${station.name} | PySchool`}
   bodyClass="text-ink"
 >
-  <div class="min-h-dvh">
-    <div class="mx-auto max-w-7xl px-6 sm:px-10">
+  <div class="border-ink/10 bg-paper border-b">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
       <StationHeader stationId={station.id} />
-    </div>
-
-    <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-[19rem_minmax(0,1fr)]">
-      <StationSidebar currentPath={currentPath} navigation={navigation} />
-
-      <main class="min-w-0 px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
-        <article class="mx-auto max-w-3xl" aria-labelledby="station-room-title">
-          <h1
-            id="station-room-title"
-            class="text-ink mt-4 text-4xl font-bold tracking-tight sm:text-5xl"
-          >
-            {title}
-          </h1>
-
-          <div class="station-content mt-10">
-            <slot />
-          </div>
-        </article>
-
-        <CodeBlocks />
-      </main>
     </div>
   </div>
 
-  <style>
-    .station-content :global(h2) {
-      margin-top: 3rem;
-      font-size: 1.875rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.2;
-    }
+  <div class="station-shell mx-auto w-full max-w-7xl lg:grid">
+    <StationSidebar currentPath={currentPath} navigation={navigation} />
 
-    .station-content :global(h3) {
-      margin-top: 2.25rem;
-      font-size: 1.375rem;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      line-height: 1.3;
-    }
+    <main
+      id="main-content"
+      class="min-w-0 px-5 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16"
+    >
+      <article class="mx-auto max-w-3xl" aria-labelledby="station-room-title">
+        <h1
+          id="station-room-title"
+          class="text-ink text-4xl font-bold tracking-tight sm:text-5xl"
+        >
+          {title}
+        </h1>
 
-    .station-content :global(p),
-    .station-content :global(li) {
-      color: var(--color-muted);
-      font-size: 1.0625rem;
-      line-height: 1.8;
-    }
+        <div class="station-content mt-10">
+          <slot />
+        </div>
+      </article>
 
-    .station-content :global(p + p) {
-      margin-top: 1.25rem;
-    }
-
-    .station-content :global(ul),
-    .station-content :global(ol) {
-      display: grid;
-      gap: 0.875rem;
-      margin-top: 1.5rem;
-      padding-left: 1.25rem;
-    }
-
-    .station-content :global(ul) {
-      list-style-type: disc;
-    }
-
-    .station-content :global(ol) {
-      list-style-type: decimal;
-    }
-
-    .station-content :global(li::marker) {
-      color: var(--color-brand);
-      font-family: var(--font-mono);
-      font-weight: 700;
-    }
-
-    .station-content :global(p a),
-    .station-content :global(li a) {
-      color: var(--color-brand);
-      font-weight: 700;
-      text-decoration-line: underline;
-      text-decoration-color: var(--color-accent);
-      text-decoration-thickness: 2px;
-      text-underline-offset: 0.2em;
-    }
-
-    .station-content :global(p a:hover),
-    .station-content :global(li a:hover) {
-      color: var(--color-brand-dark);
-    }
-  </style>
+      <CodeBlocks />
+    </main>
+  </div>
 </BaseLayout>
+
+<style>
+  .station-shell {
+    min-height: calc(100dvh - 5rem);
+  }
+
+  .station-content :global(h2) {
+    margin-top: 3rem;
+    color: var(--color-ink);
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .station-content :global(h3) {
+    margin-top: 2.25rem;
+    color: var(--color-ink);
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  .station-content :global(p),
+  .station-content :global(li) {
+    color: var(--color-muted);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .station-content :global(p + p) {
+    margin-top: 1.25rem;
+  }
+
+  .station-content :global(ul),
+  .station-content :global(ol) {
+    display: grid;
+    gap: 0.875rem;
+    margin-top: 1.5rem;
+    padding-left: 1.25rem;
+  }
+
+  .station-content :global(ul) {
+    list-style-type: disc;
+  }
+
+  .station-content :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .station-content :global(li::marker) {
+    color: var(--color-brand);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .station-content :global(p a),
+  .station-content :global(li a) {
+    border-radius: 0.125rem;
+    color: var(--color-brand);
+    font-weight: 700;
+    text-decoration-color: var(--color-accent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+    transition: color 150ms ease;
+  }
+
+  .station-content :global(p a:hover),
+  .station-content :global(li a:hover) {
+    color: var(--color-brand-dark);
+  }
+
+  .station-content :global(p a:focus-visible),
+  .station-content :global(li a:focus-visible) {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 0.25rem;
+  }
+
+  @media (min-width: 64rem) {
+    .station-shell {
+      grid-template-columns: 19rem minmax(0, 1fr);
+    }
+  }
+</style>

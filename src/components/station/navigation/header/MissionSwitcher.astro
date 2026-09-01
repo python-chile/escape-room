@@ -1,0 +1,174 @@
+---
+import { stations } from "@/data/stations/registry";
+import { withBase } from "@/lib/paths";
+
+import MissionOption from "./MissionOption.astro";
+
+interface Props {
+  stationId: string;
+  currentTitle: string;
+}
+
+const { stationId, currentTitle } = Astro.props;
+
+const stationsUrl = withBase("/#estaciones");
+---
+
+<details class="mission-switcher group relative" data-mission-switcher>
+  <summary
+    aria-label={`Cambiar misión. Misión actual: ${currentTitle}`}
+    title="Cambiar misión"
+    class="text-muted hover:text-brand focus-visible:outline-brand flex min-h-10 cursor-pointer list-none items-center gap-1.5 rounded-lg px-2 font-mono text-xs font-bold tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 sm:gap-2 sm:px-3"
+  >
+    <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 sm:hidden">
+      <path
+        d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linejoin="round"></path>
+    </svg>
+
+    <span class="sm:hidden">MISIÓN</span>
+
+    <span
+      class="text-ink hidden max-w-44 truncate text-sm font-bold tracking-normal sm:block"
+    >
+      {currentTitle}
+    </span>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      class="size-4 transition-transform duration-200 group-open:rotate-180"
+    >
+      <path
+        d="m5 7.5 5 5 5-5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </summary>
+
+  <div
+    aria-labelledby="mission-switcher-title"
+    class="mission-panel bg-paper border-ink/10 shadow-ink/15 fixed inset-x-3 top-20 z-50 overflow-y-auto rounded-xl border shadow-2xl sm:absolute sm:inset-auto sm:top-auto sm:right-0 sm:mt-3 sm:w-96 sm:rounded-2xl"
+  >
+    <header class="relative px-4 pt-4 pb-3 sm:px-5 sm:pt-5 sm:pb-4">
+      <button
+        type="button"
+        aria-label="Cerrar selector de misiones"
+        class="text-muted hover:bg-ink/5 hover:text-ink focus-visible:outline-brand absolute top-3 right-3 grid size-9 place-items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 sm:top-4 sm:right-4"
+        data-mission-close
+      >
+        <svg aria-hidden="true" viewBox="0 0 20 20" class="size-5">
+          <path
+            d="m5 5 10 10M15 5 5 15"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <h2
+        id="mission-switcher-title"
+        class="text-ink pr-10 text-xl font-bold sm:hidden"
+      >
+        Cambiar de misión
+      </h2>
+
+      <div class="hidden sm:block">
+        <h2
+          id="mission-switcher-title-desktop"
+          class="font-sketch text-ink pr-9 text-3xl leading-none font-bold"
+        >
+          Elige tu próxima
+          <span class="text-brand">aventura.</span>
+        </h2>
+
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 190 12"
+          class="text-accent mt-3 h-3 w-48"
+        >
+          <path
+            d="M2 7C35 2 62 10 95 6S154 3 188 7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </header>
+
+    <div class="px-3 pb-3">
+      <ul aria-label="Misiones disponibles" class="grid gap-1">
+        {
+          stations.map((station) => (
+            <MissionOption
+              station={station}
+              isCurrent={station.id === stationId}
+            />
+          ))
+        }
+      </ul>
+
+      <a
+        href={stationsUrl}
+        class="border-brand/30 text-brand hover:bg-brand focus-visible:outline-brand mt-3 flex min-h-11 items-center justify-center rounded-lg border-2 px-4 text-center text-sm font-bold transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-h-12 sm:rounded-xl"
+      >
+        Ver todas las estaciones
+      </a>
+    </div>
+  </div>
+</details>
+
+<script>
+  import { initializeMissionSwitchers } from "./mission-switcher";
+
+  initializeMissionSwitchers();
+</script>
+
+<style>
+  .mission-switcher summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mission-panel {
+    max-height: calc(100dvh - 6rem);
+    transform-origin: top right;
+    animation: mission-panel-enter 180ms ease-out;
+  }
+
+  @keyframes mission-panel-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .mission-switcher[open]::before {
+      position: fixed;
+      z-index: 40;
+      background: rgb(16 29 39 / 0.18);
+      content: "";
+      inset: 0;
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mission-panel {
+      animation: none;
+    }
+  }
+</style>
