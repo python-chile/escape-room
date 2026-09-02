@@ -1,0 +1,228 @@
+---
+import { withBase } from "@/lib/paths";
+
+type FinalMessage = {
+  label: string;
+  text: string;
+};
+
+interface Props {
+  title: string;
+  introduction: string[];
+  image: string;
+  imageAlt: string;
+  sectionTitle: string;
+  story: string[];
+  transmission: string;
+  primaryHref: string;
+  primaryLabel: string;
+  repeatHref: string;
+  message?: FinalMessage;
+}
+
+const {
+  title,
+  introduction,
+  image,
+  imageAlt,
+  sectionTitle,
+  story,
+  transmission,
+  primaryHref,
+  primaryLabel,
+  repeatHref,
+  message,
+} = Astro.props;
+---
+
+<section class="station-finale w-full max-w-full min-w-0">
+  <header class="max-w-4xl">
+    <p
+      class="text-accent-dark font-mono text-xs font-bold tracking-widest uppercase"
+    >
+      Misión final
+    </p>
+
+    <h1
+      id="station-room-title"
+      class="font-sketch text-ink mt-4 text-5xl leading-none font-bold tracking-tight sm:text-6xl lg:text-7xl"
+    >
+      {title}
+    </h1>
+
+    <div class="mt-7 grid max-w-3xl gap-3">
+      {
+        introduction.map((paragraph) => (
+          <p class="text-muted text-base leading-8 sm:text-lg">{paragraph}</p>
+        ))
+      }
+    </div>
+  </header>
+
+  <figure
+    class="final-image border-ink/15 bg-paper relative mt-10 w-full max-w-full min-w-0 overflow-hidden border"
+  >
+    <span
+      class="bg-brand absolute top-0 left-0 z-10 h-1 w-20"
+      aria-hidden="true"></span>
+
+    <img
+      src={withBase(image)}
+      alt={imageAlt}
+      width="1200"
+      height="600"
+      class="aspect-2/1 w-full object-cover"
+    />
+  </figure>
+
+  <div class="mt-10 max-w-4xl min-w-0">
+    <section class="min-w-0">
+      <h2 class="text-ink mt-0! text-3xl font-bold tracking-tight sm:text-4xl">
+        {sectionTitle}
+      </h2>
+
+      <div class="mt-5 grid gap-3">
+        {
+          story.map((paragraph, index) => (
+            <p
+              class:list={[
+                "text-muted max-w-3xl text-base leading-8 sm:text-lg",
+                index === story.length - 1 && "text-ink font-bold",
+              ]}
+            >
+              {paragraph}
+            </p>
+          ))
+        }
+      </div>
+    </section>
+    {
+      message && (
+        <aside
+          class="border-brand/20 bg-brand/5 relative mt-10 overflow-hidden border"
+          aria-label={message.label}
+        >
+          <div
+            class="bg-brand absolute inset-y-0 left-0 w-1"
+            aria-hidden="true"
+          />
+
+          <div class="px-6 py-6 sm:px-8 sm:py-7">
+            <header class="flex items-center gap-3">
+              <span
+                class="text-brand font-sketch text-2xl leading-none"
+                aria-hidden="true"
+              >
+                ✦
+              </span>
+
+              <p class="text-brand font-mono text-xs font-bold tracking-widest uppercase">
+                {message.label}
+              </p>
+            </header>
+
+            <blockquote class="mt-5 max-w-3xl">
+              <p class="text-ink text-lg leading-8 font-bold sm:text-xl sm:leading-9">
+                “{message.text}”
+              </p>
+
+              <footer class="mt-4 flex items-center gap-3">
+                <span class="bg-brand/40 h-px w-7" aria-hidden="true" />
+
+                <cite class="text-muted font-mono text-xs font-semibold not-italic">
+                  Profesor Oak
+                </cite>
+              </footer>
+            </blockquote>
+          </div>
+        </aside>
+      )
+    }
+  </div>
+
+  <footer class="border-ink/20 mt-12 border-t pt-7">
+    <div class="flex items-start gap-4">
+      <span
+        class="text-accent-dark font-sketch mt-1 shrink-0 text-4xl leading-none"
+        aria-hidden="true"
+      >
+        ✦
+      </span>
+
+      <div class="min-w-0">
+        <p
+          class="text-muted font-mono text-xs font-bold tracking-widest uppercase"
+        >
+          Transmisión final
+        </p>
+
+        <p class="text-ink mt-2 text-xl leading-8 font-bold sm:text-2xl">
+          {transmission}
+        </p>
+      </div>
+    </div>
+
+    <nav
+      aria-label="Acciones al finalizar la misión"
+      class="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+    >
+      <a
+        href={withBase(primaryHref)}
+        class="bg-accent text-ink shadow-action hover:bg-accent-dark focus-visible:outline-brand inline-flex min-h-13 items-center justify-center gap-3 px-6 py-3 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+      >
+        {primaryLabel}
+
+        <span class="text-brand text-xl leading-none" aria-hidden="true">
+          →
+        </span>
+      </a>
+
+      <a
+        href={withBase(repeatHref)}
+        class="text-brand hover:bg-brand/5 hover:text-brand-dark focus-visible:outline-brand inline-flex min-h-13 items-center justify-center px-5 py-3 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+      >
+        Repetir misión
+      </a>
+    </nav>
+  </footer>
+</section>
+
+<style>
+  .final-image::before,
+  .final-image::after {
+    position: absolute;
+    z-index: 10;
+    width: 1rem;
+    height: 1rem;
+    border-color: var(--color-brand);
+    content: "";
+    pointer-events: none;
+  }
+
+  .final-image::before {
+    top: 0.5rem;
+    left: 0.5rem;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .final-image::after {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+  }
+
+  @media (max-width: 39.999rem) {
+    .final-image img {
+      min-height: 13rem;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .station-finale :global(a) {
+      transition: none;
+    }
+  }
+</style>

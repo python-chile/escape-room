@@ -23,6 +23,9 @@ const {
   title,
   immersive = false,
 } = Astro.props;
+
+const isFinalRoom = title === "Habitación final";
+const useImmersiveLayout = immersive || isFinalRoom;
 ---
 
 <BaseLayout
@@ -49,12 +52,12 @@ const {
       <article
         class:list={[
           "w-full max-w-full min-w-0",
-          immersive ? "lg:max-w-6xl" : "lg:max-w-5xl",
+          useImmersiveLayout ? "lg:max-w-6xl" : "lg:max-w-5xl",
         ]}
         aria-labelledby="station-room-title"
       >
         {
-          !immersive && (
+          !useImmersiveLayout && (
             <>
               <p class="text-accent-dark mb-4 font-mono text-xs font-bold tracking-widest uppercase lg:hidden">
                 {navigation.title}
@@ -73,7 +76,7 @@ const {
         <div
           class:list={[
             "station-content w-full max-w-full min-w-0",
-            !immersive && "mt-10",
+            !useImmersiveLayout && "mt-10",
           ]}
         >
           <slot />

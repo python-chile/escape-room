@@ -3,47 +3,25 @@ title: "Habitación final"
 order: 19
 ---
 
-import { withBase } from "@/lib/paths";
+import StationFinale from "@/components/station/content/StationFinale.astro";
 
-## 🌟 ¡Misión cumplida, equipo!
-
-Después de superar desafíos matemáticos, decodificar mensajes ocultos, reparar sistemas críticos y enfrentar momentos de alta tensión…
-
-**¡La estación espacial fue estabilizada con éxito!**
-
-<figure class="border-ink/10 bg-paper mt-8 overflow-hidden border">
-  <img
-    src={withBase("/stations/space-station/sala-final.webp")}
-    alt="Estación espacial estabilizada al final de la misión"
-    width="650"
-    height="366"
-    class="w-full object-cover"
-  />
-</figure>
-
-El núcleo está seguro, las compuertas están abiertas y los sistemas vitales funcionan nuevamente.
-
-Gracias a tu ingenio y tus habilidades con Python, salvaste a la tripulación y aseguraste el futuro de la misión.
-
-El módulo de retorno está listo para volver a casa. Desde el firmamento se encienden luces que indican una trayectoria directa a la Tierra.
-
-## 🎉 Regresas como héroe galáctico
-
-Cada línea de código fue un paso hacia el éxito.
-
-<div class="mt-10 border border-brand/20 bg-brand/5 p-6 text-center">
-  <p class="font-mono text-sm font-bold tracking-widest text-brand">
-    FIN DEL ESCAPE ROOM
-  </p>
-
-<p class="text-ink mt-3 text-lg font-bold">
-  Misión Estación Espacial completada.
-</p>
-
-  <a
-        href={import.meta.env.BASE_URL}
-        class="mt-6 inline-flex rounded-lg bg-brand px-5 py-3 font-bold text-white transition-colors hover:bg-brand-dark"
-  >
-    Volver al inicio
-  </a>
-</div>
+<StationFinale
+  title="¡Misión cumplida, equipo!"
+  introduction={[
+    "Después de superar desafíos matemáticos, decodificar mensajes ocultos, reparar sistemas críticos y enfrentar momentos de alta tensión…",
+    "¡La estación espacial fue estabilizada con éxito!",
+  ]}
+  image="/stations/space-station/sala-final.webp"
+  imageAlt="Estación espacial estabilizada al final de la misión"
+  sectionTitle="Regresas como héroe galáctico"
+  story={[
+    "El núcleo está seguro, las compuertas están abiertas y los sistemas vitales funcionan nuevamente.",
+    "Gracias a tu ingenio y tus habilidades con Python, salvaste a la tripulación y aseguraste el futuro de la misión.",
+    "El módulo de retorno está listo para volver a casa. Desde el firmamento se encienden luces que indican una trayectoria directa a la Tierra.",
+    "Cada línea de código fue un paso hacia el éxito.",
+  ]}
+  transmission="Misión Estación Espacial completada."
+  primaryHref="/estaciones/02-laboratorio-oak"
+  primaryLabel="Siguiente estación"
+  repeatHref="/estaciones/01-estacion-espacial/00-inicio"
+/>
