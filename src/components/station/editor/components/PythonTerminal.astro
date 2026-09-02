@@ -1,0 +1,208 @@
+---
+import PythonChartResult from "./PythonChartResult.astro";
+import PythonTerminalOutput from "./PythonTerminalOutput.astro";
+---
+
+<section
+  class="border-line-soft relative border-t bg-white"
+  aria-label="Terminal de ejecución"
+  data-python-results
+  data-collapsed="false"
+>
+  <header
+    class="border-line-soft bg-paper flex min-h-14 items-center justify-between border-b"
+  >
+    <div
+      class="flex h-full min-w-0 overflow-x-auto"
+      role="tablist"
+      aria-label="Paneles de la terminal"
+    >
+      <button
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="python-output-panel"
+        class="terminal-tab text-ink relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest sm:px-5"
+        data-python-terminal-tab="output"
+        data-active="true"
+      >
+        SALIDA
+
+        <span
+          hidden
+          class="bg-brand text-paper grid size-5 place-items-center rounded-full text-xs"
+          data-python-output-count
+        >
+          1
+        </span>
+      </button>
+
+      <button
+        hidden
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="python-chart-panel"
+        class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
+        data-python-terminal-tab="chart"
+        data-python-chart-tab
+      >
+        GRÁFICO
+
+        <span class="bg-brand size-2 rounded-full" aria-hidden="true"></span>
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="python-logs-panel"
+        class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
+        data-python-terminal-tab="logs"
+      >
+        LOGS
+
+        <span class="bg-muted/50 size-2 rounded-full" aria-hidden="true"></span>
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="python-hints-panel"
+        class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
+        data-python-terminal-tab="hints"
+      >
+        PISTAS
+
+        <span
+          hidden
+          class="bg-accent text-ink grid size-5 place-items-center rounded-full text-xs"
+          data-python-hint-count></span>
+      </button>
+    </div>
+
+    <div class="bg-paper flex shrink-0 items-center pr-2">
+      <button
+        type="button"
+        class="text-muted hover:bg-brand/10 hover:text-brand focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2"
+        aria-label="Limpiar terminal"
+        title="Limpiar terminal"
+        data-python-clear-terminal
+      >
+        <svg
+          aria-hidden="true"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 6h18"></path>
+          <path d="M8 6V4h8v2"></path>
+          <path d="M19 6l-1 14H6L5 6"></path>
+        </svg>
+      </button>
+
+      <span class="bg-ink/10 mx-1 h-7 w-px" aria-hidden="true"></span>
+
+      <button
+        type="button"
+        class="text-muted hover:bg-brand/10 hover:text-brand focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2"
+        aria-label="Contraer terminal"
+        title="Contraer terminal"
+        aria-expanded="true"
+        data-python-terminal-toggle
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 20 20"
+          class="size-5 transition-transform"
+          data-python-terminal-toggle-icon
+        >
+          <path
+            d="m5 12.5 5-5 5 5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="min-h-0" data-python-terminal-content>
+    <PythonTerminalOutput />
+
+    <PythonChartResult />
+
+    <section
+      id="python-logs-panel"
+      hidden
+      role="tabpanel"
+      aria-label="Registro de ejecución"
+      class="bg-panel min-h-56 p-5 sm:p-6"
+      data-python-terminal-panel="logs"
+    >
+      <div class="text-muted mb-4 font-mono text-xs font-bold tracking-widest">
+        REGISTRO DE EJECUCIÓN
+      </div>
+
+      <pre
+        class="text-ink overflow-auto font-mono text-sm leading-7 whitespace-pre-wrap"
+        aria-live="polite"
+        data-python-logs>
+      </pre>
+    </section>
+
+    <section
+      id="python-hints-panel"
+      hidden
+      role="tabpanel"
+      aria-label="Pistas de la misión"
+      class="bg-panel min-h-56 p-5 sm:p-6"
+      data-python-terminal-panel="hints"
+    >
+      <div class="text-muted mb-5 font-mono text-xs font-bold tracking-widest">
+        AYUDAS DE LA MISIÓN
+      </div>
+
+      <div class="grid gap-4" data-python-hint-slot>
+        <div class="text-muted text-sm leading-6" data-python-empty-hints>
+          Esta misión no tiene pistas adicionales.
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<style>
+  .terminal-tab[data-active="true"] {
+    color: var(--color-brand);
+  }
+
+  .terminal-tab[data-active="true"]::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 0.25rem;
+    background: var(--color-brand);
+    content: "";
+  }
+
+  [data-python-results][data-collapsed="true"]
+    [data-python-terminal-toggle-icon] {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-python-terminal-toggle-icon] {
+      transition: none;
+    }
+  }
+</style>

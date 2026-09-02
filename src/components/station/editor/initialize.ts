@@ -5,18 +5,44 @@ import {
   setErrorHelpPreference,
 } from "./python-error-help";
 import { createPythonRunner } from "./runner";
+import { initializePythonTerminal } from "./terminal";
 import type { Challenge } from "./types";
 import { createPythonEditorUi } from "./ui";
 
-function moveHintIntoEditor(editor: HTMLElement, hintSlot: HTMLElement) {
-  const hint = editor.previousElementSibling;
+function moveHintIntoEditor(
+  editor: HTMLElement,
+  hintSlot: HTMLElement,
+): number {
+  let sibling = editor.previousElementSibling;
 
-  if (
-    hint instanceof HTMLDetailsElement &&
-    hint.matches("[data-station-hint]")
-  ) {
-    hintSlot.append(hint);
+  while (sibling) {
+    if (
+      sibling instanceof HTMLDetailsElement &&
+      sibling.matches("[data-station-hint]")
+    ) {
+      const content = sibling.querySelector<HTMLElement>(
+        "[data-station-hint-content]",
+      );
+
+      if (!content) {
+        return 0;
+      }
+
+      content.dataset.embedded = "true";
+      hintSlot.append(content);
+      sibling.remove();
+
+      return 1;
+    }
+
+    if (sibling.matches("[data-python-editor]")) {
+      break;
+    }
+
+    sibling = sibling.previousElementSibling;
   }
+
+  return 0;
 }
 
 function parseChallenge(value?: string): Challenge | undefined {
@@ -33,14 +59,23 @@ function parseChallenge(value?: string): Challenge | undefined {
 
 function initializePythonEditor(editor: HTMLElement) {
   const elements = getPythonEditorElements(editor);
+
   const starterCode = editor.dataset.pythonStarterCode ?? "";
+
   const challenge = parseChallenge(editor.dataset.pythonChallenge);
 
-  moveHintIntoEditor(editor, elements.hintSlot);
+  const hintCount = moveHintIntoEditor(editor, elements.hintSlot);
+
+  elements.hintCount.textContent = String(hintCount);
+  elements.hintCount.hidden = hintCount === 0;
+  elements.emptyHints.hidden = hintCount > 0;
 
   const editorView = createPythonCodeEditor(elements.codeElement, starterCode);
 
   const ui = createPythonEditorUi(elements);
+
+  initializePythonTerminal(elements, ui);
+
   const errorHelpEnabled = getErrorHelpPreference();
 
   elements.errorHelpToggle.checked = errorHelpEnabled;

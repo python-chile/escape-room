@@ -2,8 +2,10 @@
 import CodeBlocks from "@/components/station/content/CodeBlocks.astro";
 import StationHeader from "@/components/station/navigation/Header.astro";
 import StationSidebar from "@/components/station/navigation/Sidebar.astro";
+
 import type { StationNavigation } from "@/data/stations/navigation";
 import type { Station } from "@/data/stations/registry";
+
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
@@ -35,17 +37,20 @@ const {
   </div>
 
   <div
-    class="station-shell w-full lg:grid lg:px-8 xl:px-12 2xl:px-16"
+    class="station-shell w-full min-w-0 lg:grid lg:px-8 xl:px-12 2xl:px-16"
     data-station-shell
   >
     <StationSidebar currentPath={currentPath} navigation={navigation} />
 
     <main
       id="main-content"
-      class="min-w-0 px-5 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16 xl:px-20 2xl:px-24"
+      class="max-w-full min-w-0 overflow-x-hidden px-5 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16 xl:px-20 2xl:px-24"
     >
       <article
-        class:list={["w-full", immersive ? "max-w-6xl" : "max-w-5xl"]}
+        class:list={[
+          "w-full max-w-full min-w-0",
+          immersive ? "lg:max-w-6xl" : "lg:max-w-5xl",
+        ]}
         aria-labelledby="station-room-title"
       >
         {
@@ -65,7 +70,12 @@ const {
           )
         }
 
-        <div class:list={["station-content", !immersive && "mt-10"]}>
+        <div
+          class:list={[
+            "station-content w-full max-w-full min-w-0",
+            !immersive && "mt-10",
+          ]}
+        >
           <slot />
         </div>
       </article>
@@ -78,6 +88,29 @@ const {
 <style>
   .station-shell {
     min-height: calc(100dvh - 5rem);
+  }
+
+  .station-content :global(*) {
+    box-sizing: border-box;
+  }
+
+  .station-content :global(img),
+  .station-content :global(video),
+  .station-content :global(canvas),
+  .station-content :global(svg) {
+    max-width: 100%;
+  }
+
+  .station-content :global(figure) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .station-content :global(pre) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .station-content :global(h2) {
@@ -103,6 +136,7 @@ const {
     color: var(--color-muted);
     font-size: 1rem;
     line-height: 1.75;
+    overflow-wrap: break-word;
   }
 
   .station-content :global(p + p) {
@@ -113,6 +147,7 @@ const {
   .station-content :global(ol) {
     display: grid;
     gap: 1rem;
+    max-width: 100%;
     margin-top: 1.5rem;
     padding-left: 1.25rem;
   }
@@ -136,6 +171,7 @@ const {
     border-radius: 0.125rem;
     color: var(--color-brand);
     font-weight: 700;
+    overflow-wrap: anywhere;
     text-decoration-color: var(--color-accent);
     text-decoration-line: underline;
     text-decoration-thickness: 2px;
@@ -169,6 +205,13 @@ const {
 
     .station-content :global(h2) {
       font-size: 1.875rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .station-content :global(p a),
+    .station-content :global(li a) {
+      transition: none;
     }
   }
 </style>

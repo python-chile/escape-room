@@ -1,6 +1,9 @@
 <style is:global>
   .station-content pre:not([data-python-output]) {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin-top: 1.5rem;
     overflow: hidden;
     border: 1px solid rgb(16 29 39 / 18%);
@@ -10,8 +13,10 @@
 
   .station-content pre:not([data-python-output]) .code-header {
     display: flex;
+    min-width: 0;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     min-height: 2.5rem;
     padding: 0.4rem 0.75rem;
     border-bottom: 1px solid rgb(16 29 39 / 10%);
@@ -19,26 +24,49 @@
   }
 
   .station-content pre:not([data-python-output]) .code-lang {
+    overflow: hidden;
+    color: var(--color-brand);
     font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.12em;
-    color: var(--color-brand);
+    text-overflow: ellipsis;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .station-content pre:not([data-python-output]) code {
     display: block;
-    min-width: max-content;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     overflow-x: auto;
     padding: 1rem 1.1rem;
     background: transparent !important;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.8;
+    white-space: pre;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .station-content pre:not([data-python-output]) code::-webkit-scrollbar {
+    height: 0.45rem;
+  }
+
+  .station-content pre:not([data-python-output]) code::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .station-content pre:not([data-python-output]) code::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgb(100 116 139 / 35%);
   }
 
   .station-content :not(pre) > code {
+    max-width: 100%;
     border-bottom: 2px solid var(--color-accent);
     background: #edf4ff;
     padding: 0.1rem 0.3rem;
@@ -46,6 +74,7 @@
     font-family: var(--font-mono);
     font-size: 0.9em;
     font-weight: 600;
+    overflow-wrap: anywhere;
   }
 
   .station-content pre:not([data-python-output]) + p,
@@ -59,6 +88,7 @@
     display: grid;
     width: 1.75rem;
     height: 1.75rem;
+    flex-shrink: 0;
     place-items: center;
     border: 1px solid rgb(16 29 39 / 15%);
     border-radius: 0.35rem;
@@ -115,6 +145,30 @@
     opacity: 1;
     transform: scale(1);
   }
+
+  @media (max-width: 39.999rem) {
+    .station-content pre:not([data-python-output]) {
+      border-radius: 0.4rem;
+    }
+
+    .station-content pre:not([data-python-output]) code {
+      padding: 0.9rem;
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .station-content pre:not([data-python-output]) .code-header {
+      padding-right: 0.6rem;
+      padding-left: 0.6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .copy-btn,
+    .copy-btn svg {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -149,32 +203,68 @@
         header.className = "code-header";
 
         const languageLabel = document.createElement("span");
+
         languageLabel.className = "code-lang";
         languageLabel.textContent = language;
 
         const copyButton = document.createElement("button");
+
         copyButton.type = "button";
         copyButton.className = "copy-btn";
+
         copyButton.setAttribute("aria-label", "Copiar código");
+
         copyButton.setAttribute("title", "Copiar código");
+
         copyButton.innerHTML = `
-          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="12" height="12" rx="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          <svg
+            class="icon"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect
+              x="9"
+              y="9"
+              width="12"
+              height="12"
+              rx="2"
+            ></rect>
+
+            <path
+              d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+            ></path>
           </svg>
-          <svg class="check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
+
+          <svg
+            class="check"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline
+              points="20 6 9 17 4 12"
+            ></polyline>
           </svg>
         `;
 
         copyButton.addEventListener("click", async () => {
           try {
             await copyText(code.textContent ?? "");
+
             copyButton.classList.add("is-copied");
+
             copyButton.setAttribute("aria-label", "Código copiado");
 
             window.setTimeout(() => {
               copyButton.classList.remove("is-copied");
+
               copyButton.setAttribute("aria-label", "Copiar código");
             }, 1_400);
           } catch {
@@ -191,5 +281,6 @@
   }
 
   setupCodeBlocks();
+
   document.addEventListener("astro:page-load", setupCodeBlocks);
 </script>

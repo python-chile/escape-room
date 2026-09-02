@@ -1,19 +1,107 @@
-<div hidden class="mt-8" data-python-chart-container>
-  <div class="flex items-center gap-2">
-    <span class="text-brand font-mono text-sm font-bold" aria-hidden="true">
-      ✦
-    </span>
+<section
+  id="python-chart-panel"
+  hidden
+  role="tabpanel"
+  class="bg-panel min-h-56 p-5"
+  data-python-terminal-panel="chart"
+  data-python-chart-container
+>
+  <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <span class="text-brand font-mono text-sm font-bold" aria-hidden="true">
+        ✦
+      </span>
 
-    <div class="text-muted font-mono text-xs font-bold tracking-widest">
-      GRÁFICO GENERADO
+      <span class="text-brand font-mono text-xs font-bold tracking-widest">
+        GRÁFICO GENERADO
+      </span>
     </div>
-  </div>
 
-  <div class="border-line shadow-panel mt-3 overflow-hidden border bg-white">
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        class="text-brand hover:bg-brand/10 focus-visible:outline-brand inline-flex min-h-10 items-center gap-2 px-3 text-sm font-bold transition-colors focus-visible:outline-2"
+        data-python-chart-expand
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 20 20"
+          class="size-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 3H3v4"></path>
+          <path d="m3 3 5 5"></path>
+          <path d="M13 17h4v-4"></path>
+          <path d="m17 17-5-5"></path>
+        </svg>
+
+        Ampliar
+      </button>
+
+      <button
+        type="button"
+        class="text-brand hover:bg-brand/10 focus-visible:outline-brand inline-flex min-h-10 items-center gap-2 px-3 text-sm font-bold transition-colors focus-visible:outline-2"
+        data-python-chart-download
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 20 20"
+          class="size-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M10 3v9"></path>
+          <path d="m6.5 8.5 3.5 3.5 3.5-3.5"></path>
+          <path d="M4 16h12"></path>
+        </svg>
+
+        Descargar PNG
+      </button>
+    </div>
+  </header>
+
+  <div
+    class="border-line flex min-h-80 items-center justify-center overflow-hidden border bg-white p-3"
+  >
     <img
       alt="Gráfico generado por Python"
-      class="w-full bg-white"
+      class="max-h-screen w-full bg-white object-contain"
       data-python-chart
     />
   </div>
-</div>
+</section>
+
+<dialog
+  class="backdrop:bg-ink/55 m-auto w-full max-w-5xl border-0 bg-transparent p-5"
+  data-python-chart-dialog
+>
+  <div class="border-line bg-paper border p-4 shadow-xl">
+    <header class="mb-4 flex items-center justify-between">
+      <span class="text-ink font-mono text-sm font-bold">
+        Gráfico generado
+      </span>
+
+      <button
+        type="button"
+        class="text-muted hover:bg-ink/5 hover:text-ink grid size-10 place-items-center transition-colors"
+        aria-label="Cerrar gráfico"
+        data-python-chart-dialog-close
+      >
+        ✕
+      </button>
+    </header>
+
+    <img
+      alt="Vista ampliada del gráfico generado por Python"
+      class="max-h-screen w-full bg-white object-contain"
+      data-python-chart-dialog-image
+    />
+  </div>
+</dialog>
