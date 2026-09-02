@@ -1,29 +1,27 @@
 ---
-title: "Bienvenida"
+title: Bienvenida
 order: 0
 ---
 
-import StationCallout from "@/components/station/content/Callout.astro";
-import StationStartLink from "@/components/station/navigation/StartLink.astro";
+import StationWelcome from "@/components/station/welcome/StationWelcome.astro";
 
-## Bienvenido al Laboratorio Oak
-
-El Profesor Oak necesita tu ayuda. Su sistema de investigación Pokémon se apagó después de una falla en el laboratorio.
-
-Durante esta aventura aprenderás Python aplicado al análisis de datos mientras restauras los sistemas del laboratorio.
-
-<StationCallout title="🧪 Tu misión">
-  Explora datos de Pokémon, resuelve desafíos con Python y recupera los
-  registros del laboratorio.
-</StationCallout>
-
-## Objetivos
-
-- Introducir conceptos esenciales de Python aplicados al análisis de datos.
-- Aprender a trabajar con conjuntos de datos reales y entender su estructura.
-- Desarrollar habilidades de exploración, visualización y análisis de información.
-- Escribir y ejecutar código directamente en el navegador, sin instalaciones adicionales.
-
-<StationStartLink href="/estaciones/02-laboratorio-oak/00-inicio">
-  Iniciar Laboratorio Oak
-</StationStartLink>
+<StationWelcome
+  mission="MISIÓN 02"
+  station="LABORATORIO OAK"
+  status="REGISTROS DESCONECTADOS"
+  titleBefore="El "
+  titleAccent="laboratorio"
+  titleAfter=" perdió sus datos."
+  description="Una falla apagó el sistema de investigación del Profesor Oak. Usa Python para explorar los registros Pokémon y restaurar el laboratorio."
+  objectives={[
+    "Introducir los conceptos esenciales de Python aplicados al análisis de datos.",
+    "Aprender a trabajar con conjuntos de datos reales y entender su estructura.",
+    "Desarrollar habilidades de exploración, visualización y análisis de información.",
+    "Escribir y ejecutar código directamente en el navegador, sin instalaciones adicionales.",
+  ]}
+  href="/estaciones/02-laboratorio-oak/00-inicio"
+  actionLabel="Iniciar Laboratorio Oak"
+  roomCount={5}
+  accent="#ef2b1b"
+  variant="lab"
+/>

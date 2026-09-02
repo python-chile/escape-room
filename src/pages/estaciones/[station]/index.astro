@@ -36,7 +36,6 @@ export async function getStaticPaths() {
 
 const { entry, stationConfig } = Astro.props;
 const { Content } = await render(entry);
-
 const navigation = await getStationNavigation(stationConfig);
 ---
 
@@ -45,6 +44,7 @@ const navigation = await getStationNavigation(stationConfig);
   navigation={navigation}
   station={stationConfig}
   title={entry.data.title}
+  immersive
 >
   <Content />
 </StationLayout>

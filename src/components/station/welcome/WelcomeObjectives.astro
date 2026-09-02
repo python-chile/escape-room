@@ -1,0 +1,52 @@
+---
+interface Props {
+  objectives: string[];
+}
+
+const { objectives } = Astro.props;
+---
+
+<section class="mt-18 pt-6" aria-labelledby="mission-objectives-title">
+  <header class="max-w-2xl">
+    <h2
+      id="mission-objectives-title"
+      class="text-ink mt-4! text-3xl! font-bold tracking-tight sm:text-4xl!"
+    >
+      Objetivos de la misión
+    </h2>
+
+    <div class="text-muted mt-5 max-w-xl text-base leading-7 sm:text-lg">
+      Estas son las habilidades que desarrollarás durante el recorrido.
+    </div>
+  </header>
+
+  <div
+    class="mt-14 grid gap-x-20 gap-y-16 md:grid-cols-2 xl:gap-x-28 xl:gap-y-20"
+    role="list"
+    aria-label="Objetivos de aprendizaje"
+  >
+    {
+      objectives.map((objective, index) => (
+        <div class="relative min-h-36 pt-3 pl-20" role="listitem">
+          <span
+            aria-hidden="true"
+            class="font-sketch absolute top-0 left-0 text-6xl leading-none font-bold"
+            style={`color: color-mix(in srgb, var(--station-accent) 20%, transparent)`}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+
+          <div class="text-ink max-w-xl text-lg leading-8 font-semibold">
+            {objective}
+          </div>
+
+          <span
+            aria-hidden="true"
+            class="mt-6 block h-1 w-12 -rotate-1 rounded-full"
+            style="background-color: var(--station-accent)"
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>

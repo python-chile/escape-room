@@ -11,9 +11,16 @@ interface Props {
   navigation: StationNavigation;
   station: Station;
   title: string;
+  immersive?: boolean;
 }
 
-const { currentPath, navigation, station, title } = Astro.props;
+const {
+  currentPath,
+  navigation,
+  station,
+  title,
+  immersive = false,
+} = Astro.props;
 ---
 
 <BaseLayout
@@ -37,21 +44,28 @@ const { currentPath, navigation, station, title } = Astro.props;
       id="main-content"
       class="min-w-0 px-5 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16 xl:px-20 2xl:px-24"
     >
-      <article class="w-full max-w-5xl" aria-labelledby="station-room-title">
-        <p
-          class="text-accent-dark mb-4 font-mono text-xs font-bold tracking-widest uppercase lg:hidden"
-        >
-          {navigation.title}
-        </p>
+      <article
+        class:list={["w-full", immersive ? "max-w-6xl" : "max-w-5xl"]}
+        aria-labelledby="station-room-title"
+      >
+        {
+          !immersive && (
+            <>
+              <p class="text-accent-dark mb-4 font-mono text-xs font-bold tracking-widest uppercase lg:hidden">
+                {navigation.title}
+              </p>
 
-        <h1
-          id="station-room-title"
-          class="text-brand lg:text-ink text-4xl font-bold tracking-tight sm:text-5xl"
-        >
-          {title}
-        </h1>
+              <h1
+                id="station-room-title"
+                class="text-brand lg:text-ink text-4xl font-bold tracking-tight sm:text-5xl"
+              >
+                {title}
+              </h1>
+            </>
+          )
+        }
 
-        <div class="station-content mt-10">
+        <div class:list={["station-content", !immersive && "mt-10"]}>
           <slot />
         </div>
       </article>

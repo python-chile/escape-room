@@ -1,0 +1,140 @@
+---
+interface Props {
+  variant: "space" | "lab";
+}
+
+const { variant } = Astro.props;
+---
+
+<div
+  class="relative mx-auto h-56 w-full max-w-md sm:h-64 lg:h-80"
+  style="color: var(--station-accent)"
+  aria-hidden="true"
+>
+  {
+    variant === "space" ? (
+      <div class="absolute inset-0">
+        <span class="orbit orbit-primary" />
+        <span class="orbit orbit-secondary" />
+
+        <span class="absolute top-7 left-10 text-2xl">✦</span>
+        <span class="absolute right-8 bottom-8 text-xl">✦</span>
+
+        <span class="bg-muted absolute bottom-10 left-7 size-2 rounded-full" />
+
+        <span class="absolute top-5 right-10 size-2 rounded-full border-2" />
+
+        <div class="text-muted absolute top-1/2 left-1/2 size-20 -translate-x-1/2 -translate-y-1/2">
+          <svg
+            viewBox="0 0 64 64"
+            class="size-full"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="17" y="17" width="30" height="30" rx="7" />
+            <rect x="26" y="26" width="12" height="12" rx="2" />
+
+            <path d="M23 10v7M32 10v7M41 10v7" />
+            <path d="M23 47v7M32 47v7M41 47v7" />
+            <path d="M10 23h7M10 32h7M10 41h7" />
+            <path d="M47 23h7M47 32h7M47 41h7" />
+          </svg>
+        </div>
+
+        <span class="orbit-signal" />
+      </div>
+    ) : (
+      <div class="absolute inset-0">
+        <span class="lab-path lab-path-one" />
+        <span class="lab-path lab-path-two" />
+
+        <span class="bg-paper absolute top-8 left-12 size-4 rounded-full border-2" />
+        <span class="bg-paper absolute right-10 bottom-12 size-4 rounded-full border-2" />
+        <span class="bg-accent absolute bottom-7 left-24 size-4 rounded-full border-2" />
+
+        <div class="text-muted absolute top-1/2 left-1/2 size-24 -translate-x-1/2 -translate-y-1/2">
+          <svg
+            viewBox="0 0 64 64"
+            class="size-full"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M25 8h14" />
+
+            <path d="M28 8v17L15 47a6 6 0 0 0 5 9h24a6 6 0 0 0 5-9L36 25V8" />
+
+            <path d="M21 43h22" />
+            <circle cx="28" cy="48" r="2" />
+            <circle cx="37" cy="39" r="2" />
+          </svg>
+        </div>
+
+        <div class="absolute right-8 bottom-8 flex h-14 items-end gap-1.5">
+          <span class="h-5 w-2 rounded-t-sm bg-current" />
+          <span class="h-10 w-2 rounded-t-sm bg-current" />
+          <span class="h-7 w-2 rounded-t-sm bg-current" />
+          <span class="h-14 w-2 rounded-t-sm bg-current" />
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 48%;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .orbit-primary {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) rotate(-12deg);
+  }
+
+  .orbit-secondary {
+    opacity: 0.45;
+    border-style: dashed;
+    transform: translate(-50%, -50%) rotate(10deg);
+  }
+
+  .orbit-signal {
+    position: absolute;
+    top: 43%;
+    right: 5%;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 3px solid var(--color-paper);
+    border-radius: 999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 1px currentColor;
+  }
+
+  .lab-path {
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    border-top: 1px dashed currentColor;
+    opacity: 0.5;
+  }
+
+  .lab-path-one {
+    top: 40%;
+    transform: rotate(14deg);
+  }
+
+  .lab-path-two {
+    top: 58%;
+    transform: rotate(-12deg);
+  }
+</style>
