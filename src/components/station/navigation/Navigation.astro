@@ -27,7 +27,7 @@ function getItemMarker(item: StationNavigationItem) {
     return "✦";
   }
 
-  return item.label.match(/\d{2}/)?.[0] ?? "•";
+  return item.marker ?? "•";
 }
 ---
 
