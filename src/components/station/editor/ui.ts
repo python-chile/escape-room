@@ -1,8 +1,11 @@
 import type { PythonEditorElements } from "./dom";
 import { getPythonErrorHelp } from "./python-error-help";
+import { selectPythonTerminalTab } from "./terminal";
 
 export type PythonEditorUi = {
+  addLog: (message: string) => void;
   clearChart: () => void;
+  clearTerminal: () => void;
   hideNextLink: () => void;
   prepareRun: () => void;
   resetCode: (isReady: boolean) => void;
@@ -25,20 +28,22 @@ export function createPythonEditorUi(
   let lastResult = "";
   let lastStatus: "success" | "error" | undefined;
 
+  function addLog(message: string) {
+    const time = new Date().toLocaleTimeString("es-CL", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    const entry = `[${time}] ${message}`;
+
+    elements.logs.textContent = elements.logs.textContent
+      ? `${elements.logs.textContent}\n${entry}`
+      : entry;
+  }
+
   function clearCelebration() {
     delete document.documentElement.dataset.pyschoolCelebrated;
-  }
-
-  function showResults() {
-    elements.results.hidden = false;
-    elements.results.classList.add("flex");
-    elements.workspace.classList.add("python-workspace--with-results");
-  }
-
-  function hideResults() {
-    elements.results.hidden = true;
-    elements.results.classList.remove("flex");
-    elements.workspace.classList.remove("python-workspace--with-results");
   }
 
   function hideErrorHelp() {
@@ -62,50 +67,67 @@ export function createPythonEditorUi(
     }
 
     elements.errorHelpName.textContent = help.errorName;
+
     elements.errorHelpExplanation.textContent = help.explanation;
+
     elements.errorHelpSuggestion.textContent = help.suggestion;
+
     elements.errorHelp.hidden = false;
-  }
-
-  function clearOutput() {
-    lastResult = "";
-    lastStatus = undefined;
-
-    elements.output.textContent = "";
-    elements.feedback.hidden = true;
-
-    hideErrorHelp();
-    hideNextLink();
-    clearChart();
-    hideResults();
-    clearCelebration();
   }
 
   function clearChart() {
     elements.chart.removeAttribute("src");
+
+    elements.chartDialogImage.removeAttribute("src");
+
     elements.chartContainer.hidden = true;
+    elements.chartTab.hidden = true;
+
+    selectPythonTerminalTab(elements, "output");
   }
 
   function hideNextLink() {
     elements.nextLink.hidden = true;
   }
 
+  function clearTerminal() {
+    lastResult = "";
+    lastStatus = undefined;
+
+    elements.output.textContent = "";
+    elements.logs.textContent = "";
+    elements.outputCount.hidden = true;
+    elements.feedback.hidden = true;
+
+    hideErrorHelp();
+    hideNextLink();
+    clearChart();
+    clearCelebration();
+  }
+
   return {
+    addLog,
     clearChart,
+    clearTerminal,
     hideNextLink,
 
     prepareRun() {
       elements.runButton.disabled = true;
+
       elements.statusText.textContent = "Cargando entorno…";
-      clearOutput();
+
+      clearTerminal();
+      addLog("Preparando ejecución");
     },
 
     resetCode(isReady) {
-      clearOutput();
+      clearTerminal();
 
       elements.statusText.textContent = isReady
         ? "Listo para ejecutar"
         : "Preparando entorno…";
+
+      addLog("Código restablecido");
     },
 
     setErrorHelpEnabled(enabled) {
@@ -115,30 +137,49 @@ export function createPythonEditorUi(
 
     setReady() {
       elements.runButton.disabled = false;
+
       elements.statusText.textContent = "Listo para ejecutar";
+
+      addLog("Entorno Python listo");
     },
 
     setRunning() {
       elements.statusText.textContent = "Ejecutando…";
+
+      addLog("Ejecución iniciada");
     },
 
     showChart(chart) {
-      elements.chart.src = `data:image/png;base64,${chart}`;
+      const source = `data:image/png;base64,${chart}`;
+
+      elements.chart.src = source;
+      elements.chartDialogImage.src = source;
+
       elements.chartContainer.hidden = false;
+      elements.chartTab.hidden = false;
+
+      selectPythonTerminalTab(elements, "chart");
+
+      addLog("Gráfico generado");
     },
 
     showExecutionTimeout(executionTime) {
       lastResult = "";
       lastStatus = undefined;
 
-      showResults();
-      hideErrorHelp();
+      clearChart();
 
       elements.statusText.textContent = "Detenido por tiempo máximo";
 
-      elements.output.textContent = `La ejecución superó los ${
+      elements.output.textContent = `La ejecución superó ${
         executionTime / 1_000
       } segundos y fue detenida.`;
+
+      elements.outputCount.hidden = false;
+
+      selectPythonTerminalTab(elements, "output");
+
+      addLog("Ejecución detenida por tiempo máximo");
     },
 
     showFeedback(message, passed) {
@@ -154,18 +195,24 @@ export function createPythonEditorUi(
       lastResult = "";
       lastStatus = undefined;
 
-      showResults();
-      hideErrorHelp();
+      clearChart();
 
       elements.statusText.textContent = "No se pudo cargar el entorno";
 
       elements.output.textContent =
         "La carga de Python o de los datos tardó demasiado. Inténtalo nuevamente.";
+
+      elements.outputCount.hidden = false;
+
+      selectPythonTerminalTab(elements, "output");
+
+      addLog("Tiempo de carga agotado");
     },
 
     showNextLink(href, label) {
       elements.nextLink.href = href;
       elements.nextLink.textContent = `${label} →`;
+
       elements.nextLink.hidden = false;
     },
 
@@ -173,15 +220,21 @@ export function createPythonEditorUi(
       lastResult = result;
       lastStatus = status;
 
-      showResults();
-
-      // El mensaje original de Python siempre se conserva.
       elements.output.textContent = result;
+      elements.outputCount.hidden = false;
 
       elements.statusText.textContent =
         status === "success" ? "Ejecución terminada" : "Error";
 
       elements.runButton.disabled = false;
+
+      selectPythonTerminalTab(elements, "output");
+
+      addLog(
+        status === "success"
+          ? "Ejecución completada"
+          : "La ejecución terminó con errores",
+      );
 
       updateErrorHelp();
     },
@@ -190,14 +243,18 @@ export function createPythonEditorUi(
       lastResult = "";
       lastStatus = undefined;
 
-      showResults();
-      hideErrorHelp();
+      clearChart();
 
       elements.output.textContent =
         error instanceof Error ? error.message : "Ocurrió un error inesperado.";
 
+      elements.outputCount.hidden = false;
       elements.statusText.textContent = "Error";
       elements.runButton.disabled = false;
+
+      selectPythonTerminalTab(elements, "output");
+
+      addLog("Ocurrió un error inesperado");
     },
   };
 }

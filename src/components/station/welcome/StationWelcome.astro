@@ -1,0 +1,61 @@
+---
+import WelcomeFooter from "./WelcomeFooter.astro";
+import WelcomeHero from "./WelcomeHero.astro";
+import WelcomeObjectives from "./WelcomeObjectives.astro";
+
+interface Props {
+  mission: string;
+  station: string;
+  status: string;
+  titleBefore: string;
+  titleAccent: string;
+  titleAfter: string;
+  description: string;
+  objectives: string[];
+  href: string;
+  actionLabel: string;
+  roomCount: number;
+  accent: string;
+  variant: "space" | "lab";
+}
+
+const {
+  mission,
+  station,
+  status,
+  titleBefore,
+  titleAccent,
+  titleAfter,
+  description,
+  objectives,
+  href,
+  actionLabel,
+  roomCount,
+  accent,
+  variant,
+} = Astro.props;
+---
+
+<section
+  class="station-welcome relative isolate w-full overflow-hidden"
+  style={`--station-accent: ${accent}`}
+  aria-labelledby="station-room-title"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+  </div>
+
+  <WelcomeHero
+    mission={mission}
+    station={station}
+    status={status}
+    titleBefore={titleBefore}
+    titleAccent={titleAccent}
+    titleAfter={titleAfter}
+    description={description}
+    variant={variant}
+  />
+
+  <WelcomeObjectives objectives={objectives} />
+
+  <WelcomeFooter href={href} actionLabel={actionLabel} roomCount={roomCount} />
+</section>

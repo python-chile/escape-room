@@ -11,22 +11,68 @@ interface Props {
 const { currentPath, navigation } = Astro.props;
 ---
 
-<aside class="border-ink/10 hidden border-r lg:block">
-  <div class="sticky top-0 h-dvh px-6 py-10">
+<aside
+  aria-label="Panel de navegación de la estación"
+  class="desktop-sidebar border-ink/10 bg-paper relative hidden border-r lg:block"
+>
+  <div class="sidebar-content sticky top-0 px-6 py-10">
     <Navigation currentPath={currentPath} navigation={navigation} />
   </div>
 </aside>
 
 <details
-  class="border-ink bg-paper mb-10 border-2 shadow-[3px_3px_0_0_#101d27] lg:hidden"
+  class="mobile-sidebar border-brand bg-paper mx-5 mt-6 overflow-hidden rounded-lg border sm:mx-10 lg:hidden"
 >
   <summary
-    class="text-ink cursor-pointer px-4 py-3 font-mono text-xs font-bold tracking-widest"
+    class="text-brand focus-visible:outline-brand flex min-h-14 cursor-pointer list-none items-center justify-center gap-3 px-5 font-mono text-sm font-bold tracking-widest focus-visible:outline-2 focus-visible:outline-offset-2"
   >
-    VER RECORRIDO
+    <span>VER RECORRIDO</span>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      class="size-5 transition-transform duration-200"
+    >
+      <path
+        d="m5 7.5 5 5 5-5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
   </summary>
 
-  <div class="border-ink border-t-2 p-5">
+  <div class="border-brand border-t p-5">
     <Navigation currentPath={currentPath} navigation={navigation} />
   </div>
 </details>
+
+<style>
+  .desktop-sidebar,
+  .sidebar-content {
+    min-width: 0;
+  }
+
+  .desktop-sidebar {
+    min-height: calc(100dvh - 5rem);
+  }
+
+  .sidebar-content {
+    height: calc(100dvh - 5rem);
+  }
+
+  .mobile-sidebar summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-sidebar[open] summary svg {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-sidebar summary svg {
+      transition: none;
+    }
+  }
+</style>

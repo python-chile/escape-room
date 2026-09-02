@@ -6,16 +6,19 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<details class="group relative" data-station-hint>
+<details
+  class="group border-line-soft overflow-hidden border bg-white"
+  data-station-hint
+>
   <summary
-    class="text-muted hover:bg-accent/25 hover:text-ink flex h-10 cursor-pointer list-none items-center gap-2 px-3 font-mono text-xs font-bold tracking-widest uppercase transition-colors"
+    class="text-muted hover:bg-accent/20 hover:text-ink flex min-h-12 cursor-pointer list-none items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest uppercase transition-colors"
   >
-    <span class="text-brand" aria-hidden="true">✦</span>
+    <span class="text-brand" aria-hidden="true"> ✦ </span>
 
-    {title}
+    <span>{title}</span>
 
     <span
-      class="ml-1 text-base font-normal transition-transform group-open:rotate-45"
+      class="ml-auto text-base font-normal transition-transform group-open:rotate-45"
       aria-hidden="true"
     >
       +
@@ -23,8 +26,17 @@ const { title } = Astro.props;
   </summary>
 
   <div
-    class="border-ink/20 text-muted shadow-action absolute bottom-full left-0 z-20 mb-3 w-64 border bg-white p-4 text-base leading-7 sm:w-80"
+    class="hint-content border-line-soft text-muted border-t px-4 py-4 text-sm leading-7"
+    data-station-hint-content
   >
     <slot />
   </div>
 </details>
+
+<style>
+  .hint-content[data-embedded="true"] {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+</style>

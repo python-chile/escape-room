@@ -1,0 +1,52 @@
+---
+import { withBase } from "@/lib/paths";
+
+interface Props {
+  size?: "normal" | "compact";
+}
+
+const { size = "normal" } = Astro.props;
+
+const isCompact = size === "compact";
+
+const homeUrl = withBase("/");
+const logoUrl = withBase("/brand/pythonchile.png");
+---
+
+<a
+  href={homeUrl}
+  aria-label="Ir a la portada de PySchool"
+  title="Ir a la portada de PySchool"
+  class="python-chile-brand focus-visible:outline-brand inline-flex shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+>
+  <img
+    src={logoUrl}
+    alt=""
+    aria-hidden="true"
+    width="1920"
+    height="611"
+    loading="eager"
+    decoding="async"
+    class:list={[
+      "w-auto object-contain",
+      isCompact ? "h-7 sm:h-9" : "h-9 sm:h-10",
+    ]}
+  />
+</a>
+
+<style>
+  .python-chile-brand {
+    transition: transform 250ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .python-chile-brand:hover,
+  .python-chile-brand:focus-visible {
+    transform: scale(1.04) rotate(-1deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .python-chile-brand {
+      transition: none;
+    }
+  }
+</style>

@@ -27,21 +27,28 @@ const accountHref = withBase("/cuenta");
   <a
     hidden
     href={accountHref}
-    class="text-ink hover:border-accent hover:text-brand focus-visible:outline-brand inline-flex items-center gap-2 border-b-2 border-transparent px-1 py-1.5 font-mono text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+    class="group focus-visible:outline-brand inline-flex items-center gap-2.5 rounded-md px-1 py-2 focus-visible:outline-2 focus-visible:outline-offset-4"
     data-github-account
   >
     <img
       src=""
       alt=""
-      width="28"
-      height="28"
-      class="border-ink/10 size-7 rounded-full border object-cover"
+      width="32"
+      height="32"
+      class="border-ink/10 size-8 rounded-full border object-cover transition-transform duration-200 motion-safe:group-hover:scale-105"
       data-github-avatar
     />
 
-    <span class="hidden max-w-28 truncate sm:block" data-github-name></span>
+    <span class="relative hidden pb-1 sm:block">
+      <span
+        class="text-ink group-hover:text-brand block max-w-28 truncate text-sm font-bold transition-colors"
+        data-github-name></span>
 
-    <span aria-hidden="true" class="text-brand">→</span>
+      <span
+        aria-hidden="true"
+        class="bg-accent absolute right-0 bottom-0 left-0 h-0.5 origin-left scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100"
+      ></span>
+    </span>
   </a>
 
   <script>

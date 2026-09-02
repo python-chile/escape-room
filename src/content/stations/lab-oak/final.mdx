@@ -3,33 +3,29 @@ title: "Habitación final"
 order: 6
 ---
 
-## 🌟 Misión cumplida
+import StationFinale from "@/components/station/content/StationFinale.astro";
 
-La última puerta se abre lentamente.
-
-Sientes una brisa fresca y el sonido de la naturaleza vuelve a rodearte.
-
-Has logrado superar todos los desafíos del Laboratorio del Profesor Oak. No solo atrapaste datos: aprendiste a analizarlos, entenderlos y usarlos a tu favor.
-
-<div class="mt-8 border border-brand/20 bg-brand/5 p-6 text-center">
-  <p class="font-mono text-sm font-bold tracking-widest text-brand">
-    MENSAJE DEL PROFESOR OAK
-  </p>
-
-  <p class="mt-4 text-lg font-bold leading-relaxed text-ink">
-    “Los verdaderos Maestros Pokémon no solo entrenan en batalla… también dominan el poder de los datos.”
-  </p>
-</div>
-
-Sabes que esta aventura no fue solo un juego.
-
-Diste tus primeros pasos como Científico de Datos Pokémon.
-
-**Y esto es solo el comienzo.**
-
-<a
-  href={import.meta.env.BASE_URL}
-  class="bg-brand hover:bg-brand-dark mt-10 inline-flex rounded-lg px-5 py-3 font-bold text-white transition-colors"
->
-  Volver al inicio
-</a>
+<StationFinale
+  title="¡Misión cumplida!"
+  introduction={[
+    "La última puerta se abre lentamente.",
+    "Sientes una brisa fresca y el sonido de la naturaleza vuelve a rodearte.",
+    "Has logrado superar todos los desafíos del Laboratorio del Profesor Oak. No solo atrapaste datos: aprendiste a analizarlos, entenderlos y usarlos a tu favor.",
+  ]}
+  image="/stations/lab-oak/sala-final.webp"
+  imageAlt="Laboratorio del Profesor Oak restaurado después de completar la misión"
+  sectionTitle="El laboratorio vuelve a estar en línea"
+  story={[
+    "Sabes que esta aventura no fue solo un juego.",
+    "Diste tus primeros pasos como Científico de Datos Pokémon.",
+    "Y esto es solo el comienzo.",
+  ]}
+  message={{
+    label: "Mensaje del Profesor Oak",
+    text: "Los verdaderos Maestros Pokémon no solo entrenan en batalla… también dominan el poder de los datos.",
+  }}
+  transmission="El Laboratorio Oak vuelve a estar en funcionamiento."
+  primaryHref="/#estaciones"
+  primaryLabel="Volver a estaciones"
+  repeatHref="/estaciones/02-laboratorio-oak/00-inicio"
+/>

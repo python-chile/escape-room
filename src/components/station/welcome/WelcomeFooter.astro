@@ -1,0 +1,29 @@
+---
+import StationStartLink from "@/components/station/navigation/StartLink.astro";
+
+interface Props {
+  href: string;
+  actionLabel: string;
+  roomCount: number;
+}
+
+const { href, actionLabel, roomCount } = Astro.props;
+---
+
+<footer
+  class="mt-20 flex w-full flex-col items-start gap-5 pb-8 sm:flex-row sm:items-center sm:justify-between"
+>
+  <StationStartLink href={href}>
+    {actionLabel}
+  </StationStartLink>
+
+  <div
+    class="text-muted flex items-center gap-2 font-mono text-xs font-semibold sm:justify-end"
+  >
+    <span
+      class="size-2 rounded-full"
+      style="background-color: var(--station-accent)"></span>
+
+    <span>{roomCount} habitaciones</span>
+  </div>
+</footer>

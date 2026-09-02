@@ -6,6 +6,7 @@ export type StationNavigationItem = {
   label: string;
   href: string;
   type: "welcome" | "room" | "final";
+  marker?: string;
 };
 
 export type StationNavigation = {
@@ -22,6 +23,14 @@ function getEntrySlug(entryId: string): string {
   }
 
   return slug;
+}
+
+function cleanNavigationLabel(title: string): string {
+  return title.replace(/^Habitación\s+\d{2}:\s*/i, "");
+}
+
+function getRoomMarker(slug: string): string | undefined {
+  return slug.match(/^(\d{2})-/)?.[1];
 }
 
 export async function getStationNavigation(
@@ -44,10 +53,13 @@ export async function getStationNavigation(
         };
       }
 
+      const type = slug === "final" ? "final" : "room";
+
       return {
-        label: entry.data.title,
+        label: cleanNavigationLabel(entry.data.title),
         href: `${station.href}/${slug}`,
-        type: slug === "final" ? "final" : "room",
+        type,
+        marker: type === "room" ? getRoomMarker(slug) : undefined,
       };
     });
 

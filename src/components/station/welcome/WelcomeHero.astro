@@ -1,0 +1,51 @@
+---
+import WelcomeVisual from "./WelcomeVisual.astro";
+
+interface Props {
+  mission: string;
+  station: string;
+  status: string;
+  titleBefore: string;
+  titleAccent: string;
+  titleAfter: string;
+  description: string;
+  variant: "space" | "lab";
+}
+
+const { status, titleBefore, titleAccent, titleAfter, description, variant } =
+  Astro.props;
+---
+
+<header class="grid items-center gap-10 lg:grid-cols-5 lg:gap-14">
+  <div class="relative z-10 lg:col-span-3">
+    <div
+      class="mt-6 inline-flex items-center gap-2.5 rounded-md border px-3.5 py-2 font-mono text-xs font-bold tracking-widest"
+      style="color: var(--station-accent); border-color: var(--station-accent)"
+    >
+      <span
+        class="size-2 rounded-full"
+        style="background-color: var(--station-accent)"></span>
+
+      {status}
+    </div>
+
+    <h1
+      id="station-room-title"
+      class="font-sketch text-ink mt-8 max-w-3xl text-5xl leading-none font-bold tracking-tight sm:text-6xl xl:text-7xl"
+    >
+      {titleBefore}<span style="color: var(--station-accent)">
+        {titleAccent}
+      </span>{titleAfter}
+    </h1>
+
+    <div
+      class="text-muted mt-7 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+    >
+      {description}
+    </div>
+  </div>
+
+  <div class="lg:col-span-2">
+    <WelcomeVisual variant={variant} />
+  </div>
+</header>
