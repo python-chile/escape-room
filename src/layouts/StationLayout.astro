@@ -22,22 +22,31 @@ const { currentPath, navigation, station, title } = Astro.props;
   bodyClass="text-ink"
 >
   <div class="border-ink/10 bg-paper border-b">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+    <div class="px-5 sm:px-10 lg:px-8 xl:px-12 2xl:px-16">
       <StationHeader stationId={station.id} />
     </div>
   </div>
 
-  <div class="station-shell mx-auto w-full max-w-7xl lg:grid">
+  <div
+    class="station-shell w-full lg:grid lg:px-8 xl:px-12 2xl:px-16"
+    data-station-shell
+  >
     <StationSidebar currentPath={currentPath} navigation={navigation} />
 
     <main
       id="main-content"
-      class="min-w-0 px-5 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16"
+      class="min-w-0 px-5 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16 xl:px-20 2xl:px-24"
     >
-      <article class="mx-auto max-w-3xl" aria-labelledby="station-room-title">
+      <article class="w-full max-w-5xl" aria-labelledby="station-room-title">
+        <p
+          class="text-accent-dark mb-4 font-mono text-xs font-bold tracking-widest uppercase lg:hidden"
+        >
+          {navigation.title}
+        </p>
+
         <h1
           id="station-room-title"
-          class="text-ink text-4xl font-bold tracking-tight sm:text-5xl"
+          class="text-brand lg:text-ink text-4xl font-bold tracking-tight sm:text-5xl"
         >
           {title}
         </h1>
@@ -78,8 +87,8 @@ const { currentPath, navigation, station, title } = Astro.props;
   .station-content :global(p),
   .station-content :global(li) {
     color: var(--color-muted);
-    font-size: 1.0625rem;
-    line-height: 1.8;
+    font-size: 1rem;
+    line-height: 1.75;
   }
 
   .station-content :global(p + p) {
@@ -89,7 +98,7 @@ const { currentPath, navigation, station, title } = Astro.props;
   .station-content :global(ul),
   .station-content :global(ol) {
     display: grid;
-    gap: 0.875rem;
+    gap: 1rem;
     margin-top: 1.5rem;
     padding-left: 1.25rem;
   }
@@ -131,9 +140,21 @@ const { currentPath, navigation, station, title } = Astro.props;
     outline-offset: 0.25rem;
   }
 
+  @media (min-width: 40rem) {
+    .station-content :global(p),
+    .station-content :global(li) {
+      font-size: 1.0625rem;
+      line-height: 1.8;
+    }
+  }
+
   @media (min-width: 64rem) {
     .station-shell {
-      grid-template-columns: 19rem minmax(0, 1fr);
+      grid-template-columns: 20rem minmax(0, 1fr);
+    }
+
+    .station-content :global(h2) {
+      font-size: 1.875rem;
     }
   }
 </style>

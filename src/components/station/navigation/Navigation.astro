@@ -3,6 +3,7 @@ import type {
   StationNavigation,
   StationNavigationItem,
 } from "@/data/stations/navigation";
+
 import { withBase } from "@/lib/paths";
 
 interface Props {
@@ -14,7 +15,6 @@ const { currentPath, navigation } = Astro.props;
 
 const links = navigation.items;
 const currentIndex = links.findIndex((item) => item.href === currentPath);
-
 const rooms = links.filter((item) => item.type === "room");
 const totalRooms = rooms.length;
 
@@ -36,7 +36,7 @@ function getItemMarker(item: StationNavigationItem) {
   class="flex flex-col lg:h-full lg:min-h-0"
   data-station-navigation
 >
-  <header class="relative pb-7">
+  <header class="relative pb-8">
     <span
       aria-hidden="true"
       class="font-sketch text-brand/10 absolute top-2 right-2 text-8xl leading-none"
@@ -51,7 +51,7 @@ function getItemMarker(item: StationNavigationItem) {
     </span>
 
     <h2
-      class="font-sketch text-ink relative mt-5 max-w-52 text-4xl leading-[0.85] font-bold"
+      class="station-title font-sketch text-ink relative mt-5 max-w-52 text-4xl font-bold"
     >
       {navigation.title}
     </h2>
@@ -61,17 +61,23 @@ function getItemMarker(item: StationNavigationItem) {
         <p class="text-muted font-mono text-xs font-semibold">progreso local</p>
 
         <p class="text-ink font-mono text-xs font-bold">
-          <span data-station-completed-count>0</span> / {totalRooms}
+          <span data-station-completed-count>0</span>
+          /
+          {totalRooms}
         </p>
       </div>
 
       <div
+        role="progressbar"
+        aria-label={`Progreso de ${navigation.title}`}
+        aria-valuemin="0"
+        aria-valuemax={totalRooms}
+        aria-valuenow="0"
         class="bg-ink/10 mt-2 h-1.5 overflow-hidden rounded-full"
-        aria-label={`Progreso: 0 de ${totalRooms} desafíos completados`}
         data-station-progress
       >
         <div
-          class="bg-brand h-full rounded-full transition-all duration-500"
+          class="station-progress-bar bg-brand h-full rounded-full"
           style="width: 0%"
           data-station-progress-bar
         >
@@ -81,8 +87,7 @@ function getItemMarker(item: StationNavigationItem) {
   </header>
 
   <div
-    class="station-route bg-paper/70 lg:border-ink/10 relative mt-8 lg:-mx-6 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:border-t lg:px-6 lg:pt-6 lg:pb-10"
-    data-station-route
+    class="station-route border-ink/10 relative border-t pt-6 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pb-10"
   >
     <p class="text-muted px-1 font-mono text-xs font-bold tracking-widest">
       RECORRIDO
@@ -103,7 +108,7 @@ function getItemMarker(item: StationNavigationItem) {
                 <span
                   aria-hidden="true"
                   class:list={[
-                    "absolute top-9 left-4 h-[calc(100%-0.5rem)] border-l border-dashed",
+                    "station-route-line absolute top-9 left-4 border-l border-dashed",
                     index < currentIndex ? "border-brand/35" : "border-ink/15",
                   ]}
                 />
@@ -111,6 +116,7 @@ function getItemMarker(item: StationNavigationItem) {
 
               <a
                 href={withBase(item.href)}
+                title={item.label}
                 aria-current={isCurrent ? "page" : undefined}
                 data-station-link
                 data-station-path={item.href}
@@ -122,22 +128,15 @@ function getItemMarker(item: StationNavigationItem) {
               >
                 <span
                   aria-hidden="true"
-                  data-station-marker
                   class:list={[
-                    "text-muted absolute -left-11 grid size-9 place-items-center font-mono text-sm font-bold transition-colors",
+                    "station-marker text-muted absolute -left-11 grid size-9 place-items-center font-mono text-sm font-bold transition-colors",
                     isFinal ? "text-brand" : "group-hover:text-brand",
                   ]}
                 >
                   {marker}
                 </span>
 
-                <span
-                  class:list={[
-                    "relative leading-5",
-                    isCurrent &&
-                      "after:bg-accent after:absolute after:-bottom-1 after:left-0 after:h-1 after:w-full after:-rotate-1 after:content-['']",
-                  ]}
-                >
+                <span class="station-link-label relative leading-5">
                   {item.label}
                 </span>
 
@@ -164,11 +163,11 @@ function getItemMarker(item: StationNavigationItem) {
   function updateNavigation(navigation: HTMLElement) {
     const completedRooms = getCompletedRooms();
 
-    const roomLinks = [
-      ...navigation.querySelectorAll<HTMLAnchorElement>(
+    const roomLinks = Array.from(
+      navigation.querySelectorAll<HTMLAnchorElement>(
         '[data-station-room="true"]',
       ),
-    ];
+    );
 
     const completedCount = roomLinks.filter((link) =>
       completedRooms.has(link.dataset.stationPath ?? ""),
@@ -183,10 +182,7 @@ function getItemMarker(item: StationNavigationItem) {
     navigation
       .querySelectorAll<HTMLElement>("[data-station-progress]")
       .forEach((progress) => {
-        progress.setAttribute(
-          "aria-label",
-          `Progreso: ${completedCount} de ${roomLinks.length} desafíos completados`,
-        );
+        progress.setAttribute("aria-valuenow", String(completedCount));
       });
 
     navigation
@@ -203,7 +199,8 @@ function getItemMarker(item: StationNavigationItem) {
     navigation
       .querySelectorAll<HTMLAnchorElement>("[data-station-link]")
       .forEach((link) => {
-        const isCompleted = completedRooms.has(link.dataset.stationPath ?? "");
+        const path = link.dataset.stationPath ?? "";
+        const isCompleted = completedRooms.has(path);
 
         link.dataset.completed = String(isCompleted);
 
@@ -231,23 +228,47 @@ function getItemMarker(item: StationNavigationItem) {
 </script>
 
 <style>
+  .station-title {
+    line-height: 0.85;
+  }
+
+  .station-progress-bar {
+    transition: width 500ms ease;
+  }
+
+  .station-route-line {
+    height: calc(100% - 0.5rem);
+  }
+
+  .station-link[aria-current="page"] .station-link-label::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.25rem;
+    left: 0;
+    height: 0.25rem;
+    background: var(--color-accent);
+    content: "";
+    transform: rotate(-1deg);
+  }
+
   .station-link[data-completed="true"]:not([aria-current="page"]) {
     color: color-mix(in srgb, var(--color-brand) 70%, var(--color-ink));
   }
 
-  .station-link[data-completed="true"] [data-station-marker] {
+  .station-link[data-completed="true"] .station-marker {
     color: var(--color-brand);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 64rem) {
     .station-route {
-      scrollbar-color: color-mix(in srgb, var(--color-ink) 35%, transparent)
+      padding-right: 0.5rem;
+      scrollbar-color: color-mix(in srgb, var(--color-ink) 30%, transparent)
         transparent;
       scrollbar-width: thin;
     }
 
     .station-route::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
 
     .station-route::-webkit-scrollbar-track {
@@ -255,8 +276,14 @@ function getItemMarker(item: StationNavigationItem) {
     }
 
     .station-route::-webkit-scrollbar-thumb {
-      background: color-mix(in srgb, var(--color-ink) 35%, transparent);
+      background: color-mix(in srgb, var(--color-ink) 30%, transparent);
       border-radius: 999px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .station-progress-bar {
+      transition: none;
     }
   }
 </style>
