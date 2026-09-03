@@ -13,6 +13,10 @@ export type PythonEditorElements = {
   hintCount: HTMLElement;
 
   runButton: HTMLButtonElement;
+  runIdleIcon: HTMLElement;
+  runIdleLabel: HTMLElement;
+  runStopIcon: HTMLElement;
+  runStopLabel: HTMLElement;
   resetButton: HTMLButtonElement;
 
   output: HTMLElement;
@@ -57,7 +61,7 @@ function queryRequiredElement<T extends Element>(
   const element = parent.querySelector<T>(selector);
 
   if (!element) {
-    throw new Error(`No se encontró el elemento: ${selector}`);
+    throw new Error(`No se encontró el elemento requerido: ${selector}`);
   }
 
   return element;
@@ -86,6 +90,14 @@ export function getPythonEditorElements(
     hintCount: queryRequiredElement(editor, "[data-python-hint-count]"),
 
     runButton: queryRequiredElement(editor, "[data-python-run]"),
+
+    runIdleIcon: queryRequiredElement(editor, "[data-python-run-idle-icon]"),
+
+    runIdleLabel: queryRequiredElement(editor, "[data-python-run-idle-label]"),
+
+    runStopIcon: queryRequiredElement(editor, "[data-python-run-stop-icon]"),
+
+    runStopLabel: queryRequiredElement(editor, "[data-python-run-stop-label]"),
 
     resetButton: queryRequiredElement(editor, "[data-python-reset]"),
 

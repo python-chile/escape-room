@@ -81,6 +81,81 @@ print(respuesta)`,
     await expect(runButton).toBeEnabled();
   });
 
+  test("permite detener una ejecución infinita", async ({ page }) => {
+    const { runButton, status, output, nextLink } = getRunner(page);
+
+    await writeCode(
+      page,
+      `while True:
+    pass`,
+    );
+
+    await runButton.click();
+
+    await expect(runButton).toHaveAttribute("data-running", "true");
+
+    await expect(runButton).toContainText("Detener ejecución");
+
+    await expect(status).toHaveText("Ejecutando…", {
+      timeout: 90_000,
+    });
+
+    await runButton.click();
+
+    await expect(output).toContainText(
+      "La ejecución fue detenida por el usuario.",
+    );
+
+    await expect(nextLink).toBeHidden();
+
+    await expect(runButton).toBeEnabled({
+      timeout: 90_000,
+    });
+
+    await expect(runButton).toHaveAttribute("data-running", "false");
+
+    await expect(runButton).toContainText("Ejecutar código");
+
+    await expect(status).toHaveText("Listo para ejecutar");
+  });
+
+  test("restablecer código cancela la ejecución activa", async ({ page }) => {
+    const { runButton, output, nextLink } = getRunner(page);
+
+    const resetButton = page.locator("[data-python-reset]");
+
+    const editor = page.locator("[data-python-code] .cm-content");
+
+    await writeCode(
+      page,
+      `respuesta = "Cerrar"
+
+while True:
+    pass`,
+    );
+
+    await runButton.click();
+
+    await expect(runButton).toHaveAttribute("data-running", "true");
+
+    await resetButton.click();
+
+    await expect(editor).not.toContainText("while True");
+
+    await expect(output).toHaveText("");
+    await expect(nextLink).toBeHidden();
+
+    await expect(runButton).toBeEnabled({
+      timeout: 90_000,
+    });
+
+    await expect(runButton).toHaveAttribute("data-running", "false");
+
+    await page.waitForTimeout(1_000);
+
+    await expect(nextLink).toBeHidden();
+  });
+
   test("aísla las variables entre ejecuciones", async ({ page }) => {
     const { runButton, status, output, feedback, nextLink } = getRunner(page);
 
