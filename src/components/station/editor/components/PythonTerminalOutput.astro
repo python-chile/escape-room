@@ -1,15 +1,31 @@
+---
+interface Props {
+  editorId: string;
+}
+
+const { editorId } = Astro.props;
+
+const outputTabId = `${editorId}-output-tab`;
+const outputPanelId = `${editorId}-output-panel`;
+---
+
 <section
-  id="python-output-panel"
+  id={outputPanelId}
   role="tabpanel"
+  tabindex="0"
+  aria-labelledby={outputTabId}
   class="bg-panel min-h-56"
   data-python-terminal-panel="output"
 >
   <div class="p-5">
-    <div class="text-muted font-mono text-xs">$ python main.py</div>
+    <div class="text-muted font-mono text-xs" aria-hidden="true">
+      $ python main.py
+    </div>
 
     <pre
       class="text-ink mt-4 min-h-16 overflow-auto font-mono text-sm leading-7 whitespace-pre-wrap"
       aria-live="polite"
+      aria-label="Salida de Python"
       data-python-output>
     </pre>
 

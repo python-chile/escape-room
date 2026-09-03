@@ -4,11 +4,16 @@
   <button
     type="button"
     disabled
-    class="bg-accent text-ink shadow-action hover:bg-accent-dark focus-visible:outline-brand inline-flex items-center gap-3 px-5 py-3 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    class="bg-accent text-ink shadow-action hover:bg-accent-dark focus-visible:outline-brand inline-flex min-h-12 items-center gap-3 px-5 py-3 font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    aria-label="Ejecutar código"
     data-python-run
+    data-running="false"
   >
-    <span aria-hidden="true">▶</span>
-    Ejecutar código
+    <span aria-hidden="true" data-python-run-idle-icon>▶</span>
+    <span data-python-run-idle-label>Ejecutar código</span>
+
+    <span hidden aria-hidden="true" data-python-run-stop-icon>■</span>
+    <span hidden data-python-run-stop-label>Detener ejecución</span>
   </button>
 
   <button
@@ -31,7 +36,7 @@
       <path d="M3 4v5h5"></path>
     </svg>
 
-    <span>Reiniciar</span>
+    <span>Restablecer código</span>
   </button>
 
   <label
@@ -57,7 +62,7 @@
   <kbd
     class="border-line text-muted ml-auto hidden rounded border px-3 py-2 font-mono text-xs sm:inline"
   >
-    Ctrl + Enter
+    Ctrl/⌘ + Enter
   </kbd>
 
   <a

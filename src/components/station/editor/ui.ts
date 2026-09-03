@@ -2,6 +2,56 @@ import type { PythonEditorElements } from "./dom";
 import { getPythonErrorHelp } from "./python-error-help";
 import { selectPythonTerminalTab } from "./terminal";
 
+type ExecutionStatus =
+  "loading" | "ready" | "running" | "success" | "error" | "stopped";
+
+type ResultStatus = "success" | "error";
+
+type StatusConfiguration = {
+  label: string;
+  dotClass: string;
+};
+
+const STATUS_DOT_CLASSES = [
+  "bg-brand",
+  "bg-emerald-500",
+  "bg-amber-500",
+  "bg-python-red",
+  "bg-muted",
+];
+
+const STATUS_CONFIG: Record<ExecutionStatus, StatusConfiguration> = {
+  loading: {
+    label: "Preparando entorno…",
+    dotClass: "bg-brand",
+  },
+
+  ready: {
+    label: "Listo para ejecutar",
+    dotClass: "bg-emerald-500",
+  },
+
+  running: {
+    label: "Ejecutando…",
+    dotClass: "bg-amber-500",
+  },
+
+  success: {
+    label: "Ejecución terminada",
+    dotClass: "bg-emerald-500",
+  },
+
+  error: {
+    label: "Error",
+    dotClass: "bg-python-red",
+  },
+
+  stopped: {
+    label: "Ejecución detenida",
+    dotClass: "bg-muted",
+  },
+};
+
 export type PythonEditorUi = {
   addLog: (message: string) => void;
   clearChart: () => void;
@@ -13,11 +63,12 @@ export type PythonEditorUi = {
   setReady: () => void;
   setRunning: () => void;
   showChart: (chart: string) => void;
+  showExecutionStopped: () => void;
   showExecutionTimeout: (executionTime: number) => void;
   showFeedback: (message: string, passed: boolean) => void;
   showLoadingTimeout: () => void;
   showNextLink: (href: string, label: string) => void;
-  showResult: (result: string, status: "success" | "error") => void;
+  showResult: (result: string, status: ResultStatus) => void;
   showUnexpectedError: (error: unknown) => void;
 };
 
@@ -26,9 +77,9 @@ export function createPythonEditorUi(
 ): PythonEditorUi {
   let errorHelpEnabled = false;
   let lastResult = "";
-  let lastStatus: "success" | "error" | undefined;
+  let lastStatus: ResultStatus | undefined;
 
-  function addLog(message: string) {
+  function addLog(message: string): void {
     const time = new Date().toLocaleTimeString("es-CL", {
       hour: "2-digit",
       minute: "2-digit",
@@ -42,20 +93,51 @@ export function createPythonEditorUi(
       : entry;
   }
 
-  function clearCelebration() {
+  function setStatus(status: ExecutionStatus): void {
+    const configuration = STATUS_CONFIG[status];
+
+    elements.statusText.textContent = configuration.label;
+
+    elements.statusDot.classList.remove(...STATUS_DOT_CLASSES);
+
+    elements.statusDot.classList.add(configuration.dotClass);
+  }
+
+  function setRunButtonRunning(running: boolean): void {
+    elements.runButton.dataset.running = String(running);
+
+    elements.runIdleIcon.hidden = running;
+    elements.runIdleLabel.hidden = running;
+
+    elements.runStopIcon.hidden = !running;
+    elements.runStopLabel.hidden = !running;
+
+    const label = running ? "Detener ejecución" : "Ejecutar código";
+
+    elements.runButton.setAttribute("aria-label", label);
+
+    elements.runButton.title = label;
+  }
+
+  function setRunButtonAvailable(available: boolean): void {
+    elements.runButton.disabled = !available;
+  }
+
+  function clearCelebration(): void {
     delete document.documentElement.dataset.pyschoolCelebrated;
   }
 
-  function hideErrorHelp() {
+  function hideErrorHelp(): void {
     elements.errorHelp.hidden = true;
     elements.errorHelpName.textContent = "";
     elements.errorHelpExplanation.textContent = "";
     elements.errorHelpSuggestion.textContent = "";
   }
 
-  function updateErrorHelp() {
+  function updateErrorHelp(): void {
     if (!errorHelpEnabled || lastStatus !== "error") {
       hideErrorHelp();
+
       return;
     }
 
@@ -63,6 +145,7 @@ export function createPythonEditorUi(
 
     if (!help) {
       hideErrorHelp();
+
       return;
     }
 
@@ -75,7 +158,11 @@ export function createPythonEditorUi(
     elements.errorHelp.hidden = false;
   }
 
-  function clearChart() {
+  function clearChart(): void {
+    if (elements.chartDialog.open) {
+      elements.chartDialog.close();
+    }
+
     elements.chart.removeAttribute("src");
 
     elements.chartDialogImage.removeAttribute("src");
@@ -86,11 +173,12 @@ export function createPythonEditorUi(
     selectPythonTerminalTab(elements, "output");
   }
 
-  function hideNextLink() {
+  function hideNextLink(): void {
     elements.nextLink.hidden = true;
+    elements.nextLink.removeAttribute("href");
   }
 
-  function clearTerminal() {
+  function clearTerminal(): void {
     lastResult = "";
     lastStatus = undefined;
 
@@ -98,6 +186,7 @@ export function createPythonEditorUi(
     elements.logs.textContent = "";
     elements.outputCount.hidden = true;
     elements.feedback.hidden = true;
+    elements.feedback.textContent = "";
 
     hideErrorHelp();
     hideNextLink();
@@ -105,46 +194,63 @@ export function createPythonEditorUi(
     clearCelebration();
   }
 
+  function showOutput(message: string): void {
+    elements.output.textContent = message;
+    elements.outputCount.hidden = false;
+
+    selectPythonTerminalTab(elements, "output");
+  }
+
+  function setIdleControls(available: boolean): void {
+    setRunButtonRunning(false);
+    setRunButtonAvailable(available);
+  }
+
   return {
     addLog,
+
     clearChart,
+
     clearTerminal,
+
     hideNextLink,
 
     prepareRun() {
-      elements.runButton.disabled = true;
-
-      elements.statusText.textContent = "Cargando entorno…";
-
       clearTerminal();
+
+      setStatus("loading");
+      setRunButtonRunning(true);
+      setRunButtonAvailable(true);
+
       addLog("Preparando ejecución");
     },
 
     resetCode(isReady) {
       clearTerminal();
 
-      elements.statusText.textContent = isReady
-        ? "Listo para ejecutar"
-        : "Preparando entorno…";
+      setStatus(isReady ? "ready" : "loading");
+      setIdleControls(isReady);
 
       addLog("Código restablecido");
     },
 
     setErrorHelpEnabled(enabled) {
       errorHelpEnabled = enabled;
+
       updateErrorHelp();
     },
 
     setReady() {
-      elements.runButton.disabled = false;
-
-      elements.statusText.textContent = "Listo para ejecutar";
+      setStatus("ready");
+      setIdleControls(true);
 
       addLog("Entorno Python listo");
     },
 
     setRunning() {
-      elements.statusText.textContent = "Ejecutando…";
+      setStatus("running");
+      setRunButtonRunning(true);
+      setRunButtonAvailable(true);
 
       addLog("Ejecución iniciada");
     },
@@ -163,21 +269,32 @@ export function createPythonEditorUi(
       addLog("Gráfico generado");
     },
 
+    showExecutionStopped() {
+      lastResult = "";
+      lastStatus = undefined;
+
+      clearChart();
+
+      setStatus("stopped");
+      setIdleControls(false);
+
+      showOutput("La ejecución fue detenida por el usuario.");
+
+      addLog("Ejecución detenida por el usuario");
+    },
+
     showExecutionTimeout(executionTime) {
       lastResult = "";
       lastStatus = undefined;
 
       clearChart();
 
-      elements.statusText.textContent = "Detenido por tiempo máximo";
+      setStatus("stopped");
+      setIdleControls(false);
 
-      elements.output.textContent = `La ejecución superó ${
-        executionTime / 1_000
-      } segundos y fue detenida.`;
-
-      elements.outputCount.hidden = false;
-
-      selectPythonTerminalTab(elements, "output");
+      showOutput(
+        `La ejecución superó ${executionTime / 1_000} segundos y fue detenida.`,
+      );
 
       addLog("Ejecución detenida por tiempo máximo");
     },
@@ -197,14 +314,12 @@ export function createPythonEditorUi(
 
       clearChart();
 
-      elements.statusText.textContent = "No se pudo cargar el entorno";
+      setStatus("error");
+      setIdleControls(false);
 
-      elements.output.textContent =
-        "La carga de Python o de los datos tardó demasiado. Inténtalo nuevamente.";
-
-      elements.outputCount.hidden = false;
-
-      selectPythonTerminalTab(elements, "output");
+      showOutput(
+        "La carga de Python o de los datos tardó demasiado. Inténtalo nuevamente.",
+      );
 
       addLog("Tiempo de carga agotado");
     },
@@ -212,7 +327,6 @@ export function createPythonEditorUi(
     showNextLink(href, label) {
       elements.nextLink.href = href;
       elements.nextLink.textContent = `${label} →`;
-
       elements.nextLink.hidden = false;
     },
 
@@ -220,15 +334,11 @@ export function createPythonEditorUi(
       lastResult = result;
       lastStatus = status;
 
-      elements.output.textContent = result;
-      elements.outputCount.hidden = false;
+      showOutput(result);
 
-      elements.statusText.textContent =
-        status === "success" ? "Ejecución terminada" : "Error";
+      setStatus(status === "success" ? "success" : "error");
 
-      elements.runButton.disabled = false;
-
-      selectPythonTerminalTab(elements, "output");
+      setIdleControls(true);
 
       addLog(
         status === "success"
@@ -245,14 +355,13 @@ export function createPythonEditorUi(
 
       clearChart();
 
-      elements.output.textContent =
+      const message =
         error instanceof Error ? error.message : "Ocurrió un error inesperado.";
 
-      elements.outputCount.hidden = false;
-      elements.statusText.textContent = "Error";
-      elements.runButton.disabled = false;
+      showOutput(message);
 
-      selectPythonTerminalTab(elements, "output");
+      setStatus("error");
+      setIdleControls(true);
 
       addLog("Ocurrió un error inesperado");
     },

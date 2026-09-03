@@ -1,4 +1,6 @@
 ---
+import { randomUUID } from "node:crypto";
+
 import { withBase } from "@/lib/paths";
 
 import PythonEditorActions from "./components/PythonEditorActions.astro";
@@ -6,7 +8,6 @@ import PythonEditorHeader from "./components/PythonEditorHeader.astro";
 import PythonEditorWorkspace from "./components/PythonEditorWorkspace.astro";
 import PythonErrorHelp from "./components/PythonErrorHelp.astro";
 import PythonTerminal from "./components/PythonTerminal.astro";
-
 import type { Challenge } from "./types";
 
 interface Props {
@@ -16,12 +17,16 @@ interface Props {
 
 const { starterCode, challenge } = Astro.props;
 
+const editorId = `python-editor-${randomUUID()}`;
+
 const resolvedChallenge = challenge
   ? ({
       ...challenge,
+
       successHref: challenge.successHref
         ? withBase(challenge.successHref)
         : undefined,
+
       dataset: challenge.dataset
         ? {
             ...challenge.dataset,
@@ -41,15 +46,20 @@ const resolvedChallenge = challenge
     : undefined}
 >
   <div
+    id={editorId}
     class="python-editor-shell border-line shadow-editor relative overflow-hidden border bg-white"
     data-python-editor-shell
     data-expanded="false"
   >
-    <PythonEditorHeader />
+    <PythonEditorHeader editorId={editorId} />
+
     <PythonErrorHelp />
+
     <PythonEditorWorkspace />
+
     <PythonEditorActions />
-    <PythonTerminal />
+
+    <PythonTerminal editorId={editorId} />
   </div>
 
   <iframe
@@ -68,3 +78,78 @@ const resolvedChallenge = challenge
 
   initializePythonEditors();
 </script>
+
+<style>
+  [data-python-editor-shell][data-expanded="true"] {
+    position: fixed;
+    z-index: 100;
+    inset: 1rem;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 24px 80px
+      color-mix(in srgb, var(--color-ink) 30%, transparent);
+  }
+
+  [data-python-editor-shell][data-expanded="true"] [data-python-workspace] {
+    min-height: 18rem;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  [data-python-editor-shell][data-expanded="true"] [data-python-code-panel] {
+    height: 100%;
+    min-height: 0;
+  }
+
+  [data-python-editor-shell][data-expanded="true"] [data-python-code] {
+    height: 100%;
+  }
+
+  [data-python-editor-shell][data-expanded="true"] [data-python-results] {
+    display: flex;
+    max-height: 42dvh;
+    min-height: 15rem;
+    flex-direction: column;
+  }
+
+  [data-python-editor-shell][data-expanded="true"]
+    [data-python-terminal-content] {
+    min-height: 0;
+    flex: 1;
+    overflow: auto;
+  }
+
+  [data-python-editor-shell][data-expanded="true"]
+    [data-python-terminal-panel] {
+    min-height: 100%;
+  }
+
+  [data-python-editor-shell][data-expanded="true"]
+    [data-python-editor-expand-icon] {
+    transform: scale(0.82) rotate(180deg);
+  }
+
+  @media (max-width: 39.999rem) {
+    [data-python-editor-shell][data-expanded="true"] {
+      inset: 0;
+      border: 0;
+    }
+
+    [data-python-editor-shell][data-expanded="true"] [data-python-workspace] {
+      min-height: 14rem;
+    }
+
+    [data-python-editor-shell][data-expanded="true"] [data-python-results] {
+      max-height: 48dvh;
+      min-height: 13rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-python-editor-expand-icon] {
+      transition: none;
+    }
+  }
+</style>

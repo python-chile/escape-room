@@ -1,7 +1,23 @@
+---
+interface Props {
+  editorId: string;
+}
+
+const { editorId } = Astro.props;
+
+const chartTabId = `${editorId}-chart-tab`;
+const chartPanelId = `${editorId}-chart-panel`;
+
+const chartDialogId = `${editorId}-chart-dialog`;
+const chartDialogTitleId = `${editorId}-chart-dialog-title`;
+---
+
 <section
-  id="python-chart-panel"
+  id={chartPanelId}
   hidden
   role="tabpanel"
+  tabindex="0"
+  aria-labelledby={chartTabId}
   class="bg-panel min-h-56 p-5"
   data-python-terminal-panel="chart"
   data-python-chart-container
@@ -21,6 +37,7 @@
       <button
         type="button"
         class="text-brand hover:bg-brand/10 focus-visible:outline-brand inline-flex min-h-10 items-center gap-2 px-3 text-sm font-bold transition-colors focus-visible:outline-2"
+        aria-controls={chartDialogId}
         data-python-chart-expand
       >
         <svg
@@ -79,18 +96,23 @@
 </section>
 
 <dialog
+  id={chartDialogId}
   class="backdrop:bg-ink/55 m-auto w-full max-w-5xl border-0 bg-transparent p-5"
+  aria-labelledby={chartDialogTitleId}
   data-python-chart-dialog
 >
   <div class="border-line bg-paper border p-4 shadow-xl">
-    <header class="mb-4 flex items-center justify-between">
-      <span class="text-ink font-mono text-sm font-bold">
+    <header class="mb-4 flex items-center justify-between gap-4">
+      <span
+        id={chartDialogTitleId}
+        class="text-ink font-mono text-sm font-bold"
+      >
         Gráfico generado
       </span>
 
       <button
         type="button"
-        class="text-muted hover:bg-ink/5 hover:text-ink grid size-10 place-items-center transition-colors"
+        class="text-muted hover:bg-ink/5 hover:text-ink focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         aria-label="Cerrar gráfico"
         data-python-chart-dialog-close
       >

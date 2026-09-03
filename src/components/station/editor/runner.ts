@@ -24,6 +24,15 @@ type PythonRunnerOptions = {
   ui: PythonEditorUi;
 };
 
+export type PythonRunnerController = {
+  cancel: () => boolean;
+  destroy: () => void;
+  isReady: () => boolean;
+  isRunning: () => boolean;
+  run: () => Promise<void>;
+  stop: () => boolean;
+};
+
 function getUtf8Size(value: string): number {
   return new TextEncoder().encode(value).byteLength;
 }
@@ -33,12 +42,15 @@ export function createPythonRunner({
   elements,
   getCode,
   ui,
-}: PythonRunnerOptions) {
+}: PythonRunnerOptions): PythonRunnerController {
+  const listeners = new AbortController();
+
   let isReady = false;
+  let isDestroyed = false;
   let activeRequestId: string | undefined;
   let timeoutId: number | undefined;
 
-  function clearRunTimeout() {
+  function clearRunTimeout(): void {
     if (timeoutId === undefined) {
       return;
     }
@@ -47,34 +59,49 @@ export function createPythonRunner({
     timeoutId = undefined;
   }
 
-  function postMessage(message: ParentRunnerMessage) {
+  function postMessage(message: ParentRunnerMessage): void {
+    if (isDestroyed) {
+      return;
+    }
+
     elements.runner.contentWindow?.postMessage(message, "*");
   }
 
-  function announceParentIsReady() {
-    postMessage({ type: "python-parent-ready" });
+  function announceParentIsReady(): void {
+    postMessage({
+      type: "python-parent-ready",
+    });
   }
 
-  function resetRunner() {
+  function resetRunner(): void {
+    if (isDestroyed) {
+      return;
+    }
+
     clearRunTimeout();
+
     activeRequestId = undefined;
     isReady = false;
+
     elements.runButton.disabled = true;
+
     elements.runner.src = `${withBase(
       "/python-runner.html",
-    )}?instance=${Date.now()}`;
+    )}?instance=${crypto.randomUUID()}`;
   }
 
-  function finishRun(result: string, status: "success" | "error") {
+  function finishRun(result: string, status: "success" | "error"): void {
     clearRunTimeout();
+
     activeRequestId = undefined;
+
     ui.showResult(result, status);
   }
 
   function handleExecutionStarted(
     message: Extract<RunnerMessage, { type: "python-execution-started" }>,
-  ) {
-    if (message.requestId !== activeRequestId) {
+  ): void {
+    if (isDestroyed || message.requestId !== activeRequestId) {
       return;
     }
 
@@ -85,6 +112,10 @@ export function createPythonRunner({
     ui.setRunning();
 
     timeoutId = window.setTimeout(() => {
+      if (isDestroyed || message.requestId !== activeRequestId) {
+        return;
+      }
+
       ui.showExecutionTimeout(executionTime);
       resetRunner();
     }, executionTime);
@@ -92,8 +123,8 @@ export function createPythonRunner({
 
   function handleResult(
     message: Extract<RunnerMessage, { type: "python-result" }>,
-  ) {
-    if (message.requestId !== activeRequestId) {
+  ): void {
+    if (isDestroyed || message.requestId !== activeRequestId) {
       return;
     }
 
@@ -125,6 +156,36 @@ export function createPythonRunner({
       );
     } else {
       ui.hideNextLink();
+    }
+  }
+
+  function handleRunnerMessage(event: MessageEvent<unknown>): void {
+    if (
+      isDestroyed ||
+      event.source !== elements.runner.contentWindow ||
+      !isRunnerMessage(event.data)
+    ) {
+      return;
+    }
+
+    const message = event.data;
+
+    switch (message.type) {
+      case "python-runner-ready":
+        if (!isReady) {
+          isReady = true;
+          ui.setReady();
+        }
+
+        break;
+
+      case "python-execution-started":
+        handleExecutionStarted(message);
+        break;
+
+      case "python-result":
+        handleResult(message);
+        break;
     }
   }
 
@@ -164,17 +225,27 @@ export function createPythonRunner({
     };
   }
 
-  async function run() {
-    if (!isReady || activeRequestId || !elements.runner.contentWindow) {
+  async function run(): Promise<void> {
+    if (
+      isDestroyed ||
+      !isReady ||
+      activeRequestId ||
+      !elements.runner.contentWindow
+    ) {
       return;
     }
 
     const requestId = crypto.randomUUID();
 
     activeRequestId = requestId;
+
     ui.prepareRun();
 
     timeoutId = window.setTimeout(() => {
+      if (isDestroyed || activeRequestId !== requestId) {
+        return;
+      }
+
       ui.showLoadingTimeout();
       resetRunner();
     }, MAX_LOADING_TIME);
@@ -183,6 +254,7 @@ export function createPythonRunner({
       const dataset = await loadDataset();
 
       if (
+        isDestroyed ||
         activeRequestId !== requestId ||
         !isReady ||
         !elements.runner.contentWindow
@@ -198,50 +270,69 @@ export function createPythonRunner({
         dataset,
       });
     } catch (error) {
-      if (activeRequestId !== requestId) {
+      if (isDestroyed || activeRequestId !== requestId) {
         return;
       }
 
       clearRunTimeout();
       activeRequestId = undefined;
+
       ui.showUnexpectedError(error);
     }
   }
 
-  elements.runner.addEventListener("load", announceParentIsReady);
+  function stop(): boolean {
+    if (isDestroyed || !activeRequestId) {
+      return false;
+    }
 
-  window.addEventListener("message", (event) => {
-    if (
-      event.source !== elements.runner.contentWindow ||
-      !isRunnerMessage(event.data)
-    ) {
+    ui.showExecutionStopped();
+    resetRunner();
+
+    return true;
+  }
+
+  function cancel(): boolean {
+    if (isDestroyed || !activeRequestId) {
+      return false;
+    }
+
+    resetRunner();
+
+    return true;
+  }
+
+  function destroy(): void {
+    if (isDestroyed) {
       return;
     }
 
-    const message = event.data;
+    isDestroyed = true;
+    isReady = false;
+    activeRequestId = undefined;
 
-    switch (message.type) {
-      case "python-runner-ready":
-        if (!isReady) {
-          isReady = true;
-          ui.setReady();
-        }
-        break;
+    clearRunTimeout();
+    listeners.abort();
 
-      case "python-execution-started":
-        handleExecutionStarted(message);
-        break;
+    elements.runner.src = "about:blank";
+  }
 
-      case "python-result":
-        handleResult(message);
-        break;
-    }
+  elements.runner.addEventListener("load", announceParentIsReady, {
+    signal: listeners.signal,
+  });
+
+  window.addEventListener("message", handleRunnerMessage, {
+    signal: listeners.signal,
   });
 
   announceParentIsReady();
 
   return {
+    cancel,
+    destroy,
     isReady: () => isReady,
+    isRunning: () => activeRequestId !== undefined,
     run,
+    stop,
   };
 }

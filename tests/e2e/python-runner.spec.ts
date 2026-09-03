@@ -49,16 +49,115 @@ function getRunner(page: Page) {
 }
 
 test.describe("Python runner", () => {
-  test("aísla las variables entre ejecuciones", async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     test.setTimeout(180_000);
 
     await page.goto(runnerPath);
 
+    await expect(page.locator("[data-python-run]")).toBeEnabled({
+      timeout: 90_000,
+    });
+  });
+
+  test("ejecuta código con Control más Enter", async ({ page }) => {
     const { runButton, status, output, feedback, nextLink } = getRunner(page);
+
+    await writeCode(
+      page,
+      `respuesta = "Cerrar"
+print(respuesta)`,
+    );
+
+    await page.keyboard.press("Control+Enter");
+
+    await expect(status).toHaveText("Ejecución terminada", {
+      timeout: 90_000,
+    });
+
+    await expect(output).toContainText("Cerrar");
+    await expect(feedback).toBeVisible();
+    await expect(feedback).toHaveClass(/text-emerald-800/);
+    await expect(nextLink).toBeVisible();
+    await expect(runButton).toBeEnabled();
+  });
+
+  test("permite detener una ejecución infinita", async ({ page }) => {
+    const { runButton, status, output, nextLink } = getRunner(page);
+
+    await writeCode(
+      page,
+      `while True:
+    pass`,
+    );
+
+    await runButton.click();
+
+    await expect(runButton).toHaveAttribute("data-running", "true");
+
+    await expect(runButton).toContainText("Detener ejecución");
+
+    await expect(status).toHaveText("Ejecutando…", {
+      timeout: 90_000,
+    });
+
+    await runButton.click();
+
+    await expect(output).toContainText(
+      "La ejecución fue detenida por el usuario.",
+    );
+
+    await expect(nextLink).toBeHidden();
 
     await expect(runButton).toBeEnabled({
       timeout: 90_000,
     });
+
+    await expect(runButton).toHaveAttribute("data-running", "false");
+
+    await expect(runButton).toContainText("Ejecutar código");
+
+    await expect(status).toHaveText("Listo para ejecutar");
+  });
+
+  test("restablecer código cancela la ejecución activa", async ({ page }) => {
+    const { runButton, output, nextLink } = getRunner(page);
+
+    const resetButton = page.locator("[data-python-reset]");
+
+    const editor = page.locator("[data-python-code] .cm-content");
+
+    await writeCode(
+      page,
+      `respuesta = "Cerrar"
+
+while True:
+    pass`,
+    );
+
+    await runButton.click();
+
+    await expect(runButton).toHaveAttribute("data-running", "true");
+
+    await resetButton.click();
+
+    await expect(editor).not.toContainText("while True");
+
+    await expect(output).toHaveText("");
+    await expect(nextLink).toBeHidden();
+
+    await expect(runButton).toBeEnabled({
+      timeout: 90_000,
+    });
+
+    await expect(runButton).toHaveAttribute("data-running", "false");
+
+    await page.waitForTimeout(1_000);
+
+    await expect(nextLink).toBeHidden();
+  });
+
+  test("aísla las variables entre ejecuciones", async ({ page }) => {
+    const { runButton, status, output, feedback, nextLink } = getRunner(page);
 
     await writeCode(
       page,
@@ -74,6 +173,7 @@ print(variable_temporal)`,
     });
 
     await expect(feedback).toHaveClass(/text-emerald-800/);
+
     await expect(output).toContainText("123");
     await expect(nextLink).toBeVisible();
     await expect(runButton).toBeEnabled();
@@ -91,23 +191,16 @@ print("respuesta" in globals())`,
     });
 
     await expect(feedback).toBeVisible();
+
     await expect(feedback).toHaveClass(/text-amber-900/);
+
     await expect(nextLink).toBeHidden();
+
     await expect(status).toHaveText("Ejecución terminada");
   });
 
-  test("muestra los errores comunes de Python y permite recuperarse", async ({
-    page,
-  }) => {
-    test.setTimeout(180_000);
-
-    await page.goto(runnerPath);
-
+  test("muestra errores comunes y permite recuperarse", async ({ page }) => {
     const { runButton, status, output, feedback, nextLink } = getRunner(page);
-
-    await expect(runButton).toBeEnabled({
-      timeout: 90_000,
-    });
 
     for (const pythonError of pythonErrors) {
       await test.step(`muestra ${pythonError.name}`, async () => {
@@ -143,8 +236,11 @@ print(respuesta)`,
       });
 
       await expect(output).toContainText("Cerrar");
+
       await expect(feedback).toBeVisible();
+
       await expect(feedback).toHaveClass(/text-emerald-800/);
+
       await expect(nextLink).toBeVisible();
 
       await expect(page.locator("html")).toHaveAttribute(
