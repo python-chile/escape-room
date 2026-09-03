@@ -1,6 +1,26 @@
 ---
 import PythonChartResult from "./PythonChartResult.astro";
 import PythonTerminalOutput from "./PythonTerminalOutput.astro";
+
+interface Props {
+  editorId: string;
+}
+
+const { editorId } = Astro.props;
+
+const outputTabId = `${editorId}-output-tab`;
+const outputPanelId = `${editorId}-output-panel`;
+
+const chartTabId = `${editorId}-chart-tab`;
+const chartPanelId = `${editorId}-chart-panel`;
+
+const logsTabId = `${editorId}-logs-tab`;
+const logsPanelId = `${editorId}-logs-panel`;
+
+const hintsTabId = `${editorId}-hints-tab`;
+const hintsPanelId = `${editorId}-hints-panel`;
+
+const terminalContentId = `${editorId}-terminal-content`;
 ---
 
 <section
@@ -18,10 +38,12 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
       aria-label="Paneles de la terminal"
     >
       <button
+        id={outputTabId}
         type="button"
         role="tab"
+        tabindex="0"
         aria-selected="true"
-        aria-controls="python-output-panel"
+        aria-controls={outputPanelId}
         class="terminal-tab text-ink relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest sm:px-5"
         data-python-terminal-tab="output"
         data-active="true"
@@ -38,11 +60,13 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
       </button>
 
       <button
+        id={chartTabId}
         hidden
         type="button"
         role="tab"
+        tabindex="-1"
         aria-selected="false"
-        aria-controls="python-chart-panel"
+        aria-controls={chartPanelId}
         class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
         data-python-terminal-tab="chart"
         data-python-chart-tab
@@ -53,10 +77,12 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
       </button>
 
       <button
+        id={logsTabId}
         type="button"
         role="tab"
+        tabindex="-1"
         aria-selected="false"
-        aria-controls="python-logs-panel"
+        aria-controls={logsPanelId}
         class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
         data-python-terminal-tab="logs"
       >
@@ -66,10 +92,12 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
       </button>
 
       <button
+        id={hintsTabId}
         type="button"
         role="tab"
+        tabindex="-1"
         aria-selected="false"
-        aria-controls="python-hints-panel"
+        aria-controls={hintsPanelId}
         class="terminal-tab text-muted hover:text-brand relative flex min-h-14 shrink-0 items-center gap-2 px-4 font-mono text-xs font-bold tracking-widest transition-colors sm:px-5"
         data-python-terminal-tab="hints"
       >
@@ -113,8 +141,9 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
         type="button"
         class="text-muted hover:bg-brand/10 hover:text-brand focus-visible:outline-brand grid size-10 place-items-center transition-colors focus-visible:outline-2"
         aria-label="Contraer terminal"
-        title="Contraer terminal"
+        aria-controls={terminalContentId}
         aria-expanded="true"
+        title="Contraer terminal"
         data-python-terminal-toggle
       >
         <svg
@@ -135,16 +164,17 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
     </div>
   </header>
 
-  <div class="min-h-0" data-python-terminal-content>
-    <PythonTerminalOutput />
+  <div id={terminalContentId} class="min-h-0" data-python-terminal-content>
+    <PythonTerminalOutput editorId={editorId} />
 
-    <PythonChartResult />
+    <PythonChartResult editorId={editorId} />
 
     <section
-      id="python-logs-panel"
+      id={logsPanelId}
       hidden
       role="tabpanel"
-      aria-label="Registro de ejecución"
+      tabindex="0"
+      aria-labelledby={logsTabId}
       class="bg-panel min-h-56 p-5 sm:p-6"
       data-python-terminal-panel="logs"
     >
@@ -160,10 +190,11 @@ import PythonTerminalOutput from "./PythonTerminalOutput.astro";
     </section>
 
     <section
-      id="python-hints-panel"
+      id={hintsPanelId}
       hidden
       role="tabpanel"
-      aria-label="Pistas de la misión"
+      tabindex="0"
+      aria-labelledby={hintsTabId}
       class="bg-panel min-h-56 p-5 sm:p-6"
       data-python-terminal-panel="hints"
     >
