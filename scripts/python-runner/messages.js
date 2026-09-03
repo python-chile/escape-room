@@ -1,19 +1,29 @@
 export const MAX_OUTPUT_LENGTH = 12_000;
 
-const TRUNCATION_NOTICE = "… salida truncada";
+const TRUNCATION_NOTICE = "\n… salida truncada";
 
 export function send(message) {
   globalThis.postMessage(message);
 }
 
 export function appendOutput(current, value) {
-  const nextOutput = `${current}${value}\n`;
-
-  if (nextOutput.length <= MAX_OUTPUT_LENGTH) {
-    return nextOutput;
+  if (current.endsWith(TRUNCATION_NOTICE)) {
+    return current;
   }
 
-  const truncatedOutput = nextOutput.slice(0, MAX_OUTPUT_LENGTH);
+  const availableLength = MAX_OUTPUT_LENGTH - current.length;
 
-  return `${truncatedOutput}\n${TRUNCATION_NOTICE}`;
+  if (availableLength <= 0) {
+    return `${current.slice(0, MAX_OUTPUT_LENGTH)}${TRUNCATION_NOTICE}`;
+  }
+
+  const normalizedValue = `${String(value)}\n`;
+
+  if (normalizedValue.length <= availableLength) {
+    return current + normalizedValue;
+  }
+
+  return (
+    current + normalizedValue.slice(0, availableLength) + TRUNCATION_NOTICE
+  );
 }
