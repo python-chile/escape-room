@@ -49,16 +49,40 @@ function getRunner(page: Page) {
 }
 
 test.describe("Python runner", () => {
-  test("aísla las variables entre ejecuciones", async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     test.setTimeout(180_000);
 
     await page.goto(runnerPath);
 
-    const { runButton, status, output, feedback, nextLink } = getRunner(page);
-
-    await expect(runButton).toBeEnabled({
+    await expect(page.locator("[data-python-run]")).toBeEnabled({
       timeout: 90_000,
     });
+  });
+
+  test("ejecuta código con Control más Enter", async ({ page }) => {
+    const { runButton, status, output, feedback, nextLink } = getRunner(page);
+
+    await writeCode(
+      page,
+      `respuesta = "Cerrar"
+print(respuesta)`,
+    );
+
+    await page.keyboard.press("Control+Enter");
+
+    await expect(status).toHaveText("Ejecución terminada", {
+      timeout: 90_000,
+    });
+
+    await expect(output).toContainText("Cerrar");
+    await expect(feedback).toBeVisible();
+    await expect(feedback).toHaveClass(/text-emerald-800/);
+    await expect(nextLink).toBeVisible();
+    await expect(runButton).toBeEnabled();
+  });
+
+  test("aísla las variables entre ejecuciones", async ({ page }) => {
+    const { runButton, status, output, feedback, nextLink } = getRunner(page);
 
     await writeCode(
       page,
@@ -74,6 +98,7 @@ print(variable_temporal)`,
     });
 
     await expect(feedback).toHaveClass(/text-emerald-800/);
+
     await expect(output).toContainText("123");
     await expect(nextLink).toBeVisible();
     await expect(runButton).toBeEnabled();
@@ -91,23 +116,16 @@ print("respuesta" in globals())`,
     });
 
     await expect(feedback).toBeVisible();
+
     await expect(feedback).toHaveClass(/text-amber-900/);
+
     await expect(nextLink).toBeHidden();
+
     await expect(status).toHaveText("Ejecución terminada");
   });
 
-  test("muestra los errores comunes de Python y permite recuperarse", async ({
-    page,
-  }) => {
-    test.setTimeout(180_000);
-
-    await page.goto(runnerPath);
-
+  test("muestra errores comunes y permite recuperarse", async ({ page }) => {
     const { runButton, status, output, feedback, nextLink } = getRunner(page);
-
-    await expect(runButton).toBeEnabled({
-      timeout: 90_000,
-    });
 
     for (const pythonError of pythonErrors) {
       await test.step(`muestra ${pythonError.name}`, async () => {
@@ -143,8 +161,11 @@ print(respuesta)`,
       });
 
       await expect(output).toContainText("Cerrar");
+
       await expect(feedback).toBeVisible();
+
       await expect(feedback).toHaveClass(/text-emerald-800/);
+
       await expect(nextLink).toBeVisible();
 
       await expect(page.locator("html")).toHaveAttribute(

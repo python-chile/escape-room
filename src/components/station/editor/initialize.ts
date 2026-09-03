@@ -9,6 +9,8 @@ import { initializePythonTerminal } from "./terminal";
 import type { Challenge } from "./types";
 import { createPythonEditorUi } from "./ui";
 
+const INITIALIZED_VALUE = "true";
+
 function moveHintIntoEditor(
   editor: HTMLElement,
   hintSlot: HTMLElement,
@@ -53,67 +55,89 @@ function parseChallenge(value?: string): Challenge | undefined {
   try {
     return JSON.parse(value) as Challenge;
   } catch {
-    return undefined;
+    throw new Error(
+      "La configuración del desafío Python no contiene JSON válido.",
+    );
   }
 }
 
-function initializePythonEditor(editor: HTMLElement) {
-  const elements = getPythonEditorElements(editor);
+function initializePythonEditor(editor: HTMLElement): void {
+  if (editor.dataset.pythonInitialized === INITIALIZED_VALUE) {
+    return;
+  }
 
-  const starterCode = editor.dataset.pythonStarterCode ?? "";
+  editor.dataset.pythonInitialized = INITIALIZED_VALUE;
 
-  const challenge = parseChallenge(editor.dataset.pythonChallenge);
+  try {
+    const elements = getPythonEditorElements(editor);
 
-  const hintCount = moveHintIntoEditor(editor, elements.hintSlot);
+    const starterCode = editor.dataset.pythonStarterCode ?? "";
 
-  elements.hintCount.textContent = String(hintCount);
-  elements.hintCount.hidden = hintCount === 0;
-  elements.emptyHints.hidden = hintCount > 0;
+    const challenge = parseChallenge(editor.dataset.pythonChallenge);
 
-  const editorView = createPythonCodeEditor(elements.codeElement, starterCode);
+    const hintCount = moveHintIntoEditor(editor, elements.hintSlot);
 
-  const ui = createPythonEditorUi(elements);
+    elements.hintCount.textContent = String(hintCount);
+    elements.hintCount.hidden = hintCount === 0;
+    elements.emptyHints.hidden = hintCount > 0;
 
-  initializePythonTerminal(elements, ui);
-
-  const errorHelpEnabled = getErrorHelpPreference();
-
-  elements.errorHelpToggle.checked = errorHelpEnabled;
-  ui.setErrorHelpEnabled(errorHelpEnabled);
-
-  elements.errorHelpToggle.addEventListener("change", () => {
-    const enabled = elements.errorHelpToggle.checked;
-
-    setErrorHelpPreference(enabled);
-    ui.setErrorHelpEnabled(enabled);
-  });
-
-  const runner = createPythonRunner({
-    challenge,
-    elements,
-    getCode: () => editorView.state.doc.toString(),
-    ui,
-  });
-
-  elements.runButton.addEventListener("click", () => {
-    void runner.run();
-  });
-
-  elements.resetButton.addEventListener("click", () => {
-    editorView.dispatch({
-      changes: {
-        from: 0,
-        to: editorView.state.doc.length,
-        insert: starterCode,
+    const editorView = createPythonCodeEditor(
+      elements.codeElement,
+      starterCode,
+      {
+        onRun() {
+          elements.runButton.click();
+        },
       },
+    );
+
+    const ui = createPythonEditorUi(elements);
+
+    initializePythonTerminal(elements, ui);
+
+    const errorHelpEnabled = getErrorHelpPreference();
+
+    elements.errorHelpToggle.checked = errorHelpEnabled;
+    ui.setErrorHelpEnabled(errorHelpEnabled);
+
+    elements.errorHelpToggle.addEventListener("change", () => {
+      const enabled = elements.errorHelpToggle.checked;
+
+      setErrorHelpPreference(enabled);
+      ui.setErrorHelpEnabled(enabled);
     });
 
-    ui.resetCode(runner.isReady());
-    editorView.focus();
-  });
+    const runner = createPythonRunner({
+      challenge,
+      elements,
+      getCode: () => editorView.state.doc.toString(),
+      ui,
+    });
+
+    elements.runButton.addEventListener("click", () => {
+      void runner.run();
+    });
+
+    elements.resetButton.addEventListener("click", () => {
+      editorView.dispatch({
+        changes: {
+          from: 0,
+          to: editorView.state.doc.length,
+          insert: starterCode,
+        },
+      });
+
+      ui.resetCode(runner.isReady());
+      editorView.focus();
+    });
+  } catch (error) {
+    delete editor.dataset.pythonInitialized;
+
+    throw error;
+  }
 }
 
-export function initializePythonEditors() {
+export function initializePythonEditors(): void {
   document
     .querySelectorAll<HTMLElement>("[data-python-editor]")
     .forEach(initializePythonEditor);
