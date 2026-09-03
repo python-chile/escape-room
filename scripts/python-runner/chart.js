@@ -35,11 +35,11 @@ if "matplotlib.pyplot" in sys.modules:
 `;
 
 export async function captureChart(runtime, namespace) {
-  await runtime.runPythonAsync(CAPTURE_CHART_SCRIPT, {
-    globals: namespace,
-  });
-
   try {
+    await runtime.runPythonAsync(CAPTURE_CHART_SCRIPT, {
+      globals: namespace,
+    });
+
     const chart = readVariable(namespace, CHART_VARIABLE);
 
     const encodedChart = String(chart.value ?? "");
