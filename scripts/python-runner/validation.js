@@ -1,6 +1,7 @@
 import { readVariable } from "./runtime.js";
 
 const VALIDATED_VARIABLE = "__pyschool_validated";
+
 const FEEDBACK_VARIABLE = "__pyschool_feedback";
 
 const DEFAULT_TOLERANCE = 0.000001;
@@ -19,6 +20,20 @@ function createIncompleteResult(challenge) {
       challenge.incompleteMessage ||
       `Define la variable "${challenge.variable}" e inténtalo nuevamente.`,
   };
+}
+
+function getTolerance(challenge) {
+  const tolerance = challenge.tolerance ?? DEFAULT_TOLERANCE;
+
+  if (
+    typeof tolerance !== "number" ||
+    !Number.isFinite(tolerance) ||
+    tolerance < 0
+  ) {
+    throw new Error("La tolerancia del desafío no es válida.");
+  }
+
+  return tolerance;
 }
 
 async function validatePythonChallenge(runtime, namespace, challenge) {
@@ -57,9 +72,21 @@ function validateEqualsChallenge(result, challenge) {
 
 function validateNumberChallenge(result, challenge) {
   const value = result.value;
-  const isNumber = typeof value === "number" && Number.isFinite(value);
-  const tolerance = challenge.tolerance ?? DEFAULT_TOLERANCE;
-  const passed = isNumber && Math.abs(value - challenge.expected) < tolerance;
+
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return createValidationResult(false, challenge);
+  }
+
+  if (
+    typeof challenge.expected !== "number" ||
+    !Number.isFinite(challenge.expected)
+  ) {
+    throw new Error("El valor esperado del desafío no es válido.");
+  }
+
+  const tolerance = getTolerance(challenge);
+
+  const passed = Math.abs(value - challenge.expected) <= tolerance;
 
   return createValidationResult(passed, challenge);
 }

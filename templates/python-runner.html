@@ -2,10 +2,23 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
+
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; connect-src https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src 'none'; font-src 'none'; worker-src blob:; child-src blob:; base-uri 'none'; form-action 'none'"
+      content="
+        default-src 'none';
+        script-src 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net;
+        connect-src https://cdn.jsdelivr.net;
+        worker-src blob:;
+        img-src 'none';
+        font-src 'none';
+        base-uri 'none';
+        form-action 'none';
+        object-src 'none';
+      "
     />
+
     <title>Python Runner</title>
   </head>
 

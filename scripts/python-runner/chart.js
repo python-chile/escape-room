@@ -41,7 +41,12 @@ export async function captureChart(runtime, namespace) {
 
   try {
     const chart = readVariable(namespace, CHART_VARIABLE);
+
     const encodedChart = String(chart.value ?? "");
+
+    if (!encodedChart) {
+      return undefined;
+    }
 
     if (encodedChart.length > MAX_CHART_BASE64_LENGTH) {
       throw new Error("El gráfico generado supera el tamaño máximo permitido.");
