@@ -11,7 +11,6 @@ interface Props {
 }
 
 const { stationId } = Astro.props;
-
 const currentStation = getStationById(stationId);
 
 if (!currentStation) {
@@ -24,25 +23,31 @@ if (!currentStation) {
 <header class="relative z-30">
   <nav
     aria-label="Navegación de la estación"
-    class="flex min-h-16 w-full items-center justify-between gap-2 py-3 sm:min-h-20 sm:gap-4 sm:py-4"
+    class="flex min-h-16 items-center justify-between py-3 sm:min-h-20 sm:py-4"
   >
     <div class="flex min-w-0 items-center gap-2 sm:gap-6">
       <PythonChileBrand size="compact" />
 
-      <span aria-hidden="true" class="bg-ink/10 hidden h-8 w-px sm:block"
-      ></span>
+      <span
+        aria-hidden="true"
+        class="bg-ink/10 hidden h-8 w-px shrink-0 sm:block"></span>
 
-      <ExitMissionLink />
+      <div class="hidden sm:block">
+        <ExitMissionLink />
+      </div>
     </div>
 
-    <div class="flex shrink-0 items-center gap-1 sm:gap-4">
-      <MissionSwitcher
-        stationId={currentStation.id}
-        currentTitle={currentStation.title}
-      />
+    <div class="flex min-w-0 items-center gap-2 sm:gap-4">
+      <div class="max-w-35 sm:max-w-none">
+        <MissionSwitcher
+          stationId={currentStation.id}
+          currentTitle={currentStation.title}
+        />
+      </div>
 
-      <span aria-hidden="true" class="bg-ink/10 hidden h-8 w-px sm:block"
-      ></span>
+      <span
+        aria-hidden="true"
+        class="bg-ink/10 hidden h-8 w-px shrink-0 sm:block"></span>
 
       <GitHubAuth />
     </div>
